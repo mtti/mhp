@@ -11,9 +11,8 @@ class Post {
       return this.basename;
     } else if (this.fields.title) {
       return slugify(this.fields.title);
-    } else {
-      throw new Error('Unable to generate slug');
     }
+    throw new Error('Unable to generate slug');
   }
 
   get html() {
@@ -23,9 +22,8 @@ class Post {
   get uri() {
     if (this.canonicalPath) {
       return this.canonicalPath.join('/');
-    } else {
-      throw new Error('Tried to generate URI for a post with no canonical path');
     }
+    throw new Error('Tried to generate URI for a post with no canonical path');
   }
 
   constructor(fields, options) {

@@ -1,10 +1,10 @@
 
 const _ = require('lodash');
-const {cleanAttributes} = require('./utils.js');
+const { cleanAttributes } = require('./utils.js');
 
 class FileNode {
   get path() {
-    var path = [];
+    let path = [];
     if (this.parent) {
       path = this.parent.path;
     }
@@ -17,7 +17,7 @@ class FileNode {
   }
 
   get vars() {
-    var vars = {};
+    let vars = {};
     if (this.parent) {
       vars = this.parent.vars;
     }

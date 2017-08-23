@@ -6,10 +6,10 @@ function generate(directory) {
     return;
   }
 
-  directory.slice.execute().forEach(post => {
+  directory.slice.execute().forEach((post) => {
     const options = {
       vars: {
-        post: post,
+        post,
       },
       type: 'text/html',
       name: `${post.slug}.html`,

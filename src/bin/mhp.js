@@ -10,7 +10,7 @@ const DirectoryNode = require('../lib/directory-node');
 const generators = require('../lib/generators');
 
 process.on('unhandledRejection', (reason, p) => {
-  console.log("Unhandled Rejection at: Promise ", p, " reason: ", reason);
+  console.log('Unhandled Rejection at: Promise ', p, ' reason: ', reason);
 });
 
 const argv = minimist(process.argv.slice(2));

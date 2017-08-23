@@ -5,7 +5,7 @@ const yaml = require('js-yaml');
 const mime = require('mime-types');
 const FileNode = require('./file-node');
 
-const {cleanAttributes} = require('./utils.js');
+const { cleanAttributes } = require('./utils.js');
 
 function guessType(filename) {
   if (filename.split('.').length === 1) {
@@ -52,7 +52,7 @@ class DirectoryNode {
   }
 
   get path() {
-    var path = [];
+    let path = [];
     if (this.parent) {
       path = this.parent.path;
     }
@@ -65,7 +65,7 @@ class DirectoryNode {
   }
 
   get vars() {
-    var vars = {};
+    let vars = {};
     if (this.parent) {
       vars = this.parent.vars;
     }
@@ -83,7 +83,7 @@ class DirectoryNode {
     }
 
     if (this.attributes.generate instanceof Array) {
-      return this.attributes.generate.map(item => {
+      return this.attributes.generate.map((item) => {
         if (typeof item === 'object') {
           return item;
         } else if (typeof item === 'string') {

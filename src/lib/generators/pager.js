@@ -1,7 +1,7 @@
 
 const nunjucks = require('nunjucks');
 
-module.exports = function(directory, options) {
+module.exports = function (directory, options) {
   const posts = directory.slice.execute();
 
   options.filenamePattern = options.filenamePattern || 'index-{{page}}.html';

@@ -60,7 +60,7 @@ class Slice {
   groupBy(field) {
     const groups = this.uniqueValues(field);
     return _.reduce(groups, (result, value) => {
-      result[value] = new Slice(this, (post) => post[field] === value);
+      result[value] = new Slice(this, post => post[field] === value);
       return result;
     }, {});
   }
@@ -70,7 +70,7 @@ class Slice {
    */
   execute() {
     const result = this.parent.execute().filter((post) => {
-      for (var i=0; i<this.filters.length; i++) {
+      for (let i = 0; i < this.filters.length; i++) {
         if (!this.filters[i](post)) {
           return false;
         }
