@@ -20,16 +20,29 @@ class Post {
   }
 
   get uri() {
-    if (this.canonicalPath) {
-      return this.canonicalPath.join('/');
+    if (this.canonicalFile) {
+      return this.canonicalFile.uri;
     }
-    throw new Error('Tried to generate URI for a post with no canonical path');
+    throw new Error('Tried to generate URI for a post with no canonical location');
+  }
+
+  get url() {
+    if (this.canonicalFile) {
+      return this.canonicalFile.url;
+    }
+    throw new Error('Tried to generate URL for a post with no canonical location');
   }
 
   constructor(fields, options) {
     this.fields = _.cloneDeep(fields);
     this.basename = options.basename;
-    this.canonicalPath = null;
+    this.canonicalFile = null;
+  }
+
+  setCanonical(fileNode) {
+    if (!this.canonicalFile) {
+      this.canonicalFile = fileNode;
+    }
   }
 }
 

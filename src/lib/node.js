@@ -37,6 +37,20 @@ class Node {
     return vars;
   }
 
+  get url() {
+    const path = this.path;
+    if (path[path.length - 1] === 'index.html') {
+      delete path[path.length - 1];
+    }
+
+    const baseUrl = this.get('baseUrl');
+    if (baseUrl) {
+      path.unshift(baseUrl);
+    }
+
+    return path.join('/');
+  }
+
   get(key, fallback = undefined) {
     if (this.attributes.vars && (key in this.attributes.vars)) {
       return this.attributes.vars[key];

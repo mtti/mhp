@@ -18,9 +18,7 @@ function generatePosts(directory, generatorOptions) {
 
     const file = directory.addFile(options);
 
-    if (!post.canonicalPath) {
-      post.canonicalPath = file.path;
-    }
+    post.setCanonical(file);
   });
 }
 
