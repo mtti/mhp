@@ -2,14 +2,12 @@
 const _ = require('lodash');
 
 function cleanAttributes(attributes) {
-  return _.reduce(attributes, (result, value, key) => {
-    if (key.startsWith('_')) {
-      result[key.substring(1)] = value;
-    } else {
-      result[key] = value;
+  return _.fromPairs(_.toPairs(attributes).map((pair) => {
+    if (pair[0].startsWith('_')) {
+      return [pair[0].substring(1), pair[1]];
     }
-    return result;
-  }, {});
+    return pair;
+  }));
 }
 
 module.exports = {

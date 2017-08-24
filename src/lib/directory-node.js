@@ -22,29 +22,24 @@ class DirectoryNode extends Node {
     return new DirectoryNode(null, doc);
   }
 
-  constructor(parent, options={}) {
+  constructor(parent, options = {}) {
     super(parent);
 
     if (typeof options !== 'object') {
       throw new Error('Directory options must be an object');
     }
 
-    this.attributes = cleanAttributes(_.reduce(options, (result, value, key) => {
-      if (key.startsWith('_')) {
-        result[key] = value;
-      }
-      return result;
-    }, {}));
+    this.attributes = cleanAttributes(
+      _.fromPairs(_.toPairs(options).filter(pair => pair[0].startsWith('_'))));
 
-    const children = _.reduce(options, (result, value, key) => {
-      if (!key.startsWith('_')) {
-        const item = _.cloneDeep(value);
-        item._name = item._name || key;
-        item._type = item._type || guessType(key);
-        result.push(item);
-      }
-      return result;
-    }, []);
+    const children = _.toPairs(options)
+      .filter(pair => !pair[0].startsWith('_'))
+      .map((pair) => {
+        const item = _.cloneDeep(pair[1]);
+        item._name = item._name || pair[0];
+        item._type = item._type || guessType(pair[0]);
+        return item;
+      });
 
     this.files = {};
     children.filter(item => item._type !== 'directory')

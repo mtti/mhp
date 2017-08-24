@@ -1,7 +1,7 @@
 
 const Feed = require('feed');
 
-module.exports = function (directory, options) {
+module.exports = (directory, options) => {
   const posts = directory.slice.execute();
 
   const filename = options.filename || 'atom.xml';

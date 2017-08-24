@@ -28,9 +28,7 @@ if (commandFunction.initializeSite === false) {
   promise = commandFunction(argv, options);
 } else {
   promise = Site.initialize(options.inputDirectory)
-    .then((site) => {
-      return commandFunction(argv, options, site);
-    });
+    .then(site => commandFunction(argv, options, site));
 }
 
 promise.then(() => {
