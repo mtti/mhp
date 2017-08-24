@@ -4,6 +4,7 @@ const fs = require('fs');
 const _ = require('lodash');
 const yaml = require('js-yaml');
 const mime = require('mime-types');
+const Node = require('./node');
 const FileNode = require('./file-node');
 
 const { cleanAttributes } = require('./utils.js');
@@ -15,21 +16,18 @@ function guessType(filename) {
   return mime.lookup(filename) || 'application/octet-stream';
 }
 
-class DirectoryNode {
+class DirectoryNode extends Node {
   static fromFile(filePath) {
     const doc = yaml.safeLoad(fs.readFileSync(filePath, 'utf8'));
     return new DirectoryNode(null, doc);
   }
 
   constructor(parent, options={}) {
-    if (parent !== null && !(parent instanceof DirectoryNode)) {
-      throw new Error('Directory parent must be either null or another DirectoryNode');
-    }
+    super(parent);
+
     if (typeof options !== 'object') {
       throw new Error('Directory options must be an object');
     }
-
-    this.parent = parent;
 
     this.attributes = cleanAttributes(_.reduce(options, (result, value, key) => {
       if (key.startsWith('_')) {
@@ -57,37 +55,6 @@ class DirectoryNode {
 
     this.subdirectories = children.filter(item => item._type === 'directory')
       .map(subdirectory => new DirectoryNode(this, subdirectory));
-  }
-
-  get path() {
-    let path = [];
-    if (this.parent) {
-      path = this.parent.path;
-    }
-
-    if (this.attributes.name) {
-      path.push(this.attributes.name);
-    }
-
-    return path;
-  }
-
-  get uri() {
-    const path = this.path.join('/');
-    return `/${path}`;
-  }
-
-  get vars() {
-    let vars = {};
-    if (this.parent) {
-      vars = this.parent.vars;
-    }
-
-    if (this.attributes.vars) {
-      _.merge(vars, this.attributes.vars);
-    }
-
-    return vars;
   }
 
   get generators() {

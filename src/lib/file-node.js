@@ -1,34 +1,9 @@
 
 const _ = require('lodash');
-const { cleanAttributes } = require('./utils.js');
+const { cleanAttributes } = require('./utils');
+const Node = require('./node');
 
-class FileNode {
-  get path() {
-    let path = [];
-    if (this.parent) {
-      path = this.parent.path;
-    }
-
-    if (this.attributes.name) {
-      path.push(this.attributes.name);
-    }
-
-    return path;
-  }
-
-  get vars() {
-    let vars = {};
-    if (this.parent) {
-      vars = this.parent.vars;
-    }
-
-    if (this.attributes.vars) {
-      _.merge(vars, this.attributes.vars);
-    }
-
-    return vars;
-  }
-
+class FileNode extends Node {
   get template() {
     if (this.attributes.template) {
       return this.attributes.template;
@@ -43,7 +18,7 @@ class FileNode {
   }
 
   constructor(parent, attributes) {
-    this.parent = parent;
+    super(parent);
     this.attributes = cleanAttributes(_.clone(attributes));
   }
 }
