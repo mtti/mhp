@@ -7,6 +7,7 @@ function generatePosts(directory, generatorOptions) {
     const options = {
       vars: {
         post,
+        title: post.fields.title,
       },
       type: 'text/html',
       name: `${post.slug}.html`,

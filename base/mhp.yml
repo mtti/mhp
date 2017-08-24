@@ -1,11 +1,14 @@
 ---
 _vars:
+  siteTitle: An MHP site
   baseUrl: http://www.example.com
 
 index.html:
   _template: front.html
 
 blog:
+  _vars:
+    title: Blog posts
   _filterPosts:
     published: true
   _generate:
