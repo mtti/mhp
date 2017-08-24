@@ -1,7 +1,6 @@
-
 const Feed = require('feed');
 
-module.exports = (directory, options) => {
+function generateFeed(directory, options) {
   const posts = directory.slice.execute();
 
   const filename = options.filename || 'atom.xml';
@@ -31,4 +30,6 @@ module.exports = (directory, options) => {
   };
 
   directory.addFile(fileOptions);
-};
+}
+
+module.exports = generateFeed;

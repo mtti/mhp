@@ -1,4 +1,4 @@
-function generate(directory, generatorOptions) {
+function generatePosts(directory, generatorOptions) {
   if (!directory.slice) {
     return;
   }
@@ -24,4 +24,4 @@ function generate(directory, generatorOptions) {
   });
 }
 
-module.exports = generate;
+module.exports = generatePosts;

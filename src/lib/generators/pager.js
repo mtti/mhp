@@ -1,7 +1,6 @@
-
 const nunjucks = require('nunjucks');
 
-module.exports = (directory, options) => {
+function generatePager(directory, options) {
   const posts = directory.posts;
 
   if (posts.length === 0) {
@@ -39,4 +38,6 @@ module.exports = (directory, options) => {
 
     directory.addFile(fileOptions);
   }
-};
+}
+
+module.exports = generatePager;
