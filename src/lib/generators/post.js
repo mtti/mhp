@@ -1,7 +1,4 @@
-
-const FileNode = require('../file-node');
-
-function generate(directory) {
+function generate(directory, generatorOptions) {
   if (!directory.slice) {
     return;
   }
@@ -14,6 +11,11 @@ function generate(directory) {
       type: 'text/html',
       name: `${post.slug}.html`,
     };
+
+    if (generatorOptions.template) {
+      options.template = generatorOptions.template;
+    }
+
     const file = directory.addFile(options);
 
     if (!post.canonicalPath) {

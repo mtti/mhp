@@ -1,24 +1,28 @@
 
 const nunjucks = require('nunjucks');
 
-module.exports = function (directory, options) {
-  const posts = directory.slice.execute();
+module.exports = (directory, options) => {
+  const posts = directory.posts;
 
-  options.filenamePattern = options.filenamePattern || 'index-{{page}}.html';
-  options.firstPageFilename = options.firstPageFilename || 'index.html';
-  options.postsPerPage = options.postsPerPage || 15;
+  if (posts.length === 0) {
+    console.error(
+      `WARNING Directory ${directory.uri} is generating post indexes but has no posts`);
+  }
 
-  totalPages = Math.ceil(posts.length / options.postsPerPage) || 1;
+  const filenamePattern = options.filenamePattern || 'index-{{page}}.html';
+  const firstPageFilename = options.firstPageFilename || 'index.html';
+  const postsPerPage = options.postsPerPage || 15;
+  const totalPages = Math.ceil(posts.length / options.postsPerPage) || 1;
 
   for (let i = 0; i < totalPages; i += 1) {
-    const skip = i * options.postsPerPage;
+    const skip = i * postsPerPage;
     const fileOptions = {
       type: 'text/html',
-      name: nunjucks.renderString(options.filenamePattern, { page: i + 1 }),
+      name: nunjucks.renderString(filenamePattern, { page: i + 1 }),
       vars: {
         currentPage: i + 1,
         totalPages,
-        posts: posts.slice(skip, skip + options.postsPerPage),
+        posts: posts.slice(skip, skip + postsPerPage),
       },
     };
 
@@ -27,7 +31,7 @@ module.exports = function (directory, options) {
     }
 
     if (i === 0) {
-      fileOptions.name = options.firstPageFilename;
+      fileOptions.name = firstPageFilename;
       if (options.firstPageTemplate) {
         fileOptions.template = options.firstPageTemplate;
       }

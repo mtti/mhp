@@ -1,13 +1,9 @@
 #!/usr/bin/env node
 
 const path = require('path');
-const _ = require('lodash');
-const fs = require('fs-extra');
 const minimist = require('minimist');
-const Nunjucks = require('nunjucks');
-const PostDB = require('../lib/post-db');
-const DirectoryNode = require('../lib/directory-node');
-const generators = require('../lib/generators');
+const Site = require('../lib/site.js');
+const { commands } = require('../lib/cli');
 
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise ', p, ' reason: ', reason);
@@ -20,41 +16,23 @@ const options = {
 };
 options.outputDirectory = path.join(options.inputDirectory, 'dist');
 
-const nunjucks = Nunjucks.configure(path.join(options.inputDirectory, 'templates'));
+const command = argv._[0] || 'generate';
+const commandFunction = commands[command];
+if (!commandFunction) {
+  throw new Error(`Unrecognized command ${command}`);
+}
 
-const root = DirectoryNode.fromFile(path.join(options.inputDirectory, 'mhp.yml'));
+let promise;
 
-const postDb = new PostDB();
-postDb.loadDirectory(path.join(options.inputDirectory, 'posts'))
-  .then(() => {
-    console.log(`Loaded ${postDb.posts.length} posts`);
-
-    root.walk((directory) => {
-      if (directory.attributes.filterPosts) {
-        directory.slice = postDb.slice(directory.attributes.filterPosts);
-      }
-
-      directory.generators.forEach((options) => {
-        generators[options.generator](directory, options);
-      });
+if (commandFunction.initializeSite === false) {
+  promise = commandFunction(argv, options);
+} else {
+  promise = Site.initialize(options.inputDirectory)
+    .then((site) => {
+      return commandFunction(argv, options, site);
     });
+}
 
-    root.walk((directory) => {
-      const directoryPath = path.join(options.outputDirectory, path.join(...directory.path));
-      fs.ensureDirSync(directoryPath);
-
-      _.forOwn(directory.files, (file, key) => {
-        const filePath = path.join(options.outputDirectory, path.join(...file.path));
-        const vars = file.vars;
-
-        let content = '';
-        if (file.attributes.content) {
-          content = file.attributes.content;
-        } else {
-          content = nunjucks.render(file.template, vars);
-        }
-        console.log(`Writing: ${filePath}`);
-        fs.writeFileSync(filePath, content);
-      });
-    });
-  });
+promise.then(() => {
+  process.exit(0);
+});

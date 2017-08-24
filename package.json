@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.1",
   "bin": {
-    "mhp": "src/bin/main.js"
+    "mhp": "src/bin/mhp.js"
   },
   "scripts": {
     "lint": "eslint \"src/bin/**/*.js\" \"src/lib/**/*.js\" \"src/test/**/*.js\"",

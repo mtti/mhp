@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 
 const fs = require('fs');
 const _ = require('lodash');
@@ -20,7 +21,14 @@ class DirectoryNode {
     return new DirectoryNode(null, doc);
   }
 
-  constructor(parent, options) {
+  constructor(parent, options={}) {
+    if (parent !== null && !(parent instanceof DirectoryNode)) {
+      throw new Error('Directory parent must be either null or another DirectoryNode');
+    }
+    if (typeof options !== 'object') {
+      throw new Error('Directory options must be an object');
+    }
+
     this.parent = parent;
 
     this.attributes = cleanAttributes(_.reduce(options, (result, value, key) => {
@@ -64,6 +72,11 @@ class DirectoryNode {
     return path;
   }
 
+  get uri() {
+    const path = this.path.join('/');
+    return `/${path}`;
+  }
+
   get vars() {
     let vars = {};
     if (this.parent) {
@@ -103,6 +116,13 @@ class DirectoryNode {
     }
 
     throw new Error(`Unsupported generator configuration type: ${typeof filter}`);
+  }
+
+  get posts() {
+    if (this.slice) {
+      return this.slice.execute();
+    }
+    return [];
   }
 
   addFile(options) {

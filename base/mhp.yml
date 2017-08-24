@@ -1,0 +1,12 @@
+---
+index.html:
+  _template: front.html
+
+blog:
+  _filterPosts:
+    published: true
+  _generate:
+    posts:
+      template: post.html
+    pager:
+      template: post-index.html

@@ -1,4 +1,3 @@
-
 const _ = require('lodash');
 
 class Slice {
@@ -6,7 +5,7 @@ class Slice {
     if (!filter) {
       return [];
     } else if (filter instanceof Array) {
-      return _.flattenDeep(filter.map(PostSet.parseFilter));
+      return _.flattenDeep(filter.map(Slice.parseFilter));
     } else if (typeof filter === 'function') {
       return [filter];
     } else if (typeof filter === 'object') {
@@ -41,8 +40,10 @@ class Slice {
   uniqueValues(field) {
     const posts = this.execute();
 
-    const resultObject = _.reduce(posts, (result, value) => {
-      result[value] = true;
+    const resultObject = _.reduce(posts, (result, post) => {
+      if (field in post) {
+        result[post[field]] = true;
+      }
       return result;
     }, {});
 
@@ -70,7 +71,7 @@ class Slice {
    */
   execute() {
     const result = this.parent.execute().filter((post) => {
-      for (let i = 0; i < this.filters.length; i++) {
+      for (let i = 0; i < this.filters.length; i += 1) {
         if (!this.filters[i](post)) {
           return false;
         }

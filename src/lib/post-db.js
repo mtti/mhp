@@ -35,7 +35,6 @@ class PostDB {
   }
 
   load(filePath) {
-    console.log(`load ${filePath}`);
     return fsReadFile(filePath, 'utf8')
       .then((data) => {
         const content = fm(data);
@@ -53,7 +52,6 @@ class PostDB {
   }
 
   loadDirectory(directory) {
-    console.log(`loadDirectory ${directory}`);
     return fsReaddir(directory).then((filenames) => {
       const files = filenames.map((filename) => {
         const fullPath = path.join(directory, filename);
