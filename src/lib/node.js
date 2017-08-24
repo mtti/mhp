@@ -39,14 +39,17 @@ class Node {
 
   get url() {
     const path = this.path;
-    const filenameParts = path[path.length - 1].split('.');
-    const ext = filenameParts[filenameParts.length - 1];
 
-    if (ext === 'html') {
-      if (path.slice(-1)[0] === 'index.html') {
-        delete path[path.length - 1];
-      } else {
-        path[path.length - 1] = filenameParts.slice(0, filenameParts.length - 1);
+    if (this.isFile) {
+      const filenameParts = path[path.length - 1].split('.');
+      const ext = filenameParts[filenameParts.length - 1];
+
+      if (ext === 'html') {
+        if (path.slice(-1)[0] === 'index.html') {
+          delete path[path.length - 1];
+        } else {
+          path[path.length - 1] = filenameParts.slice(0, filenameParts.length - 1);
+        }
       }
     }
 
@@ -56,6 +59,14 @@ class Node {
     }
 
     return path.join('/');
+  }
+
+  get isFile() {
+    return (('type' in this.attributes) && this.attributes.type !== 'directory');
+  }
+
+  get isDirectory() {
+    return (('type' in this.attributes) && this.attributes.type === 'directory');
   }
 
   get(key, fallback = undefined) {
