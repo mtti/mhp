@@ -36,6 +36,22 @@ class Node {
 
     return vars;
   }
+
+  get(key, fallback = undefined) {
+    if (this.attributes.vars && (key in this.attributes.vars)) {
+      return this.attributes.vars[key];
+    } else if (this.parent) {
+      return this.parent.var(key, fallback);
+    }
+    return fallback;
+  }
+
+  set(key, value) {
+    if (!this.attributes.vars) {
+      this.attributes.vars = {};
+    }
+    this.attributes.vars[key] = value;
+  }
 }
 
 module.exports = Node;
