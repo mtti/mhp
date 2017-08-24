@@ -1,4 +1,7 @@
 ---
+_vars:
+  baseUrl: http://www.example.com
+
 index.html:
   _template: front.html
 

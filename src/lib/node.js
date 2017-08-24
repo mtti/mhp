@@ -39,8 +39,15 @@ class Node {
 
   get url() {
     const path = this.path;
-    if (path[path.length - 1] === 'index.html') {
-      delete path[path.length - 1];
+    const filenameParts = path[path.length - 1].split('.');
+    const ext = filenameParts[filenameParts.length - 1];
+
+    if (ext === 'html') {
+      if (path.slice(-1)[0] === 'index.html') {
+        delete path[path.length - 1];
+      } else {
+        path[path.length - 1] = filenameParts.slice(0, filenameParts.length - 1);
+      }
     }
 
     const baseUrl = this.get('baseUrl');
@@ -55,7 +62,7 @@ class Node {
     if (this.attributes.vars && (key in this.attributes.vars)) {
       return this.attributes.vars[key];
     } else if (this.parent) {
-      return this.parent.var(key, fallback);
+      return this.parent.get(key, fallback);
     }
     return fallback;
   }
