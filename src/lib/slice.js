@@ -38,13 +38,15 @@ class Slice {
    * @param {*} field
    */
   uniqueValues(field) {
-    const valueMap = {};
-    this.execute()
+    return _.uniq(this.execute()
       .filter(post => field in post.fields)
-      .forEach((post) => {
-        valueMap[post.fields[field]] = true;
-      });
-    return _.toPairs(valueMap).map(pair => pair[0]);
+      .map(post => post.fields[field])
+      .reduce((result, value) => {
+        if (value instanceof Array) {
+          return result.concat(value);
+        }
+        return result.concat([value]);
+      }, []));
   }
 
   /**
@@ -54,7 +56,22 @@ class Slice {
    */
   groupBy(field) {
     return this.uniqueValues(field)
-      .map(uniqueValue => [uniqueValue, new Slice(this, post => post.fields[field] === uniqueValue)]);
+      .map((uniqueValue) => {
+        const filter = (post) => {
+          if (!(field in post.fields)) {
+            return false;
+          }
+
+          const value = post.fields[field];
+
+          if (value instanceof Array) {
+            return value.includes(uniqueValue);
+          }
+          return value === uniqueValue;
+        };
+
+        return [uniqueValue, new Slice(this, filter)];
+      });
   }
 
   /**

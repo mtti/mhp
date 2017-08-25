@@ -2,7 +2,9 @@
 id: a0a290d4-8ed7-4d26-8d9f-c3d663d0161b
 title: An example post
 published: true
-category: general
+tags:
+    - foo
+    - bar
 ---
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu velit quam. Nunc efficitur dictum felis non rutrum. Integer et elit tincidunt, sagittis orci eget, hendrerit turpis. Curabitur hendrerit lobortis sapien sit amet vehicula. Vestibulum congue nisi nisl, nec rhoncus urna sodales sed. Proin a ex elit. Nulla tincidunt euismod eros a maximus. Nam eget bibendum ipsum.

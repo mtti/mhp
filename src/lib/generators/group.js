@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+
 const _ = require('lodash');
 const sanitizeFilename = require('sanitize-filename');
 
@@ -26,8 +28,6 @@ function generateGroups(directory, options) {
       directoryOptions._name = sanitizeFilename(pair[0]);
       directoryOptions._vars.groupingField = options.field;
       directoryOptions._vars.groupingValue = pair[0];
-
-      console.log(directoryOptions);
 
       const subdirectory = directory.addSubdirectory(directoryOptions);
       subdirectory.slice = pair[1];
