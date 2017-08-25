@@ -50,6 +50,8 @@ class DirectoryNode extends Node {
 
     this.subdirectories = children.filter(item => item._type === 'directory')
       .map(subdirectory => new DirectoryNode(this, subdirectory));
+
+    this.ownSlice = null;
   }
 
   get generators() {
@@ -80,11 +82,13 @@ class DirectoryNode extends Node {
     throw new Error(`Unsupported generator configuration type: ${typeof filter}`);
   }
 
-  get posts() {
-    if (this.slice) {
-      return this.slice.execute();
+  get slice() {
+    if (this.ownSlice) {
+      return this.ownSlice;
+    } else if (this.attributes.inheritPosts !== false && this.parent) {
+      return this.parent.slice;
     }
-    return [];
+    return null;
   }
 
   addFile(options) {

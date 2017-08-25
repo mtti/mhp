@@ -1,7 +1,7 @@
 const nunjucks = require('nunjucks');
 
 function generatePager(directory, options) {
-  const posts = directory.posts;
+  const posts = directory.slice.execute();
 
   if (posts.length === 0) {
     console.error(

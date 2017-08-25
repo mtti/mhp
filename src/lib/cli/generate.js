@@ -6,7 +6,7 @@ const generators = require('../generators');
 function generate(argv, options, site) {
   site.root.walk((directory) => {
     if (directory.attributes.filterPosts) {
-      directory.slice = site.postDb.slice(directory.attributes.filterPosts);
+      directory.ownSlice = site.postDb.slice(directory.attributes.filterPosts);
     }
 
     directory.generators.forEach((generatorOptions) => {
