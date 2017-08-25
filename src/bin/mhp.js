@@ -2,11 +2,12 @@
 
 const path = require('path');
 const minimist = require('minimist');
+const winston = require('winston');
 const Site = require('../lib/site.js');
 const { commands } = require('../lib/cli');
 
-process.on('unhandledRejection', (reason, p) => {
-  console.log('Unhandled Rejection at: Promise ', p, ' reason: ', reason);
+process.on('unhandledRejection', (reason) => {
+  winston.error(reason);
 });
 
 const argv = minimist(process.argv.slice(2));
@@ -15,6 +16,12 @@ const options = {
   inputDirectory: argv.directory || process.cwd(),
 };
 options.outputDirectory = path.join(options.inputDirectory, 'dist');
+
+if (argv.verbose) {
+  winston.level = 'verbose';
+} else {
+  winston.level = 'info';
+}
 
 const command = argv._[0] || 'generate';
 const commandFunction = commands[command];

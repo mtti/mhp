@@ -1,6 +1,7 @@
 const path = require('path');
 const _ = require('lodash');
 const fs = require('fs-extra');
+const winston = require('winston');
 const generators = require('../generators');
 
 function cleanUnknownFiles(outputDirectory, knownFiles) {
@@ -16,7 +17,7 @@ function cleanUnknownFiles(outputDirectory, knownFiles) {
 
       if (stats.isFile()) {
         if (!known[filePath]) {
-          console.log(`Deleting ${filePath}`);
+          winston.verbose(`Deleting ${filePath}`);
           fs.removeSync(filePath);
         }
       } else if (stats.isDirectory()) {
@@ -29,7 +30,7 @@ function cleanUnknownFiles(outputDirectory, knownFiles) {
     });
 
     if (fs.readdirSync(directory).length === 0) {
-      console.log(`Removing empty directory ${directory}`);
+      winston.verbose(`Removing empty directory ${directory}`);
       fs.rmdirSync(directory);
     }
   }
@@ -65,7 +66,7 @@ function generate(argv, options, site) {
         content = site.nunjucks.render(file.template, vars);
       }
 
-      console.log(`Writing ${filePath}`);
+      winston.verbose(`Writing ${filePath}`);
       fs.writeFileSync(filePath, content);
       generatedFiles.push(filePath);
     });

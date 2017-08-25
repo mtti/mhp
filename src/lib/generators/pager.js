@@ -1,11 +1,11 @@
 const nunjucks = require('nunjucks');
+const winston = require('winston');
 
 function generatePager(directory, options) {
   const posts = directory.slice.execute();
 
   if (posts.length === 0) {
-    console.error(
-      `WARNING Directory ${directory.uri} is generating post indexes but has no posts`);
+    winston.warning(`Directory ${directory.uri} is generating post indexes but has no posts`);
   }
 
   const filenamePattern = options.filenamePattern || 'index-{{page}}.html';
