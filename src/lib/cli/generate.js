@@ -3,7 +3,43 @@ const _ = require('lodash');
 const fs = require('fs-extra');
 const generators = require('../generators');
 
+function cleanUnknownFiles(outputDirectory, knownFiles) {
+  const known = _.fromPairs(knownFiles.map(filename => [filename, true]));
+
+  function clean(directory) {
+    const files = fs.readdirSync(directory);
+    const subdirectories = [];
+
+    files.forEach((filename) => {
+      const filePath = path.join(directory, filename);
+      const stats = fs.statSync(filePath);
+
+      if (stats.isFile()) {
+        if (!known[filePath]) {
+          console.log(`Deleting ${filePath}`);
+          fs.removeSync(filePath);
+        }
+      } else if (stats.isDirectory()) {
+        subdirectories.push(filePath);
+      }
+    });
+
+    subdirectories.forEach((subdirectory) => {
+      clean(subdirectory);
+    });
+
+    if (fs.readdirSync(directory).length === 0) {
+      console.log(`Removing empty directory ${directory}`);
+      fs.rmdirSync(directory);
+    }
+  }
+
+  clean(outputDirectory);
+}
+
 function generate(argv, options, site) {
+  const generatedFiles = [];
+
   site.root.walk((directory) => {
     if (directory.attributes.filterPosts) {
       directory.ownSlice = site.postDb.slice(directory.attributes.filterPosts);
@@ -31,8 +67,11 @@ function generate(argv, options, site) {
 
       console.log(`Writing ${filePath}`);
       fs.writeFileSync(filePath, content);
+      generatedFiles.push(filePath);
     });
   });
+
+  cleanUnknownFiles(options.outputDirectory, generatedFiles);
 
   return Promise.resolve();
 }
