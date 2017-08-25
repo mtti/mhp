@@ -93,6 +93,12 @@ class DirectoryNode extends Node {
     return file;
   }
 
+  addSubdirectory(options) {
+    const subdirectory = new DirectoryNode(this, options);
+    this.subdirectories.push(subdirectory);
+    return subdirectory;
+  }
+
   /**
    * Execute a callback for this directory node and all subdirectories recursively.
    *

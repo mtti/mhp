@@ -16,3 +16,9 @@ blog:
       template: post.html
     pager:
       template: post-index.html
+    groups:
+      field: category
+      options:
+        _generate:
+          pager:
+            template: post-index.html

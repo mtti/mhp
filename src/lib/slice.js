@@ -40,9 +40,9 @@ class Slice {
   uniqueValues(field) {
     const valueMap = {};
     this.execute()
-      .filter(post => field in post)
+      .filter(post => field in post.fields)
       .forEach((post) => {
-        valueMap[post[field]] = true;
+        valueMap[post.fields[field]] = true;
       });
     return _.toPairs(valueMap).map(pair => pair[0]);
   }
@@ -53,8 +53,8 @@ class Slice {
    * @param {*} field
    */
   groupBy(field) {
-    return _.fromPairs(this.uniqueValues(field)
-      .map(uniqueValue => [uniqueValue, new Slice(this, post => post[field] === uniqueValue)]));
+    return this.uniqueValues(field)
+      .map(uniqueValue => [uniqueValue, new Slice(this, post => post.fields[field] === uniqueValue)]);
   }
 
   /**
