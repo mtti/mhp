@@ -24,4 +24,4 @@ Use `mhp init` to generate a basic project for you. Or look in the `base` direct
 
 ## License
 
-MIT. See `LICENSE` file for more information.
+Apache License version 2.0. See `LICENSE` file for more information.
