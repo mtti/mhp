@@ -11,6 +11,7 @@ Usage: `mhp COMMAND [OPTIONS]`.
 Commands:
 
 * `generate` The default if no command is given. Generate an MHP site in the current working directory.
+    * `--noclean` A comma-separated list of file paths relative to the output directory which should not be deleted during post-generate cleanup.
 * `init` Create a base MHP project in the current working directory.
     * `--overwrite` Overwrite existing files with their base versions. This is intended for use in MHP's development, you probably won't need it.
 * `serve` Start a HTTP server to serve the contents of the output directory.

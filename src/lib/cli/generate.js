@@ -72,6 +72,10 @@ function generate(argv, options, site) {
     });
   });
 
+  const extraKnownFiles
+    = options.noclean.map(filename => path.join(options.outputDirectory, filename));
+  Array.prototype.push.apply(generatedFiles, extraKnownFiles);
+
   cleanUnknownFiles(options.outputDirectory, generatedFiles);
 
   return Promise.resolve();

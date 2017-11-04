@@ -18,6 +18,11 @@ const options = {
 options.outputDirectory = path.join(options.inputDirectory, 'dist');
 options.port = argv.port || 8080;
 
+options.noclean = [];
+if (argv.noclean) {
+  options.noclean = argv.noclean.split(',');
+}
+
 if (argv.verbose) {
   winston.level = 'verbose';
 } else {
