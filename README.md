@@ -13,6 +13,8 @@ Commands:
 * `generate` The default if no command is given. Generate an MHP site in the current working directory.
 * `init` Create a base MHP project in the current working directory.
     * `--overwrite` Overwrite existing files with their base versions. This is intended for use in MHP's development, you probably won't need it.
+* `serve` Start a HTTP server to serve the contents of the output directory.
+    * `--port` The port to listen on. Optional. Defaults to `8080`.
 
 ## Project structure
 
