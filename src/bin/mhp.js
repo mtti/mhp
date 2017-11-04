@@ -16,6 +16,7 @@ const options = {
   inputDirectory: argv.directory || process.cwd(),
 };
 options.outputDirectory = path.join(options.inputDirectory, 'dist');
+options.port = argv.port || 8080;
 
 if (argv.verbose) {
   winston.level = 'verbose';
@@ -38,6 +39,9 @@ if (commandFunction.initializeSite === false) {
     .then(site => commandFunction(argv, options, site));
 }
 
-promise.then(() => {
-  process.exit(0);
-});
+if (commandFunction.daemonize !== true)
+{
+  promise.then(() => {
+    process.exit(0);
+  });
+}

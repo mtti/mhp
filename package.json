@@ -27,6 +27,7 @@
     "minimist": "1.2.0",
     "moment": "2.19.1",
     "moment-timezone": "0.5.14",
+    "morgan": "1.9.0",
     "nunjucks": "3.0.1",
     "q": "1.5.1",
     "sanitize-filename": "1.6.1",
