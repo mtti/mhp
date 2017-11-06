@@ -2,6 +2,8 @@ const path = require('path');
 const _ = require('lodash');
 const fs = require('fs-extra');
 const winston = require('winston');
+const marked = require('marked');
+const nunjucks = require('nunjucks');
 const generators = require('../generators');
 
 function cleanUnknownFiles(outputDirectory, knownFiles) {
@@ -66,11 +68,16 @@ function generate(argv, options, site) {
 
     _.forOwn(directory.files, (file) => {
       const filePath = path.join(options.outputDirectory, path.join(...file.path));
-      const vars = file.vars;
+      const vars = _.cloneDeep(file.vars);
 
       let content = '';
       if (file.attributes.content) {
         content = file.attributes.content;
+      } else if (file.attributes.page) {
+        const contentPath = path.join(options.inputDirectory, 'pages', file.attributes.page);
+        const contentMarkdown = fs.readFileSync(contentPath, 'utf8');
+        vars.content = new nunjucks.runtime.SafeString(marked(contentMarkdown));
+        content = site.nunjucks.render(file.template, vars);
       } else {
         content = site.nunjucks.render(file.template, vars);
       }
