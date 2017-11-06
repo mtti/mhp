@@ -17,7 +17,7 @@ function cleanUnknownFiles(outputDirectory, knownFiles) {
       .filter(item => item.stats.isFile())
       .forEach((item) => {
         winston.verbose(`Deleting ${item.filePath}`);
-        fs.removeSync(filePath);
+        fs.removeSync(item.filePath);
       });
 
     items
@@ -38,14 +38,26 @@ function cleanUnknownFiles(outputDirectory, knownFiles) {
 function generate(argv, options, site) {
   const generatedFiles = [];
 
+  // Generate only posts first so that canonical paths get set.
   site.root.walk((directory) => {
     if (directory.attributes.filterPosts) {
       directory.ownSlice = site.postDb.slice(directory.attributes.filterPosts);
     }
 
-    directory.generators.forEach((generatorOptions) => {
-      generators[generatorOptions.generator](directory, generatorOptions);
-    });
+    directory.generators
+      .filter(generatorOptions => generatorOptions.generator === 'posts')
+      .forEach((generatorOptions) => {
+        generators[generatorOptions.generator](directory, generatorOptions);
+      });
+  });
+
+    // After canonical paths have been set, run all other generators.
+  site.root.walk((directory) => {
+    directory.generators
+      .filter(generatorOptions => generatorOptions.generator !== 'posts')
+      .forEach((generatorOptions) => {
+        generators[generatorOptions.generator](directory, generatorOptions);
+      })
   });
 
   site.root.walk((directory) => {
