@@ -8,26 +8,23 @@ function cleanUnknownFiles(outputDirectory, knownFiles) {
   const known = _.fromPairs(knownFiles.map(filename => [filename, true]));
 
   function clean(directory) {
-    const files = fs.readdirSync(directory);
-    const subdirectories = [];
+    const items = fs.readdirSync(directory)
+      .map(filename => path.join(directory, filename))
+      .filter(filePath => !(filePath in known))
+      .map(filePath => ({ filePath, stats: fs.statSync(filePath) }));
 
-    files.forEach((filename) => {
-      const filePath = path.join(directory, filename);
-      const stats = fs.statSync(filePath);
+    items
+      .filter(item => item.stats.isFile())
+      .forEach((item) => {
+        winston.verbose(`Deleting ${item.filePath}`);
+        fs.removeSync(filePath);
+      });
 
-      if (stats.isFile()) {
-        if (!known[filePath]) {
-          winston.verbose(`Deleting ${filePath}`);
-          fs.removeSync(filePath);
-        }
-      } else if (stats.isDirectory()) {
-        subdirectories.push(filePath);
-      }
-    });
-
-    subdirectories.forEach((subdirectory) => {
-      clean(subdirectory);
-    });
+    items
+      .filter(item => item.stats.isDirectory())
+      .forEach(item => {
+        clean(item.filePath);
+      });
 
     if (fs.readdirSync(directory).length === 0) {
       winston.verbose(`Removing empty directory ${directory}`);
@@ -72,11 +69,12 @@ function generate(argv, options, site) {
     });
   });
 
-  const extraKnownFiles
-    = options.noclean.map(filename => path.join(options.outputDirectory, filename));
-  Array.prototype.push.apply(generatedFiles, extraKnownFiles);
-
-  cleanUnknownFiles(options.outputDirectory, generatedFiles);
+  if (options.cleanUnknownFiles !== false) {
+    const extraKnownFiles
+      = options.keep.map(filename => path.join(options.outputDirectory, filename));
+    Array.prototype.push.apply(generatedFiles, extraKnownFiles);
+    cleanUnknownFiles(options.outputDirectory, generatedFiles);
+  }
 
   return Promise.resolve();
 }

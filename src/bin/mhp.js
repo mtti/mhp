@@ -18,9 +18,17 @@ const options = {
 options.outputDirectory = path.join(options.inputDirectory, 'dist');
 options.port = argv.port || 8080;
 
-options.noclean = [];
+options.keep = []
+if (argv.keep) {
+  if (Array.isArray(argv.keep)) {
+    options.keep = argv.keep;
+  } else {
+    options.keep.push(argv.keep);
+  }
+}
+
 if (argv.noclean) {
-  options.noclean = argv.noclean.split(',');
+  options.cleanUnknownFiles = false;
 }
 
 if (argv.verbose) {
