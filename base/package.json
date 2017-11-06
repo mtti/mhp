@@ -29,7 +29,7 @@
     "watch": "concurrently \"npm run watch:client\" \"npm run watch:site\" \"npm run serve\"",
     "serve": "mhp serve --verbose",
     "build:client": "webpack --bail",
-    "build:site": "mhp --verbose --noclean=main.css,main.js",
+    "build:site": "mhp --verbose --keep=assets",
     "watch:client": "webpack --watch",
     "watch:site": "watch \"npm run build:site\" . -d -u --ignoreDirectoryPattern=\"/node_modules|dist/\""
   }

@@ -11,10 +11,10 @@ const extractLess = new ExtractTextPlugin({
 });
 
 module.exports = {
-  entry: __dirname + '/client/main.js',
+  entry: __dirname + '/assets/main.js',
 
   output: {
-    path: __dirname + '/dist',
+    path: __dirname + '/dist/assets',
     publicPath: '/',
     filename: '[name].js',
     chunkFilename: '[name].js',
