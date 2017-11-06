@@ -1,6 +1,7 @@
 
 const _ = require('lodash');
 const marked = require('marked');
+const nunjucks = require('nunjucks');
 const slugify = require('slugify');
 
 class Post {
@@ -17,6 +18,10 @@ class Post {
 
   get html() {
     return marked(this.fields.body);
+  }
+
+  get safeHtml() {
+    return new nunjucks.runtime.SafeString(this.html);
   }
 
   get uri() {
