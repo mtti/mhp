@@ -41,6 +41,18 @@ if (commandFunction.initializeSite === false) {
   promise = commandFunction(argv, options);
 } else {
   promise = Site.initialize(options.inputDirectory)
+    .then((site) => {
+      if (argv.localhost)
+      {
+        let baseUrl = 'http://localhost';
+        if (options.port != 80)
+        {
+          baseUrl = `${baseUrl}:${options.port}`;
+        }
+        site.root.set('baseUrl', baseUrl);
+      }
+      return site;
+    })
     .then(site => commandFunction(argv, options, site));
 }
 

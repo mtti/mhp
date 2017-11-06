@@ -1,3 +1,4 @@
+const winston = require('winston');
 const Feed = require('feed');
 
 function generateFeed(directory, options) {
@@ -5,19 +6,26 @@ function generateFeed(directory, options) {
 
   const filename = options.filename || 'atom.xml';
 
+  if (!options.uuid)
+  {
+    throw new Error("Feed UUID is required");
+  }
+
   const feed = new Feed({
-    title: 'title',
-    id: 'feed id',
-    link: 'http://example.com',
+    title: options.title,
+    id: `urn:uuid:${options.uuid}`,
     updated: new Date(),
   });
 
   posts.forEach((post) => {
-    const id = post.id || post.uri;
+    if (!post.fields.uuid) {
+      throw new Error(`Post ${post.uri} is missing an UUID`);
+    }
+
     feed.addItem({
       title: post.fields.title,
-      id,
-      link: 'http://example.com',
+      id: `urn:uuid:${post.fields.uuid}`,
+      link: post.url,
       content: post.html,
       date: new Date(),
     });
