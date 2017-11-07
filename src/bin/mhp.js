@@ -2,6 +2,7 @@
 
 const path = require('path');
 const minimist = require('minimist');
+const moment = require('moment-timezone');
 const winston = require('winston');
 const Site = require('../lib/site.js');
 const { commands } = require('../lib/cli');
@@ -37,6 +38,10 @@ if (argv.verbose) {
   winston.level = 'info';
 }
 
+if (argv.tz) {
+  options.timezone = argv.tz;
+}
+
 const command = argv._[0] || 'generate';
 const commandFunction = commands[command];
 if (!commandFunction) {
@@ -50,8 +55,15 @@ if (commandFunction.initializeSite === false) {
 } else {
   promise = Site.initialize(options.inputDirectory)
     .then((site) => {
-      if (argv.localhost)
-      {
+      if (options.timezone) {
+        site.root.set('timezone', options.timezone);
+      }
+
+      if (!site.root.get('timezone')) {
+        site.root.set('timezone', moment.tz.guess());
+      }
+
+      if (argv.localhost) {
         let baseUrl = 'http://localhost';
         if (options.port != 80)
         {
