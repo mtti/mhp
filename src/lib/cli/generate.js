@@ -68,7 +68,15 @@ function generate(argv, options, site) {
 
     _.forOwn(directory.files, (file) => {
       const filePath = path.join(options.outputDirectory, path.join(...file.path));
-      const vars = _.cloneDeep(file.vars);
+
+      let vars;
+      if (file.attributes.controller) {
+        const controller = require(path.join(options.inputDirectory, 'controllers',
+          file.attributes.controller));
+        vars = controller(file, directory, site);
+      } else {
+        vars = _.cloneDeep(file.vars);
+      }
 
       let content = '';
       if (file.attributes.content) {
