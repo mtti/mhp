@@ -44,6 +44,8 @@ function generate(argv, options, site) {
   site.root.walk((directory) => {
     if (directory.attributes.filterPosts) {
       directory.ownSlice = site.postDb.slice(directory.attributes.filterPosts);
+    } else if (directory.attributes.filterPostsWith) {
+      directory.ownSlice = site.postDb.slice(site.functions[directory.attributes.filterPostsWith]);
     }
 
     directory.generators
