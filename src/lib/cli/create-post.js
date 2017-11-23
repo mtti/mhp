@@ -18,8 +18,8 @@ Write your post here.
 `;
 
 function createPost(argv, options, site) {
-  if (argv._.length != 2) {
-    throw new Error("Usage: mhp create-post TITLE");
+  if (argv._.length !== 2) {
+    throw new Error('Usage: mhp create-post TITLE');
   }
 
   const timezone = site.root.get('timezone');

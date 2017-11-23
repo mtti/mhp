@@ -24,7 +24,7 @@ function cleanUnknownFiles(outputDirectory, knownFiles) {
 
     items
       .filter(item => item.stats.isDirectory())
-      .forEach(item => {
+      .forEach((item) => {
         clean(item.filePath);
       });
 
@@ -55,13 +55,13 @@ function generate(argv, options, site) {
       });
   });
 
-    // After canonical paths have been set, run all other generators.
+  // After canonical paths have been set, run all other generators.
   site.root.walk((directory) => {
     directory.generators
       .filter(generatorOptions => generatorOptions.generator !== 'posts')
       .forEach((generatorOptions) => {
         generators[generatorOptions.generator](directory, generatorOptions);
-      })
+      });
   });
 
   site.root.walk((directory) => {
@@ -73,8 +73,10 @@ function generate(argv, options, site) {
 
       let vars;
       if (file.attributes.controller) {
-        const controller = require(path.join(options.inputDirectory, 'controllers',
-          file.attributes.controller));
+        const controller = require(path.join(
+          options.inputDirectory, 'controllers',
+          file.attributes.controller,
+        ));
         vars = controller(file, directory, site);
       } else {
         vars = _.cloneDeep(file.vars);

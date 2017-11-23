@@ -29,8 +29,8 @@ class DirectoryNode extends Node {
       throw new Error('Directory options must be an object');
     }
 
-    this.attributes = cleanAttributes(
-      _.fromPairs(_.toPairs(options).filter(pair => pair[0].startsWith('_'))));
+    this.attributes
+      = cleanAttributes(_.fromPairs(_.toPairs(options).filter(pair => pair[0].startsWith('_'))));
 
     const children = _.toPairs(options)
       .filter(pair => !pair[0].startsWith('_'))

@@ -19,7 +19,7 @@ const options = {
 options.outputDirectory = path.join(options.inputDirectory, 'dist');
 options.port = argv.port || 8080;
 
-options.keep = []
+options.keep = [];
 if (argv.keep) {
   if (Array.isArray(argv.keep)) {
     options.keep = argv.keep;
@@ -65,8 +65,7 @@ if (commandFunction.initializeSite === false) {
 
       if (argv.localhost) {
         let baseUrl = 'http://localhost';
-        if (options.port != 80)
-        {
+        if (options.port !== 80) {
           baseUrl = `${baseUrl}:${options.port}`;
         }
         site.root.set('baseUrl', baseUrl);
@@ -76,8 +75,7 @@ if (commandFunction.initializeSite === false) {
     .then(site => commandFunction(argv, options, site));
 }
 
-if (commandFunction.daemonize !== true)
-{
+if (commandFunction.daemonize !== true) {
   promise.then(() => {
     process.exit(0);
   });

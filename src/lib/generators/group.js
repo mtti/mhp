@@ -6,8 +6,8 @@ const sanitizeFilename = require('sanitize-filename');
 function generateGroups(directory, options) {
   const slice = directory.slice;
   if (!slice) {
-    throw new Error(
-      `Can't generate groups in directory ${directory.uri} which has no posts selected.`);
+    throw new Error(`Can't generate groups in directory ${directory.uri}\
+      which has no posts selected.`);
   }
 
   if (!options.field) {
