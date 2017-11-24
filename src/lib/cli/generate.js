@@ -73,10 +73,10 @@ function generate(argv, options, site) {
 
       let vars;
       if (file.attributes.controller) {
-        const controller = require(path.join(
-          options.inputDirectory, 'controllers',
-          file.attributes.controller,
-        ));
+        if (!(file.attributes.controller in site.functions)) {
+          throw new Error(`Controller does not exist: ${file.attributes.controller}`);
+        }
+        const controller = site.functions[file.attributes.controller];
         vars = controller(file, directory, site);
       } else {
         vars = _.cloneDeep(file.vars);
