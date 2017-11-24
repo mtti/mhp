@@ -19,6 +19,22 @@ class Node {
     return path;
   }
 
+  get breadcrumbs() {
+    let result = [];
+    if (this.parent) {
+      result = this.parent.breadcrumbs;
+    }
+
+    const menuTitle = this.getOwn('menuTitle');
+
+    if (!menuTitle || this.basename === 'index.html') {
+      return result;
+    }
+
+    result.push(this);
+    return result;
+  }
+
   get uri() {
     const path = this.path.join('/');
     return `/${path}`;
@@ -61,12 +77,31 @@ class Node {
     return path.join('/');
   }
 
+  get basename() {
+    return this.path.slice(-1)[0];
+  }
+
+  get extension() {
+    const basenameParts = this.basename.split('.');
+    if (basenameParts.length < 2) {
+      return '';
+    }
+    return `.${basenameParts.slice(-1)}`;
+  }
+
   get isFile() {
     return (('type' in this.attributes) && this.attributes.type !== 'directory');
   }
 
   get isDirectory() {
     return (('type' in this.attributes) && this.attributes.type === 'directory');
+  }
+
+  getOwn(key, fallback = undefined) {
+    if (this.attributes.vars && (key in this.attributes.vars)) {
+      return this.attributes.vars[key];
+    }
+    return fallback;
   }
 
   get(key, fallback = undefined) {

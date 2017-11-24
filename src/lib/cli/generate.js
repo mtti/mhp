@@ -82,6 +82,8 @@ function generate(argv, options, site) {
         vars = _.cloneDeep(file.vars);
       }
 
+      vars.breadcrumbs = file.breadcrumbs;
+
       let content = '';
       if (file.attributes.content) {
         content = file.attributes.content;
