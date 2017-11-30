@@ -9,9 +9,8 @@ class FileNode extends Node {
       return this.attributes.template;
     }
 
-    const vars = this.vars;
-    if (vars.template) {
-      return vars.template;
+    if (this.vars.template) {
+      return this.vars.template;
     }
 
     throw new Error('File has no template');

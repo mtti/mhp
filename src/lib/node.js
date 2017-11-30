@@ -54,7 +54,7 @@ class Node {
   }
 
   get url() {
-    const path = this.path;
+    const { path } = this;
 
     if (this.isFile) {
       const filenameParts = path[path.length - 1].split('.');

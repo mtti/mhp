@@ -1,4 +1,3 @@
-const winston = require('winston');
 const Feed = require('feed');
 
 function generateFeed(directory, options) {

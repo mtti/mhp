@@ -4,8 +4,7 @@ const _ = require('lodash');
 const sanitizeFilename = require('sanitize-filename');
 
 function generateGroups(directory, options) {
-  const slice = directory.slice;
-  if (!slice) {
+  if (!directory.slice) {
     throw new Error(`Can't generate groups in directory ${directory.uri}\
       which has no posts selected.`);
   }
@@ -27,10 +26,10 @@ function generateGroups(directory, options) {
 
       directoryOptions._name = sanitizeFilename(pair[0]);
       directoryOptions._vars.groupingField = options.field;
-      directoryOptions._vars.groupingValue = pair[0];
+      [directoryOptions._vars.groupingValue] = pair;
 
       const subdirectory = directory.addSubdirectory(directoryOptions);
-      subdirectory.slice = pair[1];
+      [, subdirectory.slice] = pair;
     });
 }
 
