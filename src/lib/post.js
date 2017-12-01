@@ -49,6 +49,10 @@ class Post {
       this.canonicalFile = fileNode;
     }
   }
+
+  hasTag(tag) {
+    return (this.fields.tags) && (this.fields.tags.indexOf(tag) > -1);
+  }
 }
 
 module.exports = Post;
