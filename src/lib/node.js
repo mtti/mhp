@@ -4,6 +4,11 @@ class Node {
   constructor(parent) {
     this.parent = parent;
     this.attributes = {};
+    this.children = [];
+
+    if (this.parent) {
+      this.parent.addChild(this);
+    }
   }
 
   get path() {
@@ -95,6 +100,13 @@ class Node {
 
   get isDirectory() {
     return (('type' in this.attributes) && this.attributes.type === 'directory');
+  }
+
+  addChild(child) {
+    if (!(child instanceof Node)) {
+      throw new Error('Child must be an instance of Node');
+    }
+    this.children.push(child);
   }
 
   getOwn(key, fallback = undefined) {
