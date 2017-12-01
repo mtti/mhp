@@ -35,12 +35,14 @@ class Post {
     if (this.canonicalFile) {
       return this.canonicalFile.url;
     }
-    throw new Error('Tried to generate URL for a post with no canonical location');
+    throw new Error(`Tried to generate URL for post ${this.sourcePath}`
+      + ' which has no canonical location');
   }
 
   constructor(fields, options) {
     this.fields = _.cloneDeep(fields);
     this.basename = options.basename;
+    this.sourcePath = options.sourcePath;
     this.canonicalFile = null;
   }
 

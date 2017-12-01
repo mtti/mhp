@@ -44,6 +44,7 @@ class PostDB {
         fields.contentType = 'text/markdown';
         const post = new Post(fields, {
           basename: path.basename(filePath, path.extname(filePath)),
+          sourcePath: filePath,
         });
         this.posts.push(post);
 
