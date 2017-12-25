@@ -5,7 +5,7 @@ function generatePager(directory, options) {
   const posts = directory.slice.execute();
 
   if (posts.length === 0) {
-    winston.warning(`Directory ${directory.uri} is generating post indexes but has no posts`);
+    winston.warn(`Directory ${directory.uri} is generating post indexes but has no posts`);
   }
 
   const filenamePattern = options.filenamePattern || 'index-{{page}}.html';
