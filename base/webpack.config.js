@@ -1,12 +1,10 @@
-'use strict';
-
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const extractLess = new ExtractTextPlugin({
+const extractSass = new ExtractTextPlugin({
   filename: '[name].css',
 });
 
@@ -28,11 +26,11 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.less$/,
-        use: extractLess.extract({
+        test: /\.scss$/,
+        use: extractSass.extract({
           use: [
             { loader: 'css-loader' },
-            { loader: 'less-loader' },
+            { loader: 'sass-loader' },
           ]
         }),
       },
@@ -51,8 +49,8 @@ module.exports = {
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.UglifyJsPlugin(),
     new CopyWebpackPlugin([{
-      from: __dirname + '/public',
+      from: __dirname + '/static',
     }]),
-    extractLess,
+    extractSass,
   ],
 };
