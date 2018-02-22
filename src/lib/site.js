@@ -1,6 +1,3 @@
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
-
 const path = require('path');
 const fs = require('fs-extra');
 const nunjucks = require('nunjucks');
@@ -22,6 +19,7 @@ class Site {
 
     const functionsModulePath = path.join(this.baseDirectory, 'mhp.functions.js');
     if (fs.existsSync(functionsModulePath)) {
+      // eslint-disable-next-line global-require, import/no-dynamic-require
       this.functions = require(path.join(this.baseDirectory, 'mhp.functions.js'));
     } else {
       this.functions = {};

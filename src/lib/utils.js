@@ -1,4 +1,3 @@
-
 const _ = require('lodash');
 
 function cleanAttributes(attributes) {
@@ -10,6 +9,18 @@ function cleanAttributes(attributes) {
   }));
 }
 
+/**
+ * Replace file extension with another one.
+ * @param {*} originalPath
+ * @param {*} newExtension
+ */
+function replaceExtension(originalPath, newExtension) {
+  const parts = originalPath.split('.').slice(0, -1);
+  parts.push(newExtension);
+  return parts.join('.');
+}
+
 module.exports = {
   cleanAttributes,
+  replaceExtension,
 };

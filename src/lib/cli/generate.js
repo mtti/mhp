@@ -4,8 +4,15 @@ const fs = require('fs-extra');
 const winston = require('winston');
 const marked = require('marked');
 const nunjucks = require('nunjucks');
+const fm = require('front-matter');
 const generators = require('../generators');
+const { replaceExtension } = require('../utils');
 
+/**
+ * Delete any files in outputDirectory that are not listed in knownFiles.
+ * @param {*} outputDirectory
+ * @param {*} knownFiles
+ */
 function cleanUnknownFiles(outputDirectory, knownFiles) {
   const known = _.fromPairs(knownFiles.map(filename => [filename, true]));
 
@@ -71,12 +78,37 @@ function generate(argv, options, site) {
     _.forOwn(directory.files, (file) => {
       const filePath = path.join(options.outputDirectory, path.join(...file.path));
 
+      let page;
+      if (file.attributes.page) {
+        const pagePath = replaceExtension(file.path.join(path.sep), 'md');
+        const contentPath = path.join(options.inputDirectory, 'pages', pagePath);
+
+        // Load page source file, merge in node attributes from front matter
+        page = fm(fs.readFileSync(contentPath, 'utf8'));
+        file.attributes = _.merge(file.attributes, page.attributes);
+
+        // Load optional controller file from same directory as source file
+        const dirName = path.dirname(contentPath);
+        const baseName = path.basename(contentPath).split('.')[0];
+        const controllerPath = path.join(dirName, `${baseName}.controller.js`);
+        if (fs.existsSync(controllerPath)) {
+          winston.verbose(`Using controller ${controllerPath}`);
+          // eslint-disable-next-line global-require, import/no-dynamic-require
+          file.controller = require(controllerPath);
+        }
+      }
+
       let vars;
+      let controller;
       if (file.attributes.controller) {
         if (!(file.attributes.controller in site.functions)) {
           throw new Error(`Controller does not exist: ${file.attributes.controller}`);
         }
-        const controller = site.functions[file.attributes.controller];
+        controller = site.functions[file.attributes.controller];
+      } else if (file.controller) {
+        controller = file.controller;
+      }
+      if (controller) {
         vars = controller(file, directory, site);
       } else {
         vars = _.cloneDeep(file.vars);
@@ -87,12 +119,10 @@ function generate(argv, options, site) {
       let content = '';
       if (file.attributes.content) {
         content = file.attributes.content;
-      } else if (file.attributes.page) {
-        const contentPath = path.join(options.inputDirectory, 'pages', file.attributes.page);
-        const contentMarkdown = fs.readFileSync(contentPath, 'utf8');
-        vars.content = new nunjucks.runtime.SafeString(marked(contentMarkdown));
-        content = site.nunjucks.render(file.template, vars);
       } else {
+        if (page) {
+          vars.content = new nunjucks.runtime.SafeString(marked(page.body));
+        }
         content = site.nunjucks.render(file.template, vars);
       }
 
