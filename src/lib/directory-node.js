@@ -54,6 +54,9 @@ class DirectoryNode extends Node {
     this.ownSlice = null;
   }
 
+  /**
+   * Parse and return this subdirectory's generator configurations.
+   */
   get generators() {
     if (!this.attributes.generate) {
       return [];

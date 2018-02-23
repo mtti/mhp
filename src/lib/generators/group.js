@@ -3,6 +3,14 @@
 const _ = require('lodash');
 const sanitizeFilename = require('sanitize-filename');
 
+/**
+ * The 'groups' generator creates a subdirectory for each unique value of the post field named in
+ * options.field. Each generated subdirectory is assigned a subslice with a subset of posts where
+ * the grouping field's value matches the group's value. Each generated subdirectory also receives
+ * an options object copied from options.forEach.
+ * @param {*} directory
+ * @param {*} options
+ */
 function generateGroups(directory, options) {
   if (!directory.slice) {
     throw new Error(`Can't generate groups in directory ${directory.uri}\
@@ -13,7 +21,7 @@ function generateGroups(directory, options) {
     throw new Error(`No grouping field specified for directory ${directory.uri}`);
   }
 
-  const groupOptions = options.options || {};
+  const groupOptions = options.forEach || {};
 
   directory.slice.groupBy(options.field)
     .forEach((pair) => {

@@ -1,5 +1,8 @@
 const _ = require('lodash');
 
+/**
+ * A filtered and sorted subset of posts.
+ */
 class Slice {
   static parseFilter(filter) {
     if (!filter) {
@@ -34,7 +37,6 @@ class Slice {
   /**
    * Get an array of all the unique values of the given field across all posts matched by this
    * slice.
-   *
    * @param {*} field
    */
   uniqueValues(field) {
@@ -50,8 +52,7 @@ class Slice {
   }
 
   /**
-   * Return a dictionary of slices, keyed by each unique value of the field, which match a subset
-   * of this slice where the grouping field has the respective value.
+   * Return a dictionary of slices keyed to each unique value of the grouping field.
    * @param {*} field
    */
   groupBy(field) {
