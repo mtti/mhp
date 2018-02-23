@@ -1,5 +1,3 @@
-/* eslint-disable no-underscore-dangle */
-
 const fs = require('fs');
 const _ = require('lodash');
 const yaml = require('js-yaml');

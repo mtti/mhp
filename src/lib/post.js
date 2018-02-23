@@ -1,4 +1,3 @@
-
 const _ = require('lodash');
 const marked = require('marked');
 const nunjucks = require('nunjucks');

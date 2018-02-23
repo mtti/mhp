@@ -1,5 +1,3 @@
-/* eslint-disable no-underscore-dangle */
-
 const _ = require('lodash');
 const sanitizeFilename = require('sanitize-filename');
 
