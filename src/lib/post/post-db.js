@@ -12,7 +12,7 @@ const fsReaddir = Q.nfbind(fs.readdir);
 const asyncMap = Q.nfbind(async.map);
 const fsReadFile = Q.nfbind(fs.readFile);
 
-class PostDB {
+class PostDb {
   static checkFileType(originalFile, cb) {
     const file = _.cloneDeep(originalFile);
     fs.stat(file.path, (err, stat) => {
@@ -62,7 +62,7 @@ class PostDB {
           extension,
         };
       });
-      return asyncMap(files, PostDB.checkFileType);
+      return asyncMap(files, PostDb.checkFileType);
     }).then((items) => {
       const filePromises = items
         .filter(item => item.type === 'file' && item.extension === '.md')
@@ -83,4 +83,4 @@ class PostDB {
   }
 }
 
-module.exports = PostDB;
+module.exports = PostDb;

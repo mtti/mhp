@@ -1,8 +1,6 @@
 const _ = require('lodash');
 
-/**
- * A filtered and sorted subset of posts.
- */
+/** A filtered and sorted subset of posts. */
 class Slice {
   static parseFilter(filter) {
     if (!filter) {

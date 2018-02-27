@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs-extra');
 const nunjucks = require('nunjucks');
-const PostDB = require('./post-db');
+const { PostDb } = require('./post');
 const { DirectoryNode } = require('./nodes');
 
 class Site {
@@ -15,7 +15,7 @@ class Site {
     this.baseDirectory = baseDirectory;
     this.root = DirectoryNode.fromFile(path.join(this.baseDirectory, 'mhp.yml'), this);
     this.nunjucks = nunjucks.configure(path.join(this.baseDirectory, 'templates'));
-    this.postDb = new PostDB();
+    this.postDb = new PostDb();
 
     const functionsModulePath = path.join(this.baseDirectory, 'mhp.functions.js');
     if (fs.existsSync(functionsModulePath)) {
