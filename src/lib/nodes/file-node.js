@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { cleanAttributes } = require('./utils');
+const { cleanAttributes } = require('../utils');
 const Node = require('./node');
 
 /** Represents a file in the site structure. */

@@ -5,7 +5,6 @@ const winston = require('winston');
 const marked = require('marked');
 const nunjucks = require('nunjucks');
 const fm = require('front-matter');
-const generators = require('../generators');
 const { replaceExtension } = require('../utils');
 
 /**
@@ -52,13 +51,13 @@ function _generatePosts(site) {
       directory.ownSlice = site.postDb.slice(site.functions[directory.attributes.filterPostsWith]);
     }
 
-    directory.runGenerators((options) => options.generator === 'posts');
+    directory.runGenerators(options => options.generator === 'posts');
   });
 }
 
 function _generateOthers(site) {
   site.root.walk((directory) => {
-    directory.runGenerators((options) => options.generator !== 'posts');
+    directory.runGenerators(options => options.generator !== 'posts');
   });
 }
 

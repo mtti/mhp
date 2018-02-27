@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const nunjucks = require('nunjucks');
 const PostDB = require('./post-db');
-const DirectoryNode = require('./directory-node.js');
+const { DirectoryNode } = require('./nodes');
 
 class Site {
   static initialize(baseDirectory) {

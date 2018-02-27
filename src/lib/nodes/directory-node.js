@@ -1,12 +1,11 @@
 const fs = require('fs');
 const _ = require('lodash');
 const yaml = require('js-yaml');
-const mime = require('mime-types');
 const Node = require('./node');
 const FileNode = require('./file-node');
-const generators = require('./generators');
+const generators = require('../generators');
 
-const { cleanAttributes, guessMimeType } = require('./utils.js');
+const { cleanAttributes, guessMimeType } = require('../utils');
 
 /** Represents a directory in the site structure.  */
 class DirectoryNode extends Node {
