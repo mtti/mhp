@@ -44,10 +44,7 @@ function cleanUnknownFiles(outputDirectory, knownFiles) {
   clean(outputDirectory);
 }
 
-function generate(argv, options, site) {
-  const generatedFiles = [];
-
-  // Generate only posts first so that canonical paths get set.
+function _generatePosts(site) {
   site.root.walk((directory) => {
     if (directory.attributes.filterPosts) {
       directory.ownSlice = site.postDb.slice(directory.attributes.filterPosts);
@@ -55,21 +52,24 @@ function generate(argv, options, site) {
       directory.ownSlice = site.postDb.slice(site.functions[directory.attributes.filterPostsWith]);
     }
 
-    directory.generators
-      .filter(generatorOptions => generatorOptions.generator === 'posts')
-      .forEach((generatorOptions) => {
-        generators[generatorOptions.generator](directory, generatorOptions);
-      });
+    directory.runGenerators((options) => options.generator === 'posts');
   });
+}
+
+function _generateOthers(site) {
+  site.root.walk((directory) => {
+    directory.runGenerators((options) => options.generator !== 'posts');
+  });
+}
+
+function generate(argv, options, site) {
+  // Generate only posts first so that canonical paths get set.
+  _generatePosts(site);
 
   // After canonical paths have been set, run all other generators.
-  site.root.walk((directory) => {
-    directory.generators
-      .filter(generatorOptions => generatorOptions.generator !== 'posts')
-      .forEach((generatorOptions) => {
-        generators[generatorOptions.generator](directory, generatorOptions);
-      });
-  });
+  _generateOthers(site);
+
+  const generatedFiles = [];
 
   site.root.walk((directory) => {
     const directoryPath = path.join(options.outputDirectory, path.join(...directory.path));
@@ -85,7 +85,7 @@ function generate(argv, options, site) {
 
         // Load page source file, merge in node attributes from front matter
         page = fm(fs.readFileSync(contentPath, 'utf8'));
-        file.attributes = _.merge(file.attributes, page.attributes);
+        file.updateAttributes(page.attributes);
 
         // Load optional controller file from same directory as source file
         const dirName = path.dirname(contentPath);

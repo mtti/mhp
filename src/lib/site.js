@@ -13,7 +13,7 @@ class Site {
 
   constructor(baseDirectory) {
     this.baseDirectory = baseDirectory;
-    this.root = DirectoryNode.fromFile(path.join(this.baseDirectory, 'mhp.yml'));
+    this.root = DirectoryNode.fromFile(path.join(this.baseDirectory, 'mhp.yml'), this);
     this.nunjucks = nunjucks.configure(path.join(this.baseDirectory, 'templates'));
     this.postDb = new PostDB();
 

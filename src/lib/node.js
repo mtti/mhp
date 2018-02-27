@@ -1,10 +1,12 @@
 const _ = require('lodash');
 
+/** Base class for site structure nodes. */
 class Node {
-  constructor(parent) {
+  constructor(parent, site) {
     this.parent = parent;
     this.attributes = {};
     this.children = [];
+    this._site = site;
 
     if (this.parent) {
       this.parent.addChild(this);
@@ -102,11 +104,25 @@ class Node {
     return (('type' in this.attributes) && this.attributes.type === 'directory');
   }
 
+  get site() {
+    if (this._site) {
+      return this._site;
+    }
+    if (this.parent) {
+      return this.parent.site;
+    }
+    return null;
+  }
+
   addChild(child) {
     if (!(child instanceof Node)) {
       throw new Error('Child must be an instance of Node');
     }
     this.children.push(child);
+  }
+
+  updateAttributes(updates) {
+    this.attributes = _.merge(this.attributes, updates);
   }
 
   getOwn(key, fallback = undefined) {

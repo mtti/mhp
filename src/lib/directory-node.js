@@ -4,24 +4,19 @@ const yaml = require('js-yaml');
 const mime = require('mime-types');
 const Node = require('./node');
 const FileNode = require('./file-node');
+const generators = require('./generators');
 
-const { cleanAttributes } = require('./utils.js');
+const { cleanAttributes, guessMimeType } = require('./utils.js');
 
-function guessType(filename) {
-  if (filename.split('.').length === 1) {
-    return 'directory';
-  }
-  return mime.lookup(filename) || 'application/octet-stream';
-}
-
+/** Represents a directory in the site structure.  */
 class DirectoryNode extends Node {
-  static fromFile(filePath) {
+  static fromFile(filePath, site) {
     const doc = yaml.safeLoad(fs.readFileSync(filePath, 'utf8'));
-    return new DirectoryNode(null, doc);
+    return new DirectoryNode(null, doc, site);
   }
 
-  constructor(parent, options = {}) {
-    super(parent);
+  constructor(parent, options = {}, site) {
+    super(parent, site);
 
     if (typeof options !== 'object') {
       throw new Error('Directory options must be an object');
@@ -35,7 +30,7 @@ class DirectoryNode extends Node {
       .map((pair) => {
         const item = _.cloneDeep(pair[1]);
         item._name = item._name || pair[0];
-        item._type = item._type || guessType(pair[0]);
+        item._type = item._type || guessMimeType(pair[0]);
         return item;
       });
 
@@ -102,6 +97,13 @@ class DirectoryNode extends Node {
     const subdirectory = new DirectoryNode(this, options);
     this.subdirectories.push(subdirectory);
     return subdirectory;
+  }
+
+  runGenerators(filterCb) {
+    this.generators.filter(filterCb)
+      .forEach((options) => {
+        generators[options.generator](this, options);
+      });
   }
 
   /**

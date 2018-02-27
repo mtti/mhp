@@ -2,6 +2,7 @@ const _ = require('lodash');
 const { cleanAttributes } = require('./utils');
 const Node = require('./node');
 
+/** Represents a file in the site structure. */
 class FileNode extends Node {
   get template() {
     if (this.attributes.template) {
@@ -15,8 +16,8 @@ class FileNode extends Node {
     throw new Error('File has no template');
   }
 
-  constructor(parent, attributes) {
-    super(parent);
+  constructor(parent, attributes, site) {
+    super(parent, site);
     this.attributes = cleanAttributes(_.clone(attributes));
   }
 }
