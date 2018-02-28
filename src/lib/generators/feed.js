@@ -16,16 +16,12 @@ function generateFeed(directory, options) {
   });
 
   posts.forEach((post) => {
-    if (!post.fields.uuid) {
-      throw new Error(`Post ${post.uri} is missing an UUID`);
-    }
-
     feed.addItem({
       title: post.fields.title,
       id: `urn:uuid:${post.fields.uuid}`,
       link: post.url,
       content: post.html,
-      date: new Date(),
+      date: post.publishedAt.toDate(),
     });
   });
 

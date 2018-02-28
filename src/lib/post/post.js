@@ -39,15 +39,22 @@ class Post {
       + ' which has no canonical location');
   }
 
+  get publishedAt() {
+    return moment(this.fields.publishedAt);
+  }
+
+  get updatedAt() {
+    if (this.fields.updatedAt) {
+      return moment(this.fields.updatedAt);
+    }
+    return this.publishedAt;
+  }
+
   constructor(fields, options) {
     this.fields = _.cloneDeep(fields);
     this.basename = options.basename;
     this.sourcePath = options.sourcePath;
     this.canonicalFile = null;
-
-    if (this.fields.publishedAt) {
-      this.publishedAt = moment(this.fields.publishedAt);
-    }
   }
 
   setCanonical(fileNode) {
