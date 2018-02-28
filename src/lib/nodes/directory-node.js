@@ -103,6 +103,10 @@ class DirectoryNode extends Node {
     return subdirectory;
   }
 
+  setPostFilter(filter) {
+    this.ownSlice = this.site.postDb.slice(filter);
+  }
+
   runGenerators(filterCb) {
     this.generators.filter(filterCb)
       .forEach((options) => {

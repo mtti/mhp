@@ -10,7 +10,7 @@
     "lint": "eslint \"src/bin/**/*.js\" \"src/lib/**/*.js\" \"src/test/**/*.js\"",
     "lint:fix": "eslint --fix \"src/bin/**/*.js\" \"src/lib/**/*.js\" \"src/test/**/*.js\"",
     "mocha": "mocha src/test/setup.js \"src/bin/**/*.spec.js\" \"src/lib/**/*.spec.js\"",
-    "test": "npm run lint || npm run mocha"
+    "test": "npm run lint && npm run mocha"
   },
   "dependencies": {
     "async": "2.6.0",

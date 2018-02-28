@@ -42,11 +42,10 @@ function cleanUnknownFiles(outputDirectory, knownFiles) {
 function _generatePosts(site) {
   site.root.walk((directory) => {
     if (directory.attributes.filterPosts) {
-      directory.ownSlice = site.postDb.slice(directory.attributes.filterPosts);
+      directory.setPostFilter(directory.attributes.filterPosts);
     } else if (directory.attributes.filterPostsWith) {
-      directory.ownSlice = site.postDb.slice(site.functions[directory.attributes.filterPostsWith]);
+      directory.setPostFilter(site.functions[directory.attributes.filterPostsWith]);
     }
-
     directory.runGenerators(options => options.generator === 'posts');
   });
 }

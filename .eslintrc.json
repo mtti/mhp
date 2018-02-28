@@ -4,11 +4,13 @@
       "mocha": true
   },
   "globals": {
-      "assert": true
+      "assert": true,
+      "sandbox": true
   },
   "rules": {
       "import/no-extraneous-dependencies": ["error", {"devDependencies": ["src/test/**/*.js", "src/**/*.spec.js"]}],
       "import/no-unresolved": [2, {"caseSensitive": false}],
-      "no-underscore-dangle": "off"
+      "no-underscore-dangle": "off",
+      "prefer-destructuring": "off"
   }
 }
