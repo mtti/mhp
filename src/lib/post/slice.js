@@ -17,7 +17,7 @@ class Slice {
 
   static parseSort(sort) {
     if (!sort) {
-      return null;
+      return (a, b) => b.publishedAt - a.publishedAt;
     } else if (typeof sort === 'function') {
       return sort;
     } else if (typeof sort === 'string') {

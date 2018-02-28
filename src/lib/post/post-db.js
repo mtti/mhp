@@ -1,10 +1,10 @@
-
 const fs = require('fs');
 const path = require('path');
 const async = require('async');
 const Q = require('q');
 const _ = require('lodash');
 const fm = require('front-matter');
+const winston = require('winston');
 const Post = require('./post');
 const Slice = require('./slice');
 
@@ -46,7 +46,13 @@ class PostDb {
           basename: path.basename(filePath, path.extname(filePath)),
           sourcePath: filePath,
         });
-        this.posts.push(post);
+
+        const validationErrors = post.validate();
+        if (validationErrors.length > 0) {
+          winston.warn(`Post ${filePath} ignored: ${validationErrors.join(',')}`);
+        } else {
+          this.posts.push(post);
+        }
 
         return post;
       });

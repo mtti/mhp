@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const marked = require('marked');
+const moment = require('moment');
 const nunjucks = require('nunjucks');
 const slugify = require('slugify');
 
@@ -43,6 +44,10 @@ class Post {
     this.basename = options.basename;
     this.sourcePath = options.sourcePath;
     this.canonicalFile = null;
+
+    if (this.fields.publishedAt) {
+      this.publishedAt = moment(this.fields.publishedAt);
+    }
   }
 
   setCanonical(fileNode) {
@@ -53,6 +58,19 @@ class Post {
 
   hasTag(tag) {
     return (this.fields.tags) && (this.fields.tags.indexOf(tag) > -1);
+  }
+
+  validate() {
+    const errors = [];
+
+    if (!this.fields.uuid) {
+      errors.push('Missing field "uuid"');
+    }
+    if (!this.fields.publishedAt) {
+      errors.push('Missing field "publishedAt"');
+    }
+
+    return errors;
   }
 }
 
