@@ -1,5 +1,7 @@
 const _ = require('lodash');
+const async = require('async');
 const mime = require('mime-types');
+const Q = require('q');
 
 /**
  * Remove leading underscore from object keys that have one.
@@ -44,4 +46,5 @@ module.exports = {
   cleanAttributes,
   replaceExtension,
   guessMimeType,
+  asyncMap: Q.nfbind(async.map),
 };

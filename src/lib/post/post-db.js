@@ -1,16 +1,11 @@
-const fs = require('fs');
 const path = require('path');
-const async = require('async');
-const Q = require('q');
 const _ = require('lodash');
 const fm = require('front-matter');
+const fs = require('fs-extra');
 const winston = require('winston');
 const Post = require('./post');
 const Slice = require('./slice');
-
-const fsReaddir = Q.nfbind(fs.readdir);
-const asyncMap = Q.nfbind(async.map);
-const fsReadFile = Q.nfbind(fs.readFile);
+const { asyncMap } = require('../utils');
 
 class PostDb {
   static checkFileType(originalFile, cb) {
@@ -35,7 +30,7 @@ class PostDb {
   }
 
   load(filePath) {
-    return fsReadFile(filePath, 'utf8')
+    return fs.readFile(filePath, 'utf8')
       .then((data) => {
         const content = fm(data);
 
@@ -59,25 +54,27 @@ class PostDb {
   }
 
   loadDirectory(directory) {
-    return fsReaddir(directory).then((filenames) => {
-      const files = filenames.map((filename) => {
-        const fullPath = path.join(directory, filename);
-        const extension = path.extname(fullPath);
-        return {
-          path: fullPath,
-          extension,
-        };
+    return fs.readdir(directory)
+      .then((filenames) => {
+        const files = filenames.map((filename) => {
+          const fullPath = path.join(directory, filename);
+          const extension = path.extname(fullPath);
+          return {
+            path: fullPath,
+            extension,
+          };
+        });
+        return asyncMap(files, PostDb.checkFileType);
+      })
+      .then((items) => {
+        const filePromises = items
+          .filter(item => item.type === 'file' && item.extension === '.md')
+          .map(file => this.load(file.path));
+        const directoryPromises = items
+          .filter(item => item.type === 'directory')
+          .map(subdirectory => this.loadDirectory(subdirectory));
+        return Promise.all(_.flattenDeep([filePromises, directoryPromises]));
       });
-      return asyncMap(files, PostDb.checkFileType);
-    }).then((items) => {
-      const filePromises = items
-        .filter(item => item.type === 'file' && item.extension === '.md')
-        .map(file => this.load(file.path));
-      const directoryPromises = items
-        .filter(item => item.type === 'directory')
-        .map(subdirectory => this.loadDirectory(subdirectory));
-      return Promise.all(_.flattenDeep([filePromises, directoryPromises]));
-    });
   }
 
   slice(filters, sorter) {
