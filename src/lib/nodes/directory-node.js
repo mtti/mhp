@@ -21,9 +21,13 @@ class DirectoryNode extends Node {
       throw new Error('Directory options must be an object');
     }
 
+    this.ownSlice = null;
+
+    // In a directory config, keys starting with an underscore are attributes...
     this.attributes
       = cleanAttributes(_.fromPairs(_.toPairs(options).filter(pair => pair[0].startsWith('_'))));
 
+    // ...and regular keys are names of children...
     const children = _.toPairs(options)
       .filter(pair => !pair[0].startsWith('_'))
       .map((pair) => {
@@ -33,17 +37,18 @@ class DirectoryNode extends Node {
         return item;
       });
 
-    this.files = {};
-    children.filter(item => item._type !== 'directory')
-      .forEach((item) => {
+    // ...which can be either files...
+    this.files = _.fromPairs(children
+      .filter(item => item._type !== 'directory')
+      .map((item) => {
         const file = new FileNode(this, item);
-        this.files[file.attributes.name] = file;
-      });
+        return [file.attributes.name, file];
+      }));
 
-    this.subdirectories = children.filter(item => item._type === 'directory')
+    // ...or directories.
+    this.subdirectories = children
+      .filter(item => item._type === 'directory')
       .map(subdirectory => new DirectoryNode(this, subdirectory));
-
-    this.ownSlice = null;
   }
 
   /**

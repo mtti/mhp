@@ -2,10 +2,6 @@ const path = require('path');
 const _ = require('lodash');
 const fs = require('fs-extra');
 const winston = require('winston');
-const marked = require('marked');
-const nunjucks = require('nunjucks');
-const fm = require('front-matter');
-const { replaceExtension } = require('../utils');
 
 /**
  * Delete any files in outputDirectory that are not listed in knownFiles.
@@ -75,56 +71,8 @@ function generate(argv, options, site) {
     fs.ensureDirSync(directoryPath);
 
     _.forOwn(directory.files, (file) => {
+      const content = file.render();
       const filePath = path.join(options.outputDirectory, path.join(...file.path));
-
-      let page;
-      if (file.attributes.page) {
-        const pagePath = replaceExtension(file.path.join(path.sep), 'md');
-        const contentPath = path.join(options.inputDirectory, 'pages', pagePath);
-
-        // Load page source file, merge in node attributes from front matter
-        page = fm(fs.readFileSync(contentPath, 'utf8'));
-        file.updateAttributes(page.attributes);
-
-        // Load optional controller file from same directory as source file
-        const dirName = path.dirname(contentPath);
-        const baseName = path.basename(contentPath).split('.')[0];
-        const controllerPath = path.join(dirName, `${baseName}.controller.js`);
-        if (fs.existsSync(controllerPath)) {
-          winston.verbose(`Using controller ${controllerPath}`);
-          // eslint-disable-next-line global-require, import/no-dynamic-require
-          file.controller = require(controllerPath);
-        }
-      }
-
-      let vars;
-      let controller;
-      if (file.attributes.controller) {
-        if (!(file.attributes.controller in site.functions)) {
-          throw new Error(`Controller does not exist: ${file.attributes.controller}`);
-        }
-        controller = site.functions[file.attributes.controller];
-      } else if (file.controller) {
-        controller = file.controller;
-      }
-      if (controller) {
-        vars = controller(file, directory, site);
-      } else {
-        vars = _.cloneDeep(file.vars);
-      }
-
-      vars.breadcrumbs = file.breadcrumbs;
-
-      let content = '';
-      if (file.attributes.content) {
-        content = file.attributes.content;
-      } else {
-        if (page) {
-          vars.content = new nunjucks.runtime.SafeString(marked(page.body));
-        }
-        content = site.nunjucks.render(file.template, vars);
-      }
-
       winston.verbose(`Writing ${filePath}`);
       fs.writeFileSync(filePath, content);
       generatedFiles.push(filePath);

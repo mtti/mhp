@@ -3,6 +3,10 @@ const _ = require('lodash');
 /** Base class for site structure nodes. */
 class Node {
   constructor(parent, site) {
+    if (new.target === Node) {
+      throw new TypeError('Can\'t initialize Node instances directly.');
+    }
+
     this.parent = parent;
     this.attributes = {};
     this.children = [];
