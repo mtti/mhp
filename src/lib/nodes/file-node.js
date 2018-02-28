@@ -61,8 +61,8 @@ class FileNode extends Node {
 
     let { content } = this.attributes;
     if (!content) {
-      if (this.page) {
-        vars.content = new nunjucks.runtime.SafeString(marked(this.page.body));
+      if (this._page) {
+        vars.content = new nunjucks.runtime.SafeString(marked(this._page.body));
       }
       content = this.site.nunjucks.render(this.template, vars);
     }
