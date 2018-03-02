@@ -49,7 +49,7 @@ class Node {
 
   get uri() {
     let path = _.cloneDeep(this.path);
-    if (this.path.slice(-1) == 'index.html') {
+    if (this.path.slice(-1) === 'index.html') {
       path = path.slice(0, -1);
     }
     return `/${path.join('/')}`;

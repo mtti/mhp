@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const cheerio = require('cheerio');
 const marked = require('marked');
 const moment = require('moment');
 const nunjucks = require('nunjucks');
@@ -48,6 +49,15 @@ class Post {
       return moment(this.fields.updatedAt);
     }
     return this.publishedAt;
+  }
+
+  get summary() {
+    if (this.fields.summary) {
+      return this.fields.summary;
+    }
+
+    const doc = cheerio.load(this.html);
+    return doc('p').first().html();
   }
 
   constructor(fields, options) {

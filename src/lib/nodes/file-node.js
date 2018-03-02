@@ -57,12 +57,15 @@ class FileNode extends Node {
       vars = _.cloneDeep(this.vars);
     }
 
-    vars.breadcrumbs = this.breadcrumbs.map((node) => ({
+    vars.breadcrumbs = this.breadcrumbs.map(node => ({
       node,
-      current: node.url == this.url,
+      current: node.url === this.url,
       title: node.get('menuTitle'),
       url: node.url,
     }));
+
+    vars.isFront = this.uri === '/';
+    vars.file = this;
 
     let { content } = this.attributes;
     if (!content) {
