@@ -1,5 +1,20 @@
 const Feed = require('feed');
 
+function findNewestUpdateAt(posts) {
+  if (posts.length === 0) {
+    return null;
+  }
+
+  let newest = posts[0].updatedAt;
+  posts.slice(1).forEach((post) => {
+    if (post.updatedAt.isAfter(newest)) {
+      newest = post.updatedAt;
+    }
+  });
+
+  return newest;
+}
+
 function generateFeed(directory, options) {
   const posts = directory.slice.execute();
 
@@ -9,10 +24,11 @@ function generateFeed(directory, options) {
     throw new Error('Feed UUID is required');
   }
 
+  const updated = findNewestUpdateAt(posts);
   const feed = new Feed({
     title: options.title,
     id: `urn:uuid:${options.uuid}`,
-    updated: new Date(),
+    updated: updated.toDate(),
   });
 
   posts.forEach((post) => {

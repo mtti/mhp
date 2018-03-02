@@ -57,7 +57,12 @@ class FileNode extends Node {
       vars = _.cloneDeep(this.vars);
     }
 
-    vars.breadcrumbs = this.breadcrumbs;
+    vars.breadcrumbs = this.breadcrumbs.map((node) => ({
+      node,
+      current: node.url == this.url,
+      title: node.get('menuTitle'),
+      url: node.url,
+    }));
 
     let { content } = this.attributes;
     if (!content) {
@@ -65,6 +70,9 @@ class FileNode extends Node {
         vars.content = new nunjucks.runtime.SafeString(marked(this._page.body));
       }
       content = this.site.nunjucks.render(this.template, vars);
+    }
+    if (content === null) {
+      throw new Error(`nunjucks render returned null during ${this.uri}`);
     }
 
     return content;

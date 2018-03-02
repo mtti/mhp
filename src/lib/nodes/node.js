@@ -43,12 +43,16 @@ class Node {
     }
 
     result.push(this);
+
     return result;
   }
 
   get uri() {
-    const path = this.path.join('/');
-    return `/${path}`;
+    let path = _.cloneDeep(this.path);
+    if (this.path.slice(-1) == 'index.html') {
+      path = path.slice(0, -1);
+    }
+    return `/${path.join('/')}`;
   }
 
   get vars() {
@@ -85,7 +89,12 @@ class Node {
       path.unshift(baseUrl);
     }
 
-    return path.join('/');
+    // Remove trailing slash
+    const pathString = path.join('/');
+    if (pathString.slice(-1) === '/') {
+      return pathString.slice(0, -1);
+    }
+    return pathString;
   }
 
   get basename() {
