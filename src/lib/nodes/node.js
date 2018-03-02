@@ -36,9 +36,7 @@ class Node {
       result = this.parent.breadcrumbs;
     }
 
-    const menuTitle = this.getOwn('menuTitle');
-
-    if (!menuTitle || this.basename === 'index.html') {
+    if (!this.getOwn('menuTitle') || this.basename === 'index.html') {
       return result;
     }
 
