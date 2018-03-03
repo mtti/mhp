@@ -9,7 +9,7 @@ class Node {
 
     this.parent = parent;
     this.attributes = {};
-    this.children = [];
+    this._children = [];
     this._site = site;
 
     if (this.parent) {
@@ -36,12 +36,20 @@ class Node {
       result = this.parent.breadcrumbs;
     }
 
-    if (!this.getOwn('menuTitle') || this.basename === 'index.html') {
+    if (this.isDirectory) {
+      const index = this.getChild('index.html');
+      if (!index || !index.isFile) {
+        return result;
+      }
+      result.push(index);
       return result;
+    } else if (this.isFile) {
+      if (this.basename === 'index.html') {
+        return result;
+      }
     }
 
     result.push(this);
-
     return result;
   }
 
@@ -107,12 +115,14 @@ class Node {
     return `.${basenameParts.slice(-1)}`;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   get isFile() {
-    return (('type' in this.attributes) && this.attributes.type !== 'directory');
+    return false;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   get isDirectory() {
-    return (('type' in this.attributes) && this.attributes.type === 'directory');
+    return false;
   }
 
   get site() {
@@ -129,7 +139,15 @@ class Node {
     if (!(child instanceof Node)) {
       throw new Error('Child must be an instance of Node');
     }
-    this.children.push(child);
+    this._children.push(child);
+  }
+
+  getChild(name) {
+    const result = this._children.filter(child => child.basename === name);
+    if (result.length < 1) {
+      return null;
+    }
+    return result[0];
   }
 
   updateAttributes(updates) {

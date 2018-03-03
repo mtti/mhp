@@ -22,6 +22,11 @@ class FileNode extends Node {
     throw new Error('File has no template');
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  get isFile() {
+    return true;
+  }
+
   /**
    * Create a FileNode
    * @param {Node} parent
@@ -60,11 +65,11 @@ class FileNode extends Node {
     vars.breadcrumbs = this.breadcrumbs.map(node => ({
       node,
       current: node.url === this.url,
-      title: node.get('menuTitle'),
+      title: node.getOwn('menuTitle') || node.get('title', node.basename),
       url: node.url,
     }));
 
-    vars.isFront = this.uri === '/';
+    vars.isFront = this.uri === '/index.html';
     vars.file = this;
 
     let { content } = this.attributes;
@@ -93,6 +98,7 @@ class FileNode extends Node {
       if (fs.existsSync(contentPath)) {
         this._page = fm(fs.readFileSync(contentPath, 'utf8'));
         this.updateAttributes(this._page.attributes);
+        winston.verbose(`Loaded ${contentPath}`);
       }
 
       // Load optional controller file from same directory as source file

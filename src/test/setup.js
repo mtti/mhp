@@ -6,6 +6,7 @@ global.chai = chai;
 chai.use(chaiSubset);
 global.sinon = sinon;
 global.assert = chai.assert;
+global.expect = chai.expect;
 sinon.assert.expose(chai.assert, { prefix: '' });
 
 beforeEach(() => {

@@ -91,15 +91,22 @@ class DirectoryNode extends Node {
     return null;
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  get isDirectory() {
+    return true;
+  }
+
   addFile(options) {
     const file = new FileNode(this, options);
     this.files[file.attributes.name] = file;
+    this.addChild(file);
     return file;
   }
 
   addSubdirectory(options) {
     const subdirectory = new DirectoryNode(this, options);
     this.subdirectories.push(subdirectory);
+    this.addChild(subdirectory);
     return subdirectory;
   }
 
