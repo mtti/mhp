@@ -1,9 +1,10 @@
 const path = require('path');
 const fs = require('fs-extra');
-const moment = require('moment');
+const _ = require('lodash');
 const nunjucks = require('nunjucks');
 const { PostDb } = require('./post');
 const { DirectoryNode } = require('./nodes');
+const templateFilters = require('./template-filters');
 
 class Site {
   static initialize(baseDirectory) {
@@ -18,12 +19,8 @@ class Site {
     this.nunjucks = nunjucks.configure(path.join(this.baseDirectory, 'templates'));
     this.postDb = new PostDb();
 
-    this.nunjucks.addFilter('date', (input, format) => {
-      let useFormat = 'YYYY-MM-DD';
-      if (format) {
-        useFormat = format;
-      }
-      return moment(input).format(useFormat);
+    _.toPairs(templateFilters).forEach((item) => {
+      this.nunjucks.addFilter(item[0], item[1]);
     });
 
     const functionsModulePath = path.join(this.baseDirectory, 'mhp.functions.js');
