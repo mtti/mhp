@@ -87,6 +87,8 @@ class DirectoryNode extends Node {
       return this.ownSlice;
     } else if (this.attributes.inheritPosts !== false && this.parent) {
       return this.parent.slice;
+    } else if (this.site) {
+      return this.site.postDb.slice();
     }
     return null;
   }
