@@ -53,7 +53,7 @@ class DirectoryNode extends Node {
       throw new Error('Directory options must be an object');
     }
 
-    this.ownSlice = null;
+    this._posts = null;
 
     // In a directory config, keys starting with an underscore are attributes...
     this.attributes
@@ -78,23 +78,16 @@ class DirectoryNode extends Node {
       }));
 
     // ...or directories.
-    this.subdirectories = children
+    this._subdirectories = children
       .filter(item => item._type === 'directory')
       .map(subdirectory => new DirectoryNode(this, subdirectory));
 
     this._generators = DirectoryNode._parseGenerators(this.attributes.generate);
   }
 
-  /**
-   * Parse and return this subdirectory's generator configurations.
-   */
-  get generators() {
-    return this._generators;
-  }
-
   get slice() {
-    if (this.ownSlice) {
-      return this.ownSlice;
+    if (this._posts) {
+      return this._posts;
     } else if (this.attributes.inheritPosts !== false && this.parent) {
       return this.parent.slice;
     } else if (this.site) {
@@ -116,7 +109,7 @@ class DirectoryNode extends Node {
 
   addSubdirectory(options) {
     const subdirectory = new DirectoryNode(this, options);
-    this.subdirectories.push(subdirectory);
+    this._subdirectories.push(subdirectory);
     return subdirectory;
   }
 
@@ -124,7 +117,7 @@ class DirectoryNode extends Node {
   getOrCreateSubdirectory(name) {
     let subdirectory;
 
-    const existing = this.subdirectories.filter(item => item.basename === name);
+    const existing = this._subdirectories.filter(item => item.basename === name);
     if (existing.length > 0) {
       subdirectory = existing[0];
     } else {
@@ -133,18 +126,18 @@ class DirectoryNode extends Node {
         _type: 'directory',
       };
       subdirectory = new DirectoryNode(this, options);
-      this.subdirectories.push(subdirectory);
+      this._subdirectories.push(subdirectory);
     }
 
     return subdirectory;
   }
 
   setPostFilter(filter) {
-    this.ownSlice = this.site.postDb.slice(filter);
+    this._posts = this.site.postDb.slice(filter);
   }
 
   runGenerators(filterCb) {
-    this.generators.filter(filterCb)
+    this._generators.filter(filterCb)
       .forEach((options) => {
         generators[options.generator](this, options);
       });
@@ -157,7 +150,7 @@ class DirectoryNode extends Node {
    */
   walk(callback) {
     callback(this);
-    this.subdirectories.forEach(subdirectory => subdirectory.walk(callback));
+    this._subdirectories.forEach(subdirectory => subdirectory.walk(callback));
   }
 }
 
