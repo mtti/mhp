@@ -120,6 +120,25 @@ class DirectoryNode extends Node {
     return subdirectory;
   }
 
+  /** Returns a subdirectory node by name, creating a new one if it doesn't already exist. */
+  getOrCreateSubdirectory(name) {
+    let subdirectory;
+
+    const existing = this.subdirectories.filter(item => item.basename === name);
+    if (existing.length > 0) {
+      subdirectory = existing[0];
+    } else {
+      const options = {
+        _name: name,
+        _type: 'directory',
+      };
+      subdirectory = new DirectoryNode(this, options);
+      this.subdirectories.push(subdirectory);
+    }
+
+    return subdirectory;
+  }
+
   setPostFilter(filter) {
     this.ownSlice = this.site.postDb.slice(filter);
   }
