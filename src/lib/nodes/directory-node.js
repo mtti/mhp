@@ -14,6 +14,38 @@ class DirectoryNode extends Node {
     return new DirectoryNode(null, doc, site);
   }
 
+  /**
+   * Parse generator configurations from options file format to the internal format.
+   * @param {*} generatorConfig
+   */
+  static _parseGenerators(generatorConfig) {
+    if (!generatorConfig) {
+      return [];
+    }
+
+    if (generatorConfig instanceof Array) {
+      return generatorConfig.map((item) => {
+        if (typeof item === 'object') {
+          return item;
+        } else if (typeof item === 'string') {
+          return { generator: item };
+        }
+        throw new Error('Invalid generator configuration');
+      });
+    } else if (typeof generatorConfig === 'object') {
+      return _.reduce(generatorConfig, (result, value, key) => {
+        const item = _.cloneDeep(value);
+        item.generator = key;
+        result.push(item);
+        return result;
+      }, []);
+    } else if (typeof generatorConfig === 'string') {
+      return [{ generator: generatorConfig }];
+    }
+
+    throw new Error(`Unsupported generator configuration type: ${typeof generatorConfig}`);
+  }
+
   constructor(parent, options = {}, site) {
     super(parent, site);
 
@@ -49,37 +81,15 @@ class DirectoryNode extends Node {
     this.subdirectories = children
       .filter(item => item._type === 'directory')
       .map(subdirectory => new DirectoryNode(this, subdirectory));
+
+    this._generators = DirectoryNode._parseGenerators(this.attributes.generate);
   }
 
   /**
    * Parse and return this subdirectory's generator configurations.
    */
   get generators() {
-    if (!this.attributes.generate) {
-      return [];
-    }
-
-    if (this.attributes.generate instanceof Array) {
-      return this.attributes.generate.map((item) => {
-        if (typeof item === 'object') {
-          return item;
-        } else if (typeof item === 'string') {
-          return { generator: item };
-        }
-        throw new Error('Invalid generator configuration');
-      });
-    } else if (typeof this.attributes.generate === 'object') {
-      return _.reduce(this.attributes.generate, (result, value, key) => {
-        const item = _.cloneDeep(value);
-        item.generator = key;
-        result.push(item);
-        return result;
-      }, []);
-    } else if (typeof this.attributes.generate === 'string') {
-      return [{ generator: this.attributes.generate }];
-    }
-
-    throw new Error(`Unsupported generator configuration type: ${typeof filter}`);
+    return this._generators;
   }
 
   get slice() {
