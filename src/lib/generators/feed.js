@@ -16,7 +16,7 @@ function findNewestUpdateAt(posts) {
 }
 
 function generateFeed(directory, options) {
-  const posts = directory.slice.execute();
+  const posts = directory.slice.getAll();
 
   const filename = options.filename || 'atom.xml';
 

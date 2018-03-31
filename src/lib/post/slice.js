@@ -38,7 +38,7 @@ class Slice {
    * @param {*} field
    */
   uniqueValues(field) {
-    return _.uniq(this.execute()
+    return _.uniq(this.getAll()
       .filter(post => post.has(field))
       .map(post => post.get(field))
       .reduce((result, value) => {
@@ -75,8 +75,8 @@ class Slice {
   /**
    * Return all posts matched by this slice.
    */
-  execute() {
-    const result = this.parent.execute().filter((post) => {
+  getAll() {
+    const result = this.parent.getAll().filter((post) => {
       for (let i = 0; i < this.filters.length; i += 1) {
         if (!this.filters[i](post)) {
           return false;
