@@ -39,8 +39,8 @@ class Slice {
    */
   uniqueValues(field) {
     return _.uniq(this.execute()
-      .filter(post => field in post.fields)
-      .map(post => post.fields[field])
+      .filter(post => post.has(field))
+      .map(post => post.get(field))
       .reduce((result, value) => {
         if (value instanceof Array) {
           return result.concat(value);
@@ -57,12 +57,11 @@ class Slice {
     return this.uniqueValues(field)
       .map((uniqueValue) => {
         const filter = (post) => {
-          if (!(field in post.fields)) {
+          if (!post.has(field)) {
             return false;
           }
 
-          const value = post.fields[field];
-
+          const value = post.get(field);
           if (value instanceof Array) {
             return value.includes(uniqueValue);
           }

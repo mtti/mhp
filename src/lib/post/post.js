@@ -67,6 +67,22 @@ class Post {
     this.canonicalFile = null;
   }
 
+  /** Get the value of a property or field */
+  get(key) {
+    if (key in this) {
+      const value = this[key];
+      if (typeof value !== 'function') {
+        return value;
+      }
+    }
+    return this.fields[key];
+  }
+
+  /** Check if the post has a property or a field */
+  has(key) {
+    return (key in this.fields) || (key in this);
+  }
+
   setCanonical(fileNode) {
     if (!this.canonicalFile) {
       this.canonicalFile = fileNode;
