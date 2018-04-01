@@ -53,7 +53,7 @@ let promise;
 if (commandFunction.initializeSite === false) {
   promise = commandFunction(argv, options);
 } else {
-  promise = Site.initialize(options.inputDirectory)
+  promise = Site.initialize(options.inputDirectory, options.outputDirectory)
     .then((site) => {
       if (options.timezone) {
         site.root.set('timezone', options.timezone);
