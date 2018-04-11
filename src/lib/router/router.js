@@ -30,7 +30,7 @@ class Router {
     const groupCount = parts.filter(item => item.startsWith(':')).length;
     if (groupCount === 0) {
       const request = new Request(parts, params);
-      const response = new Response(this._site, posts);
+      const response = new Response(this._site, request, posts);
       callbacks.forEach((callback) => {
         callback(request, response);
       });
