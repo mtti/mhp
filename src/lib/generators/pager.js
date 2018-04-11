@@ -2,7 +2,7 @@ const nunjucks = require('nunjucks');
 const winston = require('winston');
 
 function generatePager(directory, options) {
-  const posts = directory.slice.getAll();
+  const posts = directory.slice.findAll();
 
   if (posts.length === 0) {
     winston.warn(`Directory ${directory.uri} is generating post indexes but has no posts`);

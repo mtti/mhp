@@ -3,7 +3,7 @@ function generatePosts(directory, generatorOptions) {
     return;
   }
 
-  directory.slice.getAll().forEach((post) => {
+  directory.slice.findAll().forEach((post) => {
     const options = {
       vars: {
         post,

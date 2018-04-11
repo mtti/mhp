@@ -81,7 +81,7 @@ class PostDb {
     return new Slice(this, filters, sorter);
   }
 
-  getAll() {
+  findAll() {
     return this.posts;
   }
 }
