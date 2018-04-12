@@ -23,6 +23,7 @@ class Site {
     this.root = DirectoryNode.fromFile(path.join(this.baseDirectory, 'mhp.yml'), this);
     this.nunjucks = nunjucks.configure(path.join(this.baseDirectory, 'templates'));
     this.postDb = new PostDb();
+    this.generatedFiles = [];
 
     _.toPairs(templateFilters).forEach((item) => {
       this.nunjucks.addFilter(item[0], item[1]);

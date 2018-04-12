@@ -1,5 +1,6 @@
 const path = require('path');
 const _ = require('lodash');
+const fs = require('fs-extra');
 const mime = require('mime-types');
 
 class Response {
@@ -54,8 +55,18 @@ class Response {
       }
     }
 
-    const directoryPath = path.join(this._site.outputDirectory, path.join(...pathCopy));
-    console.log(`Would write ${directoryPath}`);
+    // Make sure final output directory exists
+    const directoryParts = pathCopy.slice(0, -1);
+    fs.ensureDirSync(path.join(this._site.outputDirectory, path.join(...directoryParts)));
+
+    // Write the output file
+    const filePath = path.join(
+      this._site.outputDirectory,
+      path.join(...pathCopy)
+    );
+    console.log(`Writing ${filePath}`);
+    fs.writeFileSync(filePath, content);
+    this._site.generatedFiles.push(filePath);
   }
 }
 

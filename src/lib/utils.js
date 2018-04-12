@@ -1,7 +1,10 @@
+const path = require('path');
 const _ = require('lodash');
 const async = require('async');
+const fs = require('fs-extra');
 const mime = require('mime-types');
 const Q = require('q');
+const winston = require('winston');
 
 /**
  * Remove leading underscore from object keys that have one.
@@ -42,9 +45,46 @@ function guessMimeType(filename) {
   return mime.lookup(filename) || 'application/octet-stream';
 }
 
+/**
+ * Delete any files in outputDirectory that are not listed in knownFiles.
+ * @param {string} outputDirectory Absolute path of the directory to clean.
+ * @param {string[]} knownFiles Absolute paths of all files that should not be deleted.
+ */
+function cleanUnknownFiles(outputDirectory, knownFiles) {
+  const known = _.fromPairs(knownFiles.map(filename => [filename, true]));
+
+  function clean(directory) {
+    const items = fs.readdirSync(directory)
+      .map(filename => path.join(directory, filename))
+      .filter(filePath => !(filePath in known))
+      .map(filePath => ({ filePath, stats: fs.statSync(filePath) }));
+
+    items
+      .filter(item => item.stats.isFile())
+      .forEach((item) => {
+        winston.verbose(`Deleting ${item.filePath}`);
+        fs.removeSync(item.filePath);
+      });
+
+    items
+      .filter(item => item.stats.isDirectory())
+      .forEach((item) => {
+        clean(item.filePath);
+      });
+
+    if (fs.readdirSync(directory).length === 0) {
+      winston.verbose(`Removing empty directory ${directory}`);
+      fs.rmdirSync(directory);
+    }
+  }
+
+  clean(outputDirectory);
+}
+
 module.exports = {
   cleanAttributes,
   replaceExtension,
   guessMimeType,
+  cleanUnknownFiles,
   asyncMap: Q.nfbind(async.map),
 };
