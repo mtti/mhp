@@ -1,5 +1,5 @@
 const atom = require('./atom');
-const generatePosts = require('./generate-posts');
-const pager = require('./pager');
+const posts = require('./posts');
+const indexes = require('./indexes');
 
-module.exports = { atom, generatePosts, pager };
+module.exports = { atom, posts, indexes };

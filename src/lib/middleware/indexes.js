@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const nunjucks = require('nunjucks');
 
-function pagerConstructor(options = {}) {
+function indexMiddlewareConstructor(options = {}) {
   const opts = {
     firstPageFilename: 'index.html',
     filenamePattern: 'index-{{page}}.html',
@@ -11,7 +11,7 @@ function pagerConstructor(options = {}) {
 
   _.merge(opts, options);
 
-  return function pagerMiddleware(req, res) {
+  return function indexMiddleware(req, res) {
     const posts = res.posts.findAll();
 
     const totalPages = Math.ceil(posts.length / opts.postsPerPage) || 1;
@@ -45,4 +45,4 @@ function pagerConstructor(options = {}) {
   }
 }
 
-module.exports = pagerConstructor;
+module.exports = indexMiddlewareConstructor;

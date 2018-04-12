@@ -1,12 +1,12 @@
 const _ = require('lodash');
 
-function generatePostsConstructor(options = {}) {
+function postMiddlewareConstructor(options = {}) {
   const opts = {
     canonical: true,
     template: 'post.html',
   };
 
-  return function generatePostsMiddleware(req, res) {
+  return function postMiddleware(req, res) {
     const posts = res.posts.findAll();
     if (posts.length !== 1) {
       throw new Error(`generatePosts requires exactly 1 post, got ${postCount}`);
@@ -21,4 +21,4 @@ function generatePostsConstructor(options = {}) {
   }
 }
 
-module.exports = generatePostsConstructor;
+module.exports = postMiddlewareConstructor;
