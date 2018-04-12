@@ -7,10 +7,29 @@ class Response {
     return this._postSet;
   }
 
-  constructor(site, req, postSet) {
+  constructor(site, globals, req, postSet) {
     this._site = site;
     this._req = req;
     this._postSet = postSet;
+    this._globals = globals;
+  }
+
+  url(uriParts) {
+    let uri;
+    if (uriParts) {
+      uri = uriParts.join('/');
+    } else {
+      uri = this._req.path.join('/');
+    }
+    return `${this._globals.baseURL}/${uri}`;
+  }
+
+  render(template, context = {}, options = {}) {
+    const vars = _.cloneDeep(this._globals);
+    _.merge(vars, context);
+
+    const content = this._site.nunjucks.render(template, vars);
+    return this.write(content, options);
   }
 
   write(content, options = {}) {
@@ -37,11 +56,6 @@ class Response {
 
     const directoryPath = path.join(this._site.outputDirectory, path.join(...pathCopy));
     console.log(`Would write ${directoryPath}`);
-  }
-
-  render(filePath, template, context) {
-    const content = this._site.nunjucks.render(template, context);
-    this.write(filePath, 'text/html', content);
   }
 }
 

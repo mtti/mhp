@@ -26,6 +26,10 @@ class Slice {
     throw new Error(`Unsupported sort type: ${typeof sort}`);
   }
 
+  get length() {
+    return this.findAll().length;
+  }
+
   constructor(parent, filters, sorter) {
     this.parent = parent;
     this.filters = Slice.parseFilter(filters);
@@ -90,6 +94,14 @@ class Slice {
     }
 
     return result;
+  }
+
+  findOne() {
+    const posts = this.findAll();
+    if (posts.length < 0) {
+      return null;
+    }
+    return posts[0];
   }
 }
 

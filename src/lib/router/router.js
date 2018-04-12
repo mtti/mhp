@@ -1,10 +1,24 @@
 const _ = require('lodash');
+const middleware = require('../middleware');
 const Request = require('./request');
 const Response = require('./response');
 
 class Router {
+  get middleware() {
+    return middleware;
+  }
+
   constructor(site) {
     this._site = site;
+    this._globals = {};
+  }
+
+  setGlobal(key, value) {
+    this._globals[key] = value;
+  }
+
+  setGlobals(obj) {
+    _.merge(this._globals, obj);
   }
 
   get() {
@@ -29,8 +43,8 @@ class Router {
     // Run callbacks when there are no more parameter expansions to be done in the path
     const groupCount = parts.filter(item => item.startsWith(':')).length;
     if (groupCount === 0) {
-      const request = new Request(parts, params);
-      const response = new Response(this._site, request, posts);
+      const request = new Request(this._site, parts, params);
+      const response = new Response(this._site, this._globals, request, posts);
       callbacks.forEach((callback) => {
         callback(request, response);
       });
