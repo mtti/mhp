@@ -1,9 +1,10 @@
 const _ = require('lodash');
 const Feed = require('feed');
+const moment = require('moment');
 
 function findNewestUpdateAt(posts) {
   if (posts.length === 0) {
-    return null;
+    return moment(0);
   }
 
   let newest = posts[0].updatedAt;

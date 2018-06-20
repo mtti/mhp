@@ -10,7 +10,9 @@ class Router {
 
   constructor(site) {
     this._site = site;
-    this._globals = {};
+    this._globals = {
+      assetManifest: site.assetManifest,
+    };
   }
 
   setGlobal(key, value) {

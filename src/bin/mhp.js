@@ -42,7 +42,7 @@ if (argv.tz) {
   options.timezone = argv.tz;
 }
 
-const command = argv._[0] || 'generate';
+const command = argv._[0] || 'generate-routes';
 const commandFunction = commands[command];
 if (!commandFunction) {
   throw new Error(`Unrecognized command ${command}`);
@@ -54,24 +54,6 @@ if (commandFunction.initializeSite === false) {
   promise = commandFunction(argv, options);
 } else {
   promise = Site.initialize(options.inputDirectory, options.outputDirectory)
-    .then((site) => {
-      if (options.timezone) {
-        site.root.set('timezone', options.timezone);
-      }
-
-      if (!site.root.get('timezone')) {
-        site.root.set('timezone', moment.tz.guess());
-      }
-
-      if (argv.localhost) {
-        let baseUrl = 'http://localhost';
-        if (options.port !== 80) {
-          baseUrl = `${baseUrl}:${options.port}`;
-        }
-        site.root.set('baseUrl', baseUrl);
-      }
-      return site;
-    })
     .then(site => commandFunction(argv, options, site));
 }
 
