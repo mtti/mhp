@@ -6,6 +6,8 @@ function postMiddlewareConstructor(options = {}) {
     template: 'post.html',
   };
 
+  _.merge(opts, options);
+
   return function postMiddleware(req, res) {
     const posts = res.posts.findAll();
     if (posts.length !== 1) {
@@ -14,7 +16,7 @@ function postMiddlewareConstructor(options = {}) {
     const post = posts[0];
 
     if (opts.canonical) {
-      post.canonicalURL = res.url();
+      post.setCanonical(res.url());
     }
 
     res.render(opts.template, { post });

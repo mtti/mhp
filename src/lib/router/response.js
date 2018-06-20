@@ -2,6 +2,9 @@ const path = require('path');
 const _ = require('lodash');
 const fs = require('fs-extra');
 const mime = require('mime-types');
+const fm = require('front-matter');
+const marked = require('marked');
+const nunjucks = require('nunjucks');
 
 class Response {
   get posts() {
@@ -22,7 +25,26 @@ class Response {
     } else {
       uri = this._req.path.join('/');
     }
-    return `${this._globals.baseURL}/${uri}`;
+    return `${this._globals.baseUrl}/${uri}`;
+  }
+
+  renderPage(pagePath, context = {}, options = {}) {
+    const sourcePath = path.join(this._site.pageDirectory, pagePath);
+    const page = fm(fs.readFileSync(sourcePath, 'utf8'));
+
+    let template = 'page.html';
+    if (page.attributes.template) {
+      template = page.attributes.template;
+    }
+
+    const ctx = {};
+    if (page.attributes.vars) {
+      _.merge(ctx, page.attributes.vars);
+    }
+    _.merge(ctx, context);
+    ctx.body = new nunjucks.runtime.SafeString(marked(page.body));
+
+    return this.render(template, ctx, options);
   }
 
   render(template, context = {}, options = {}) {

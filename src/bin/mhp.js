@@ -18,6 +18,7 @@ const options = {
 };
 options.outputDirectory = path.join(options.inputDirectory, 'dist');
 options.port = argv.port || 8080;
+options.baseUrl = argv.baseUrl || false;
 
 options.keep = [];
 if (argv.keep) {

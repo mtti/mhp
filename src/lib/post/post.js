@@ -33,8 +33,8 @@ class Post {
   }
 
   get url() {
-    if (this.canonicalFile) {
-      return this.canonicalFile.url;
+    if (this._canonicalUrl) {
+      return this._canonicalUrl;
     }
     throw new Error(`Tried to generate URL for post ${this.sourcePath}`
       + ' which has no canonical location');
@@ -64,7 +64,7 @@ class Post {
     this.fields = _.cloneDeep(fields);
     this.basename = options.basename;
     this.sourcePath = options.sourcePath;
-    this.canonicalFile = null;
+    this._canonicalUrl = null;
   }
 
   /** Get the value of a property or field */
@@ -83,9 +83,9 @@ class Post {
     return (key in this.fields) || (key in this);
   }
 
-  setCanonical(fileNode) {
-    if (!this.canonicalFile) {
-      this.canonicalFile = fileNode;
+  setCanonical(url) {
+    if (!this._canonicalUrl) {
+      this._canonicalUrl = url;
     }
   }
 

@@ -11,7 +11,6 @@ const postTemplate = `---
 uuid: {{ uuid }}
 title: {{ title }}
 publishedAt: {{ publishedAt }}
-published: false
 ---
 
 Write your post here.
@@ -22,12 +21,11 @@ function createPost(argv, options, site) {
     throw new Error('Usage: mhp create-post TITLE');
   }
 
-  const timezone = site.root.get('timezone');
   const title = argv._[1];
   const slug = slugify(title, { lower: true });
   const sanitizedSlug = sanitizeFilename(slug);
   const filePath = path.join(options.inputDirectory, 'posts', `${sanitizedSlug}.md`);
-  const publishedAt = moment().tz(timezone).format('YYYY-MM-DD HH:mm Z');
+  const publishedAt = moment().utc().format('YYYY-MM-DD HH:mmZ');
 
   if (fs.existsSync(filePath)) {
     throw new Error(`File ${filePath} already exists`);

@@ -8,11 +8,21 @@ class Router {
     return middleware;
   }
 
-  constructor(site) {
+  get globals() {
+    return Object.assign({}, this._globals, this._lockedGlobals);
+  }
+
+  constructor(site, options = {}) {
     this._site = site;
     this._globals = {
+      lang: 'en',
       assetManifest: site.assetManifest,
     };
+
+    this._lockedGlobals = {};
+    if (options.baseUrl) {
+      this._lockedGlobals.baseUrl = options.baseUrl;
+    }
   }
 
   setGlobal(key, value) {
@@ -46,7 +56,7 @@ class Router {
     const groupCount = parts.filter(item => item.startsWith(':')).length;
     if (groupCount === 0) {
       const request = new Request(this._site, parts, params);
-      const response = new Response(this._site, this._globals, request, posts);
+      const response = new Response(this._site, this.globals, request, posts);
       callbacks.forEach((callback) => {
         callback(request, response);
       });

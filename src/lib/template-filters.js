@@ -1,4 +1,5 @@
 const moment = require('moment');
+const { Post } = require('./post');
 
 function date(input, format) {
   let useFormat = 'YYYY-MM-DD';
@@ -19,6 +20,9 @@ function assetUrl(input) {
 }
 
 function url(input) {
+  if (input instanceof Post) {
+    return input.url;
+  }
   return `${this.ctx.baseUrl}/${input}`;
 }
 

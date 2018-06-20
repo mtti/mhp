@@ -41,7 +41,7 @@ function atomConstructor(options = {}) {
       feed.addItem({
         title: post.fields.title,
         id: `urn:uuid:${post.fields.uuid}`,
-        link: post.canonicalURL,
+        link: post.url,
         content: post.html,
         date: post.publishedAt.toDate(),
       });

@@ -22,6 +22,14 @@ class Site {
     return this._outputDirectory;
   }
 
+  get baseDirectory() {
+    return this._baseDirectory;
+  }
+
+  get pageDirectory() {
+    return path.join(this._baseDirectory, 'pages');
+  }
+
   get assetManifest() {
     const assetManifestPath = path.join(this._outputDirectory, 'assets', 'manifest.json');
     if (fs.existsSync(assetManifestPath)) {
@@ -32,7 +40,7 @@ class Site {
   }
 
   constructor(baseDirectory, outputDirectory) {
-    this.baseDirectory = baseDirectory;
+    this._baseDirectory = baseDirectory;
     this._outputDirectory = outputDirectory;
     this._assetManifest = {};
     this.nunjucks = nunjucks.configure(path.join(this.baseDirectory, 'templates'));
