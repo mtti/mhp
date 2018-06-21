@@ -36,7 +36,7 @@ function navlink(uri, kwargs = {}) {
   const classes = className.split(' ').filter(item => item.length > 0);
 
   if ((exact && uri === this.ctx.uri)
-    || (!exact && this.ctx.uri.length > 0 && uri.starsWith(this.ctx.uri))
+    || (!exact && this.ctx.uri.length > 0 && uri.startsWith(this.ctx.uri))
   ) {
     classes.push(activeClass);
   }
@@ -54,7 +54,7 @@ function ifActivePath(str, uri, kwargs = {}) {
   const exact = kwargs.exact || false;
 
   if ((exact && uri === this.ctx.uri)
-    || (!exact && this.ctx.uri.length > 0 && uri.starsWith(this.ctx.uri))
+    || (!exact && this.ctx.uri.length > 0 && uri.startsWith(this.ctx.uri))
   ) {
     return str;
   }

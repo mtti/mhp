@@ -87,7 +87,7 @@ class Response {
     // Write the output file
     const filePath = path.join(
       this._site.outputDirectory,
-      path.join(...pathCopy)
+      path.join(...pathCopy),
     );
     console.log(`Writing ${filePath}`);
     fs.writeFileSync(filePath, content);

@@ -46,7 +46,7 @@ class MenuNode {
    * @param {*} callback
    */
   walkPath(path, callback) {
-    const result = [ callback(this) ];
+    const result = [callback(this)];
 
     if (path.length === 0) {
       return result;
@@ -70,10 +70,8 @@ class MenuNode {
   clone() {
     const other = new MenuNode(this._parent, this._name);
     other._properties = _.cloneDeep(this._properties);
-    other._children = _.fromPairs(
-      _.toPairs(this._children)
-        .map(pair => [pair[0], pair[1].clone()])
-    );
+    other._children = _.fromPairs(_.toPairs(this._children)
+      .map(pair => [pair[0], pair[1].clone()]));
     return other;
   }
 }

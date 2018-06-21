@@ -20,7 +20,7 @@ function postMiddlewareConstructor(options = {}) {
     }
 
     res.render(opts.template, { post });
-  }
+  };
 }
 
 module.exports = postMiddlewareConstructor;

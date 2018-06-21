@@ -17,7 +17,7 @@ class Request {
       if (filename[0] === 'index') {
         pathCopy.splice(pathCopy.length - 1, 1);
       } else {
-        pathCopy[pathCopy.length - 1] = filename.slice(0,-1).join('.');
+        pathCopy[pathCopy.length - 1] = filename.slice(0, -1).join('.');
       }
     }
 

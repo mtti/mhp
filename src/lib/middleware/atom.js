@@ -52,7 +52,7 @@ function atomConstructor(options = {}) {
       contentType: 'application/atom+xml',
     };
     res.write(feed.atom1(), fileOptions);
-  }
+  };
 }
 
 module.exports = atomConstructor;

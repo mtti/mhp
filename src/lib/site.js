@@ -34,9 +34,8 @@ class Site {
     const assetManifestPath = path.join(this._outputDirectory, 'assets', 'manifest.json');
     if (fs.existsSync(assetManifestPath)) {
       return JSON.parse(fs.readFileSync(assetManifestPath));
-    } else {
-      return {};
     }
+    return {};
   }
 
   constructor(baseDirectory, outputDirectory) {

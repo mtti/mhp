@@ -42,7 +42,7 @@ function indexMiddlewareConstructor(options = {}) {
 
       res.render(template, context, renderOptions);
     }
-  }
+  };
 }
 
 module.exports = indexMiddlewareConstructor;
