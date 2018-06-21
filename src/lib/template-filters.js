@@ -1,4 +1,5 @@
 const moment = require('moment');
+const nunjucks = require('nunjucks');
 const { Post } = require('./post');
 
 function date(input, format) {
@@ -26,8 +27,37 @@ function url(input) {
   return `${this.ctx.baseUrl}/${input}`;
 }
 
+function navlink(uri, kwargs = {}) {
+  const activeClass = kwargs.activeClass || 'active';
+  const className = kwargs.class || '';
+  const text = kwargs.text || uri;
+  const href = url.call(this, uri);
+  const classes = className.split(' ').filter(item => item.length > 0);
+
+  if (uri.startsWith(this.ctx.uri) && this.ctx.uri.length > 0) {
+    classes.push(activeClass);
+  }
+
+  let classStr = '';
+  if (classes.length > 0) {
+    classStr = ` class="${classes.join(' ')}"`;
+  }
+
+  const result = `<a href="${href}"${classStr}>${text}</a>`;
+  return new nunjucks.runtime.SafeString(result);
+}
+
+function ifActivePath(str, uri) {
+  if (uri.startsWith(this.ctx.uri)) {
+    return str;
+  }
+  return '';
+}
+
 module.exports = {
   date,
   assetUrl,
   url,
+  navlink,
+  ifActivePath,
 };

@@ -51,6 +51,9 @@ class Response {
     const vars = _.cloneDeep(this._globals);
     _.merge(vars, context);
 
+    vars.uriParts = this._req.uriParts;
+    vars.uri = this._req.uri;
+
     const content = this._site.nunjucks.render(template, vars);
     return this.write(content, options);
   }
