@@ -11,11 +11,11 @@ class MenuNode {
   /**
    * Set menu node properties.
    */
-  set() {
-    if (arguments.length === 1) {
-      _.merge(this._properties, arguments[0]);
-    } else if (arguments.length === 2) {
-      this._properties[arguments[0]] = this._properties[arguments[1]];
+  set(...args) {
+    if (args.length === 1) {
+      _.merge(this._properties, args[0]);
+    } else if (args.length === 2) {
+      this._properties[args[0]] = this._properties[args[1]];
     }
     return this;
   }
@@ -75,3 +75,5 @@ class MenuNode {
     return other;
   }
 }
+
+module.exports = MenuNode;

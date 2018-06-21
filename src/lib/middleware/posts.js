@@ -11,7 +11,7 @@ function postMiddlewareConstructor(options = {}) {
   return function postMiddleware(req, res) {
     const posts = res.posts.findAll();
     if (posts.length !== 1) {
-      throw new Error(`generatePosts requires exactly 1 post, got ${postCount}`);
+      throw new Error(`generatePosts requires exactly 1 post, got ${posts.length}`);
     }
     const post = posts[0];
 

@@ -33,14 +33,14 @@ class Router {
     _.merge(this._globals, obj);
   }
 
-  get() {
-    let cleanedURI = arguments[0];
+  get(...args) {
+    let cleanedURI = args[0];
     if (cleanedURI.startsWith('/')) {
       cleanedURI = cleanedURI.slice(1);
     }
     const parts = cleanedURI.split('/');
 
-    const callbacks = Array.prototype.slice.call(arguments, 1);
+    const callbacks = Array.prototype.slice.call(args, 1);
     return this._generate(parts, callbacks);
   }
 

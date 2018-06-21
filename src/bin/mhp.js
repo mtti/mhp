@@ -2,7 +2,6 @@
 
 const path = require('path');
 const minimist = require('minimist');
-const moment = require('moment-timezone');
 const winston = require('winston');
 const Site = require('../lib/site.js');
 const { commands } = require('../lib/cli');
