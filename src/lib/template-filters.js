@@ -32,9 +32,12 @@ function navlink(uri, kwargs = {}) {
   const className = kwargs.class || '';
   const text = kwargs.text || uri;
   const href = url.call(this, uri);
+  const exact = kwargs.exact || false;
   const classes = className.split(' ').filter(item => item.length > 0);
 
-  if (uri.startsWith(this.ctx.uri) && this.ctx.uri.length > 0) {
+  if ((exact && uri === this.ctx.uri)
+    || (!exact && this.ctx.uri.length > 0 && uri.starsWith(this.ctx.uri))
+  ) {
     classes.push(activeClass);
   }
 
@@ -47,10 +50,15 @@ function navlink(uri, kwargs = {}) {
   return new nunjucks.runtime.SafeString(result);
 }
 
-function ifActivePath(str, uri) {
-  if (uri.startsWith(this.ctx.uri)) {
+function ifActivePath(str, uri, kwargs = {}) {
+  const exact = kwargs.exact || false;
+
+  if ((exact && uri === this.ctx.uri)
+    || (!exact && this.ctx.uri.length > 0 && uri.starsWith(this.ctx.uri))
+  ) {
     return str;
   }
+
   return '';
 }
 
