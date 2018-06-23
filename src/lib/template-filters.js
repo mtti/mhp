@@ -1,6 +1,7 @@
 const moment = require('moment');
 const nunjucks = require('nunjucks');
 const { Post } = require('./post');
+const { isInActivePath } = require('./utils');
 
 function date(input, format) {
   let useFormat = 'YYYY-MM-DD';
@@ -35,9 +36,7 @@ function navlink(uri, kwargs = {}) {
   const exact = kwargs.exact || false;
   const classes = className.split(' ').filter(item => item.length > 0);
 
-  if ((exact && uri === this.ctx.uri)
-    || (!exact && this.ctx.uri.length > 0 && uri.startsWith(this.ctx.uri))
-  ) {
+  if (isInActivePath(uri, this.ctx.uri, exact)) {
     classes.push(activeClass);
   }
 
@@ -53,12 +52,9 @@ function navlink(uri, kwargs = {}) {
 function ifActivePath(str, uri, kwargs = {}) {
   const exact = kwargs.exact || false;
 
-  if ((exact && uri === this.ctx.uri)
-    || (!exact && this.ctx.uri.length > 0 && uri.startsWith(this.ctx.uri))
-  ) {
+  if (isInActivePath(uri, this.ctx.uri, exact)) {
     return str;
   }
-
   return '';
 }
 

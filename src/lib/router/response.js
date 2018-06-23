@@ -33,8 +33,8 @@ class Response {
     const sourcePath = path.join(this._site.pageDirectory, pagePath);
     const page = fm(fs.readFileSync(sourcePath, 'utf8'));
 
-    let template = 'page.html';
-    if (page.attributes.template) {
+    let template = options.template || 'page.html';
+    if (!options.template && page.attributes.template) {
       template = page.attributes.template;
     }
 
@@ -50,10 +50,12 @@ class Response {
 
   render(template, context = {}, options = {}) {
     const vars = _.cloneDeep(this._globals);
-    _.merge(vars, context);
 
     vars.uriParts = this._req.uriParts;
     vars.uri = this._req.uri;
+    vars.front = vars.uriParts.length === 0;
+
+    _.merge(vars, context);
 
     const content = this._site.nunjucks.render(template, vars);
     return this.write(content, options);

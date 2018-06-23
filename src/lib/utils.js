@@ -81,10 +81,18 @@ function cleanUnknownFiles(outputDirectory, knownFiles) {
   clean(outputDirectory);
 }
 
+function isInActivePath(uri, activePath, exact = false) {
+  if (exact) {
+    return uri === activePath;
+  }
+  return activePath.length > 0 && activePath.startsWith(uri);
+}
+
 module.exports = {
   cleanAttributes,
   replaceExtension,
   guessMimeType,
   cleanUnknownFiles,
+  isInActivePath,
   asyncMap: Q.nfbind(async.map),
 };

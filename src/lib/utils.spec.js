@@ -1,5 +1,5 @@
 const mime = require('mime-types');
-const { cleanAttributes, replaceExtension, guessMimeType } = require('./utils');
+const { cleanAttributes, replaceExtension, guessMimeType, isInActivePath } = require('./utils');
 
 describe('utils', () => {
   describe('cleanAttributes', () => {
@@ -65,6 +65,27 @@ describe('utils', () => {
 
       it('returns application/octet-stream', () => {
         assert.equal(result, 'application/octet-stream');
+      });
+    });
+  });
+
+  describe('isInActivePath', () => {
+    let result;
+
+    describe('exact = false', () => {
+      it('child is not active on parent page', () => {
+        result = isInActivePath('first/second', 'first', false);
+        assert.equal(result, false);
+      });
+
+      it('parent is active on child page', () => {
+        result = isInActivePath('first', 'first/second', false);
+        assert.equal(result, true);
+      });
+
+      it('child is active on its own page', () => {
+        result = isInActivePath('first/second', 'first/second', false);
+        assert.equal(result, true);
       });
     });
   });
