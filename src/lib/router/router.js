@@ -4,6 +4,7 @@ const Request = require('./request');
 const Response = require('./response');
 
 class Router {
+  // eslint-disable-next-line class-methods-use-this
   get middleware() {
     return middleware;
   }

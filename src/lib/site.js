@@ -4,6 +4,7 @@ const _ = require('lodash');
 const nunjucks = require('nunjucks');
 const { PostDb } = require('./post');
 const templateFilters = require('./template-filters');
+const Loader = require('./loader');
 
 class Site {
   static initialize(baseDirectory, outputDirectory) {
@@ -42,7 +43,11 @@ class Site {
     this._baseDirectory = baseDirectory;
     this._outputDirectory = outputDirectory;
     this._assetManifest = {};
-    this.nunjucks = nunjucks.configure(path.join(this.baseDirectory, 'templates'));
+
+    this._loader = new Loader();
+    this._loader.addPath(path.join(this.baseDirectory, 'templates'));
+    this.nunjucks = new nunjucks.Environment(this._loader);
+
     this.postDb = new PostDb();
     this.generatedFiles = [];
 

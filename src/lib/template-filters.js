@@ -2,6 +2,7 @@ const moment = require('moment');
 const nunjucks = require('nunjucks');
 const { Post } = require('./post');
 const { isInActivePath } = require('./utils');
+
 const { SafeString } = nunjucks.runtime;
 
 function date(input, format) {
