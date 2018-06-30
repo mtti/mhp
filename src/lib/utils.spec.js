@@ -1,6 +1,7 @@
 const mime = require('mime-types');
 const {
-  cleanAttributes, replaceExtension, guessMimeType, isInActivePath,
+  cleanAttributes, replaceExtension, guessMimeType, isInActivePath, mustStartWith, mustEndWith,
+  mustNotStartWith, mustNotEndWith
 } = require('./utils');
 
 describe('utils', () => {
@@ -88,6 +89,74 @@ describe('utils', () => {
       it('child is active on its own page', () => {
         result = isInActivePath('first/second', 'first/second', false);
         assert.equal(result, true);
+      });
+    });
+  });
+
+  describe('mustStartWith', () => {
+    const parameters = [
+      ['foobar', 'ADD', 'ADDfoobar'],
+      ['foo/bar/', '/', '/foo/bar/'],
+    ];
+
+    parameters.forEach((item) => {
+      const original = item[0];
+      const prefix = item[1];
+      const expected = item[2];
+      it(`add '${prefix}' to '${original}'`, () => {
+        const result = mustStartWith(original, prefix);
+        assert.equal(result, expected);
+      });
+    });
+  });
+
+  describe('mustEndWith', () => {
+    const parameters = [
+      ['foobar', 'ADD', 'foobarADD'],
+      ['/foo/bar', '/', '/foo/bar/'],
+    ];
+
+    parameters.forEach((item) => {
+      const original = item[0];
+      const suffix = item[1];
+      const expected = item[2];
+      it(`remove '${suffix}' from '${original}'`, () => {
+        const result = mustEndWith(original, suffix);
+        assert.equal(result, expected);
+      });
+    });
+  });
+
+  describe('mustNotStartWith', () => {
+    const parameters = [
+      ['REMOVEfoobar', 'REMOVE', 'foobar'],
+      ['/foo/bar/', '/', 'foo/bar/'],
+    ];
+
+    parameters.forEach((item) => {
+      const original = item[0];
+      const prefix = item[1];
+      const expected = item[2];
+      it(`remove '${prefix}' from '${original}'`, () => {
+        const result = mustNotStartWith(original, prefix);
+        assert.equal(result, expected);
+      });
+    });
+  });
+
+  describe('mustNotEndWith', () => {
+    const parameters = [
+      ['foobarREMOVE', 'REMOVE', 'foobar'],
+      ['/foo/bar/', '/', '/foo/bar'],
+    ];
+
+    parameters.forEach((item) => {
+      const original = item[0];
+      const suffix = item[1];
+      const expected = item[2];
+      it(`remove '${suffix}' from '${original}'`, () => {
+        const result = mustNotEndWith(original, suffix);
+        assert.equal(result, expected);
       });
     });
   });

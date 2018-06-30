@@ -88,11 +88,43 @@ function isInActivePath(uri, activePath, exact = false) {
   return activePath.length > 0 && activePath.startsWith(uri);
 }
 
+function mustStartWith(str, prefix) {
+  if (str.startsWith(prefix)) {
+    return str;
+  }
+  return `${prefix}${str}`;
+}
+
+function mustEndWith(str, suffix) {
+  if (str.endsWith(suffix)) {
+    return str;
+  }
+  return `${str}${suffix}`;
+}
+
+function mustNotStartWith(str, prefix) {
+  if (!str.startsWith(prefix)) {
+    return str;
+  }
+  return str.slice(prefix.length);
+}
+
+function mustNotEndWith(str, suffix) {
+  if (!str.endsWith(suffix)) {
+    return str;
+  }
+  return str.slice(0, str.length - suffix.length);
+}
+
 module.exports = {
   cleanAttributes,
   replaceExtension,
   guessMimeType,
   cleanUnknownFiles,
   isInActivePath,
+  mustStartWith,
+  mustEndWith,
+  mustNotStartWith,
+  mustNotEndWith,
   asyncMap: Q.nfbind(async.map),
 };
