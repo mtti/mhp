@@ -10,6 +10,7 @@ function generateRoutes(argv, options, site) {
 
   if (site.routeCb) {
     site.routeCb(router);
+    router.execute();
   }
 
   if (options.cleanUnknownFiles !== false) {
