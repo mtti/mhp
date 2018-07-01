@@ -3,10 +3,10 @@ const { cleanUnknownFiles } = require('../utils');
 const { Router } = require('../router');
 
 function generateRoutes(argv, options, site) {
-  const routerOptions = {
+  const router = new Router({
     baseUrl: options.baseUrl,
-  };
-  const router = new Router(site, routerOptions);
+  });
+  router.initialize(site, null, '');
 
   if (site.routeCb) {
     site.routeCb(router);

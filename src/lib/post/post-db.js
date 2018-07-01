@@ -72,7 +72,7 @@ class PostDb {
           .map(file => this.load(file.path));
         const directoryPromises = items
           .filter(item => item.type === 'directory')
-          .map(subdirectory => this.loadDirectory(subdirectory));
+          .map(subdirectory => this.loadDirectory(subdirectory.path));
         return Promise.all(_.flattenDeep([filePromises, directoryPromises]));
       });
   }

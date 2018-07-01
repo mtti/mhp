@@ -8,15 +8,19 @@ const nunjucks = require('nunjucks');
 const winston = require('winston');
 
 class Response {
-  get posts() {
-    return this._postSet;
-  }
-
   constructor(site, globals, req, postSet) {
     this._site = site;
     this._req = req;
     this._postSet = postSet;
     this._globals = globals;
+  }
+
+  get posts() {
+    return this._postSet;
+  }
+
+  set posts(value) {
+    this._postSet = value;
   }
 
   url(uriParts) {

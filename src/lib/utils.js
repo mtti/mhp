@@ -116,6 +116,15 @@ function mustNotEndWith(str, suffix) {
   return str.slice(0, str.length - suffix.length);
 }
 
+/**
+ * Removes a substring from both sides of a string.
+ * @param {string} str Main string.
+ * @param {string} affix Substring to remove.
+ */
+function trim(str, affix) {
+  return mustNotEndWith(mustNotStartWith(str, affix), affix);
+}
+
 module.exports = {
   cleanAttributes,
   replaceExtension,
@@ -126,5 +135,6 @@ module.exports = {
   mustEndWith,
   mustNotStartWith,
   mustNotEndWith,
+  trim,
   asyncMap: Q.nfbind(async.map),
 };

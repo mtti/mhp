@@ -3,6 +3,26 @@ const Request = require('./request');
 const Response = require('./response');
 
 class Router {
+  constructor(options = {}) {
+    this._globals = {
+      lang: 'en',
+    };
+
+    this._children = [];
+    this._pathPrefix = '';
+    this._middleware = [];
+    this._routes = [];
+
+    this._lockedGlobals = {};
+    if (options.baseUrl) {
+      this._lockedGlobals.baseUrl = options.baseUrl;
+    }
+  }
+
+  /**
+   * The list of middleware callbacks from this router and its parents in the orher they were
+   * defined.
+   */
   get middleware() {
     const middleware = [];
     if (this._parent !== null) {
@@ -12,6 +32,10 @@ class Router {
     return middleware;
   }
 
+  /**
+   * All global template variables for this router, including variables inherited from parent
+   * routers.
+   */
   get globals() {
     let parentGlobals = {};
     if (this._parent != null) {
@@ -20,47 +44,29 @@ class Router {
     return Object.assign(parentGlobals, this._globals, this._lockedGlobals);
   }
 
-  set site(value) {
-    this._site = value;
-  }
-
-  set parent(value) {
-    if (this._parent !== null) {
-      throw new Error('Router already has a parent');
-    }
-    this._parent = value;
-  }
-
-  set pathPrefix(value) {
-    this._pathPrefix = value;
-  }
-
-  constructor(site, options = {}) {
-    this._site = site;
-    this._parent = options.parent || null;
-    this._children = [];
-    this._pathPrefix = '';
-    this._middleware = [];
-    this._routes = [];
-    this._globals = {
-      lang: 'en',
-      assetManifest: site.assetManifest,
-    };
-
-    this._lockedGlobals = {};
-    if (options.baseUrl) {
-      this._lockedGlobals.baseUrl = options.baseUrl;
-    }
-  }
-
+  /**
+   * Set the value of an individual global template variable. Values set on a router override values
+   * inherited from parent routers.
+   * @param {string} key
+   * @param {*} value
+   */
   setGlobal(key, value) {
     this._globals[key] = value;
   }
 
+  /**
+   * Set the values of multiple global template variables. Values set on a router override values
+   * inherited from parent routers.
+   * @param {Object.<string, *>} obj
+   */
   setGlobals(obj) {
     _.merge(this._globals, obj);
   }
 
+  /**
+   * Configure one or more middleware callbacks to be executed against a specific URI path.
+   * @param {*} args
+   */
   get(...args) {
     const uri = args[0];
     const callbacks = Array.prototype.slice.call(args, 1);
@@ -74,15 +80,33 @@ class Router {
     } else if (args.length === 2) {
       const uri = args[0];
       const other = args[1];
-      other.parent = this;
-      other.site = this._site;
-      other.pathPrefix = uri;
+      other.initialize(this._site, this, uri);
       this._children.push(other);
     } else {
       throw new Error(`Unsupported number of arguments: ${args.length}`);
     }
   }
 
+  /**
+   * Initialize the router into a router hierarchy. This function is internal to MHP and should not
+   * be called directly.
+   * @param {*} site
+   * @param {*} parent
+   * @param {*} pathPrefix
+   */
+  initialize(site, parent, pathPrefix = '') {
+    if (this._parent !== undefined) {
+      throw new Error(`Router has already been initialized at ${this._pathPrefix}`);
+    }
+    this._site = site;
+    this._parent = parent;
+    this._pathPrefix = pathPrefix;
+  }
+
+  /**
+   * Execute the route handlers for this router and all of its children. This is always called
+   * automatically after the route callback, so there should be no need to call this manually.
+   */
   execute() {
     this._children.forEach((child) => {
       child.execute();

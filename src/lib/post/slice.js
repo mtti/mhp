@@ -36,6 +36,14 @@ class Slice {
     this.sorter = Slice.parseSort(sorter);
   }
 
+  filter(filters) {
+    return new Slice(this, filters, null);
+  }
+
+  sort(sorter) {
+    return new Slice(this, null, sorter);
+  }
+
   /**
    * Get an array of all the unique values of the given field across all posts matched by this
    * slice.

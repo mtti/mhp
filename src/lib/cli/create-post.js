@@ -21,11 +21,22 @@ function createPost(argv, options) {
     throw new Error('Usage: mhp create-post TITLE');
   }
 
-  const title = argv._[1];
+  const destParts = argv._[1].split('/');
+  const title = destParts.slice(-1)[0];
   const slug = slugify(title, { lower: true });
   const sanitizedSlug = sanitizeFilename(slug);
-  const filePath = path.join(options.inputDirectory, 'posts', `${sanitizedSlug}.md`);
   const publishedAt = moment().utc().format('YYYY-MM-DD HH:mmZ');
+
+  const pathParts = [
+    options.inputDirectory,
+    'posts',
+  ];
+  if (pathParts.length > 1) {
+    pathParts.push(...destParts.slice(0, -1));
+  }
+  const directoryPath = path.join(...pathParts);
+  pathParts.push(`${sanitizedSlug}.md`);
+  const filePath = path.join(...pathParts);
 
   if (fs.existsSync(filePath)) {
     throw new Error(`File ${filePath} already exists`);
@@ -39,6 +50,8 @@ function createPost(argv, options) {
   };
 
   const body = nunjucks.compile(postTemplate).render(vars);
+
+  fs.ensureDirSync(directoryPath);
   fs.writeFileSync(filePath, body, 'utf8');
   winston.info(`Wrote ${filePath}`);
 }

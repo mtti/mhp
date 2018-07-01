@@ -1,7 +1,7 @@
 const mime = require('mime-types');
 const {
   cleanAttributes, replaceExtension, guessMimeType, isInActivePath, mustStartWith, mustEndWith,
-  mustNotStartWith, mustNotEndWith
+  mustNotStartWith, mustNotEndWith,
 } = require('./utils');
 
 describe('utils', () => {
