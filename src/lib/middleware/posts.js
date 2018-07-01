@@ -9,7 +9,7 @@ function postMiddlewareConstructor(options = {}) {
 
   _.merge(opts, options);
 
-  return function postMiddleware(req, res) {
+  const postMiddleware = (req, res) => {
     const posts = res.posts.findAll();
     if (posts.length === 0) {
       winston.warn(`No posts found at ${req.uri}`);
@@ -24,6 +24,8 @@ function postMiddlewareConstructor(options = {}) {
 
     res.render(opts.template, { post });
   };
+  postMiddleware._mhp_priority = true;
+  return postMiddleware;
 }
 
 module.exports = postMiddlewareConstructor;

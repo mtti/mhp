@@ -1,13 +1,17 @@
 function filterMiddlewareConstructor(filters) {
-  return function filterMiddleware(req, res) {
+  const filterMiddleware = (req, res) => {
     res.posts = res.posts.filter(filters);
   };
+  filterMiddleware._mhp_filter = true;
+  return filterMiddleware;
 }
 
 function sortMiddlewareConstructor(sorter) {
-  return function sortMiddleware(req, res) {
+  const sortMiddleware = (req, res) => {
     res.posts = res.posts.sort(sorter);
   };
+  sortMiddleware._mhp_sorter = true;
+  return sortMiddleware;
 }
 
 module.exports = {

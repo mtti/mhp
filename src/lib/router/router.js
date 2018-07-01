@@ -108,26 +108,48 @@ class Router {
    * automatically after the route callback, so there should be no need to call this manually.
    */
   execute() {
-    this._children.forEach((child) => {
-      child.execute();
-    });
+    this._executePriority();
+    this._executeRegular();
+  }
 
-    this._routes.forEach((route) => {
-      const uri = route[0];
-      const callbacks = route[1];
+  /**
+   * Execute high priority route handlers, first for child routers and then this one. A high
+   * priority route handler is any with at least one middleware with the _mhp_priority field set.
+   * Currently, the only built-in one is posts(), which uses the priority flag so that canonical
+   * post paths are always generated before any index pages that reference them.
+   */
+  _executePriority() {
+    this._children.forEach(child => child._executePriority());
+    this._routes
+      .filter(route => route[1].filter(callback => callback._mhp_priority).length > 0)
+      .forEach(route => this._executeRoute(route));
+  }
 
-      let cleanedURI = `${this._pathPrefix}${uri}`;
-      if (cleanedURI.startsWith('/')) {
-        cleanedURI = cleanedURI.slice(1);
-      }
-      const parts = cleanedURI.split('/');
+  /**
+   * Execute regular priority route handlers, first for child routers and then this one.
+   */
+  _executeRegular() {
+    this._children.forEach(child => child._executeRegular());
+    this._routes
+      .filter(route => route[1].filter(callback => callback._mhp_priority).length === 0)
+      .forEach(route => this._executeRoute(route));
+  }
 
-      const middleware = [];
-      middleware.push(...this.middleware);
-      middleware.push(...callbacks);
+  _executeRoute(route) {
+    const uri = route[0];
+    const callbacks = route[1];
 
-      this._generate(parts, middleware);
-    });
+    let cleanedURI = `${this._pathPrefix}${uri}`;
+    if (cleanedURI.startsWith('/')) {
+      cleanedURI = cleanedURI.slice(1);
+    }
+    const parts = cleanedURI.split('/');
+
+    const middleware = [];
+    middleware.push(...this.middleware);
+    middleware.push(...callbacks);
+
+    this._generate(parts, middleware);
   }
 
   _generate(parts, callbacks, postSet, params = {}) {
@@ -138,22 +160,27 @@ class Router {
       posts = this._site.postDb.slice();
     }
 
+    const request = new Request(this._site, parts, params);
+    const response = new Response(this._site, this.globals, request, posts);
+
     // Run callbacks when there are no more parameter expansions to be done in the path
     const groupCount = parts.filter(item => item.startsWith(':')).length;
     if (groupCount === 0) {
-      const request = new Request(this._site, parts, params);
-      const response = new Response(this._site, this.globals, request, posts);
       callbacks.forEach((callback) => {
         callback(request, response);
       });
       return;
     }
 
+    callbacks
+      .filter(callback => callback._mhp_filter || callback._mhp_sorter)
+      .forEach(callback => callback(request, response));
+
     const path = [];
     parts.forEach((item, i) => {
       if (item.startsWith(':')) {
         const fieldName = item.slice(1);
-        posts
+        response.posts
           .groupBy(fieldName)
           .forEach((pair) => {
             const pathCopy = path.slice();
