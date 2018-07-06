@@ -1,5 +1,6 @@
 const moment = require('moment');
 const nunjucks = require('nunjucks');
+const winston = require('winston');
 const { Post } = require('./post');
 const { isInActivePath, mustNotEndWith } = require('./utils');
 
@@ -17,7 +18,7 @@ function date(input, format) {
 
 function assetUrl(input) {
   let filename = input;
-  if (input in this.ctx.assetManifest) {
+  if (this.ctx.assetManifest && input in this.ctx.assetManifest) {
     filename = this.ctx.assetManifest[input];
   }
   return `${this.ctx.baseUrl}/assets/${filename}`;
@@ -65,10 +66,21 @@ function ifActivePath(str, uri, kwargs = {}) {
   return '';
 }
 
+function _wrapFilter(filterFunc) {
+  return function wrappedFilter(...args) {
+    try {
+      return filterFunc.call(this, ...args);
+    } catch (err) {
+      winston.error(err);
+      throw err;
+    }
+  };
+}
+
 module.exports = {
-  date,
-  assetUrl,
-  url,
-  navlink,
-  ifActivePath,
+  date: _wrapFilter(date),
+  assetUrl: _wrapFilter(assetUrl),
+  url: _wrapFilter(url),
+  navlink: _wrapFilter(navlink),
+  ifActivePath: _wrapFilter(ifActivePath),
 };

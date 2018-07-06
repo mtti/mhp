@@ -5,6 +5,9 @@ const { Router } = require('../router');
 function generateRoutes(argv, options, site) {
   const router = new Router({
     baseUrl: options.baseUrl,
+    globals: {
+      assetManifest: site.assetManifest,
+    },
   });
   router.initialize(site, null, '');
 

@@ -3,22 +3,6 @@ const Request = require('./request');
 const Response = require('./response');
 
 class Router {
-  constructor(options = {}) {
-    this._globals = {
-      lang: 'en',
-    };
-
-    this._children = [];
-    this._pathPrefix = '';
-    this._middleware = [];
-    this._routes = [];
-
-    this._lockedGlobals = {};
-    if (options.baseUrl) {
-      this._lockedGlobals.baseUrl = options.baseUrl;
-    }
-  }
-
   /**
    * The list of middleware callbacks from this router and its parents in the orher they were
    * defined.
@@ -37,11 +21,34 @@ class Router {
    * routers.
    */
   get globals() {
-    let parentGlobals = {};
-    if (this._parent != null) {
-      parentGlobals = this._parent.globals;
+    const globals = {};
+    if (this._parent !== null) {
+      Object.assign(globals, this._parent.globals);
     }
-    return Object.assign(parentGlobals, this._globals, this._lockedGlobals);
+    return Object.assign(globals, this._globals, this._lockedGlobals);
+  }
+
+  get site() {
+    return this._site;
+  }
+
+  constructor(options = {}) {
+    this._globals = {
+      lang: 'en',
+    };
+
+    const globals = options.globals || {};
+    Object.assign(this._globals, globals);
+
+    this._children = [];
+    this._pathPrefix = '';
+    this._middleware = [];
+    this._routes = [];
+
+    this._lockedGlobals = {};
+    if (options.baseUrl) {
+      this._lockedGlobals.baseUrl = options.baseUrl;
+    }
   }
 
   /**
@@ -160,8 +167,8 @@ class Router {
       posts = this._site.postDb.slice();
     }
 
-    const request = new Request(this._site, parts, params);
-    const response = new Response(this._site, this.globals, request, posts);
+    const request = new Request(this, parts, params);
+    const response = new Response(this, request, posts);
 
     // Run callbacks when there are no more parameter expansions to be done in the path
     const groupCount = parts.filter(item => item.startsWith(':')).length;

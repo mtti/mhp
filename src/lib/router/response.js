@@ -8,19 +8,18 @@ const nunjucks = require('nunjucks');
 const winston = require('winston');
 
 class Response {
-  constructor(site, globals, req, postSet) {
-    this._site = site;
-    this._req = req;
-    this._postSet = postSet;
-    this._globals = globals;
-  }
-
   get posts() {
     return this._postSet;
   }
 
   set posts(value) {
     this._postSet = value;
+  }
+
+  constructor(router, req, postSet) {
+    this._router = router;
+    this._req = req;
+    this._postSet = postSet;
   }
 
   url(uriParts) {
@@ -30,11 +29,11 @@ class Response {
     } else {
       uri = this._req.path.join('/');
     }
-    return `${this._globals.baseUrl}/${uri}`;
+    return `${this._router.globals.baseUrl}/${uri}`;
   }
 
   renderPage(pagePath, context = {}, options = {}) {
-    const sourcePath = path.join(this._site.pageDirectory, pagePath);
+    const sourcePath = path.join(this._router.site.pageDirectory, pagePath);
     const page = fm(fs.readFileSync(sourcePath, 'utf8'));
 
     let template = options.template || 'page.html';
@@ -53,15 +52,19 @@ class Response {
   }
 
   render(template, context = {}, options = {}) {
-    const vars = _.cloneDeep(this._globals);
+    const vars = _.cloneDeep(this._router.globals);
+    Object.assign(vars, context);
+    const frontPageUri = vars.frontPage || '';
 
     vars.uriParts = this._req.uriParts;
     vars.uri = this._req.uri;
-    vars.front = vars.uriParts.length === 0;
+    vars.front = vars.uri === frontPageUri;
 
-    _.merge(vars, context);
+    const content = this._router.site.nunjucks.render(template, vars);
+    if (content === null) {
+      throw new Error(`Nunjucks returned null while rendering ${vars.uri}`);
+    }
 
-    const content = this._site.nunjucks.render(template, vars);
     return this.write(content, options);
   }
 
@@ -89,16 +92,16 @@ class Response {
 
     // Make sure final output directory exists
     const directoryParts = pathCopy.slice(0, -1);
-    fs.ensureDirSync(path.join(this._site.outputDirectory, path.join(...directoryParts)));
+    fs.ensureDirSync(path.join(this._router.site.outputDirectory, path.join(...directoryParts)));
 
     // Write the output file
     const filePath = path.join(
-      this._site.outputDirectory,
+      this._router.site.outputDirectory,
       path.join(...pathCopy),
     );
     winston.verbose(`Writing ${filePath}`);
     fs.writeFileSync(filePath, content);
-    this._site.generatedFiles.push(filePath);
+    this._router.site.generatedFiles.push(filePath);
   }
 }
 

@@ -2,7 +2,7 @@ const _ = require('lodash');
 
 class Request {
   get site() {
-    return this._site;
+    return this._router.site;
   }
 
   get path() {
@@ -32,8 +32,8 @@ class Request {
     return this._params;
   }
 
-  constructor(site, path, params) {
-    this._site = site;
+  constructor(router, path, params) {
+    this._router = router;
     this._path = path.slice();
     this._params = _.cloneDeep(params);
   }
