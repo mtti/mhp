@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const moment = require('moment');
 const nunjucks = require('nunjucks');
 const winston = require('winston');
@@ -77,10 +78,11 @@ function _wrapFilter(filterFunc) {
   };
 }
 
-module.exports = {
-  date: _wrapFilter(date),
-  assetUrl: _wrapFilter(assetUrl),
-  url: _wrapFilter(url),
-  navlink: _wrapFilter(navlink),
-  ifActivePath: _wrapFilter(ifActivePath),
+const filters = {
+  date,
+  assetUrl,
+  url,
+  navlink,
+  ifActivePath,
 };
+module.exports = _.fromPairs(_.toPairs(filters).map(pair => [pair[0], _wrapFilter(pair[1])]));
