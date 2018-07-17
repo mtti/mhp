@@ -4,6 +4,7 @@ const marked = require('marked');
 const moment = require('moment');
 const nunjucks = require('nunjucks');
 const slugify = require('slugify');
+const striptags = require('striptags');
 
 class Post {
   get slug() {
@@ -57,7 +58,7 @@ class Post {
     }
 
     const doc = cheerio.load(this.html);
-    return doc('p').first().html();
+    return striptags(doc('p').first().html());
   }
 
   constructor(fields, options) {

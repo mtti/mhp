@@ -1,7 +1,7 @@
 const mime = require('mime-types');
 const {
   cleanAttributes, replaceExtension, guessMimeType, isInActivePath, mustStartWith, mustEndWith,
-  mustNotStartWith, mustNotEndWith,
+  mustNotStartWith, mustNotEndWith, cleanUri,
 } = require('./utils');
 
 describe('utils', () => {
@@ -156,6 +156,31 @@ describe('utils', () => {
       const expected = item[2];
       it(`remove '${suffix}' from '${original}'`, () => {
         const result = mustNotEndWith(original, suffix);
+        assert.equal(result, expected);
+      });
+    });
+  });
+
+  describe('cleanUri', () => {
+    const parameters = [
+      ['/index.html', ''],
+      ['index.html', ''],
+      ['foo.html', 'foo'],
+      ['subdir/index.html', 'subdir'],
+      ['subdir/foo.html', 'subdir/foo'],
+      ['/subdir/index.html', 'subdir'],
+      ['/subdir/foo.html', 'subdir/foo'],
+
+      ['/readme.txt', 'readme.txt'],
+      ['readme.txt', 'readme.txt'],
+      ['subdir/foo.pdf', 'subdir/foo.pdf'],
+    ];
+
+    parameters.forEach((item) => {
+      const original = item[0];
+      const expected = item[1];
+      it(`with ${original}`, () => {
+        const result = cleanUri(original);
         assert.equal(result, expected);
       });
     });

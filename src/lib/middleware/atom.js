@@ -29,7 +29,7 @@ function atomConstructor(options = {}) {
   _.merge(opts, options);
 
   return function atomMiddleware(req, res) {
-    const posts = res.posts.findAll();
+    const posts = res.posts.findAll().slice(0, 50);
     const updated = findNewestUpdateAt(posts);
     const feed = new Feed({
       title: opts.title,

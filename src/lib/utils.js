@@ -125,6 +125,23 @@ function trim(str, affix) {
   return mustNotEndWith(mustNotStartWith(str, affix), affix);
 }
 
+function cleanUri(uri) {
+  const trimmedUri = trim(uri, '/');
+  const parts = trimmedUri.split('/');
+  const filename = parts.slice(-1)[0];
+  const ext = filename.split('.').slice(-1)[0];
+
+  if (ext === 'html') {
+    if (filename === 'index.html') {
+      parts.splice(parts.length - 1, 1);
+    } else {
+      parts[parts.length - 1] = filename.split('.').slice(0, -1).join('.');
+    }
+  }
+
+  return parts.join('/');
+}
+
 module.exports = {
   cleanAttributes,
   replaceExtension,
@@ -136,5 +153,6 @@ module.exports = {
   mustNotStartWith,
   mustNotEndWith,
   trim,
+  cleanUri,
   asyncMap: Q.nfbind(async.map),
 };

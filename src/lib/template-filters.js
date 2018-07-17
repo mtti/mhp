@@ -3,7 +3,7 @@ const moment = require('moment');
 const nunjucks = require('nunjucks');
 const winston = require('winston');
 const { Post } = require('./post');
-const { isInActivePath, mustNotEndWith } = require('./utils');
+const { isInActivePath, mustNotEndWith, cleanUri } = require('./utils');
 
 const { SafeString } = nunjucks.runtime;
 
@@ -31,7 +31,9 @@ function url(input) {
   }
 
   const baseUrl = mustNotEndWith(this.ctx.baseUrl, '/');
-  return `${baseUrl}/${input}`;
+  const uri = cleanUri(input);
+
+  return `${baseUrl}/${uri}`;
 }
 
 function navlink(uri, kwargs = {}) {
