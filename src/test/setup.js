@@ -10,7 +10,7 @@ global.expect = chai.expect;
 sinon.assert.expose(chai.assert, { prefix: '' });
 
 beforeEach(() => {
-  global.sandbox = global.sinon.sandbox.create();
+  global.sandbox = sinon.createSandbox();
 });
 
 afterEach(() => {
