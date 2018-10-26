@@ -3,7 +3,7 @@
 const path = require('path');
 const minimist = require('minimist');
 const logger = require('../lib/logger');
-const Site = require('../lib/site.js');
+const Site = require('../lib/site');
 const { commands } = require('../lib/cli');
 
 process.on('unhandledRejection', (reason) => {
