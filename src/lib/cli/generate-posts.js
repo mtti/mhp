@@ -6,9 +6,9 @@ const loremIpsum = require('lorem-ipsum');
 const uuidv4 = require('uuid/v4');
 const slugify = require('slugify');
 const sanitizeFilename = require('sanitize-filename');
-const winston = require('winston');
 const moment = require('moment');
 const yaml = require('js-yaml');
+const logger = require('../logger');
 
 function _generatePost(targetDirectory, since, fields) {
   const sinceSeconds = Math.floor(Math.random() * moment.utc().diff(since, 'seconds'));
@@ -28,7 +28,7 @@ function _generatePost(targetDirectory, since, fields) {
 
   fs.ensureDirSync(targetDirectory);
   fs.writeFileSync(filePath, fileBody, 'utf8');
-  winston.info(`Wrote ${filePath}`);
+  logger.info(`Wrote ${filePath}`);
 }
 
 function generatePosts(argv, options) {

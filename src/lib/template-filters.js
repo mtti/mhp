@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const moment = require('moment');
 const nunjucks = require('nunjucks');
-const winston = require('winston');
+const logger = require('./logger');
 const { Post } = require('./post');
 const { isInActivePath, mustNotEndWith, cleanUri } = require('./utils');
 
@@ -74,7 +74,7 @@ function _wrapFilter(filterFunc) {
     try {
       return filterFunc.call(this, ...args);
     } catch (err) {
-      winston.error(err);
+      logger.error(err);
       throw err;
     }
   };

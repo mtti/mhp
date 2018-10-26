@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const Feed = require('feed');
+const { Feed } = require('feed');
 const moment = require('moment');
 
 function findNewestUpdateAt(posts) {

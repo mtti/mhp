@@ -4,7 +4,7 @@ const async = require('async');
 const fs = require('fs-extra');
 const mime = require('mime-types');
 const Q = require('q');
-const winston = require('winston');
+const logger = require('./logger');
 
 /**
  * Remove leading underscore from object keys that have one.
@@ -62,7 +62,7 @@ function cleanUnknownFiles(outputDirectory, knownFiles) {
     items
       .filter(item => item.stats.isFile())
       .forEach((item) => {
-        winston.verbose(`Deleting ${item.filePath}`);
+        logger.verbose(`Deleting ${item.filePath}`);
         fs.removeSync(item.filePath);
       });
 
@@ -73,7 +73,7 @@ function cleanUnknownFiles(outputDirectory, knownFiles) {
       });
 
     if (fs.readdirSync(directory).length === 0) {
-      winston.verbose(`Removing empty directory ${directory}`);
+      logger.verbose(`Removing empty directory ${directory}`);
       fs.rmdirSync(directory);
     }
   }

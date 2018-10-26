@@ -3,7 +3,7 @@ const fs = require('fs-extra');
 const slugify = require('slugify');
 const sanitizeFilename = require('sanitize-filename');
 const nunjucks = require('nunjucks');
-const winston = require('winston');
+const logger = require('../logger');
 const uuidv4 = require('uuid/v4');
 const moment = require('moment-timezone');
 
@@ -53,7 +53,7 @@ function createPost(argv, options) {
 
   fs.ensureDirSync(directoryPath);
   fs.writeFileSync(filePath, body, 'utf8');
-  winston.info(`Wrote ${filePath}`);
+  logger.info(`Wrote ${filePath}`);
 }
 
 module.exports = createPost;

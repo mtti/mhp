@@ -2,7 +2,7 @@ const path = require('path');
 const _ = require('lodash');
 const fm = require('front-matter');
 const fs = require('fs-extra');
-const winston = require('winston');
+const logger = require('../logger');
 const Post = require('./post');
 const Slice = require('./slice');
 const { asyncMap } = require('../utils');
@@ -44,7 +44,7 @@ class PostDb {
 
         const validationErrors = post.validate();
         if (validationErrors.length > 0) {
-          winston.warn(`Post ${filePath} ignored: ${validationErrors.join(',')}`);
+          logger.warn(`Post ${filePath} ignored: ${validationErrors.join(',')}`);
         } else {
           this.posts.push(post);
         }

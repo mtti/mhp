@@ -2,12 +2,13 @@
 
 const path = require('path');
 const minimist = require('minimist');
-const winston = require('winston');
+const logger = require('../lib/logger');
 const Site = require('../lib/site.js');
 const { commands } = require('../lib/cli');
 
 process.on('unhandledRejection', (reason) => {
-  winston.error(reason);
+  logger.error(reason);
+  console.log(reason);
 });
 
 const argv = minimist(process.argv.slice(2));
@@ -33,9 +34,9 @@ if (argv.noclean) {
 }
 
 if (argv.verbose) {
-  winston.level = 'verbose';
+  logger.level = 'verbose';
 } else {
-  winston.level = 'info';
+  logger.level = 'info';
 }
 
 if (argv.tz) {

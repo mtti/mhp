@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const winston = require('winston');
+const logger = require('../logger');
 
 function postMiddlewareConstructor(options = {}) {
   const opts = {
@@ -12,7 +12,7 @@ function postMiddlewareConstructor(options = {}) {
   const postMiddleware = (req, res) => {
     const posts = res.posts.findAll();
     if (posts.length === 0) {
-      winston.warn(`No posts found at ${req.uri}`);
+      logger.warn(`No posts found at ${req.uri}`);
     } else if (posts.length > 1) {
       throw new Error(`posts middleware requires at most 1 post, got ${posts.length}`);
     }

@@ -5,7 +5,7 @@ const mime = require('mime-types');
 const fm = require('front-matter');
 const marked = require('marked');
 const nunjucks = require('nunjucks');
-const winston = require('winston');
+const logger = require('../logger');
 
 class Response {
   get posts() {
@@ -99,7 +99,7 @@ class Response {
       this._router.site.outputDirectory,
       path.join(...pathCopy),
     );
-    winston.verbose(`Writing ${filePath}`);
+    logger.verbose(`Writing ${filePath}`);
     fs.writeFileSync(filePath, content);
     this._router.site.generatedFiles.push(filePath);
   }
