@@ -74,7 +74,7 @@ function _wrapFilter(filterFunc) {
     try {
       return filterFunc.call(this, ...args);
     } catch (err) {
-      logger.error(err);
+      logger.error(err.stack);
       throw err;
     }
   };

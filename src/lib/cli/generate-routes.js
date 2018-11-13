@@ -13,6 +13,7 @@ function generateRoutes(argv, options, site) {
 
   if (site.routeCb) {
     site.routeCb(router);
+    site.addTemplateDirectory(path.join(site.baseDirectory, 'templates'));
     router.execute();
   }
 

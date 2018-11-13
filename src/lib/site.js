@@ -45,7 +45,6 @@ class Site {
     this._assetManifest = {};
 
     this._loader = new Loader();
-    this._loader.addPath(path.join(this.baseDirectory, 'templates'));
     this.nunjucks = new nunjucks.Environment(this._loader);
 
     this.postDb = new PostDb();
@@ -62,6 +61,10 @@ class Site {
     } else {
       this.routeCb = null;
     }
+  }
+
+  addTemplateDirectory(directoryPath) {
+    this._loader.addPath(directoryPath);
   }
 }
 

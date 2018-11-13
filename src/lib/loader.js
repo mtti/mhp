@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs-extra');
+const logger = require('./logger');
 
 class Loader {
   constructor() {
@@ -17,6 +18,7 @@ class Loader {
         return fullPath;
       }
     }
+    logger.error(`Template not found: ${templateName}`);
     return null;
   }
 
