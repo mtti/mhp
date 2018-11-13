@@ -3,9 +3,9 @@ const fs = require('fs-extra');
 const slugify = require('slugify');
 const sanitizeFilename = require('sanitize-filename');
 const nunjucks = require('nunjucks');
-const logger = require('../logger');
 const uuidv4 = require('uuid/v4');
 const moment = require('moment-timezone');
+const logger = require('../logger');
 
 const postTemplate = `---
 uuid: {{ uuid }}

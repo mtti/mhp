@@ -16,11 +16,13 @@ function _generatePost(targetDirectory, since, fields) {
 
   const vars = Object.assign({}, fields, {
     uuid: uuidv4(),
-    title: loremIpsum({count: 1, units: 'sentences', sentenceLowerBound: 4, sentenceUpperBound: 6}),
+    title: loremIpsum({
+      count: 1, units: 'sentences', sentenceLowerBound: 4, sentenceUpperBound: 6,
+    }),
     publishedAt: moment().utc().subtract(sinceSeconds, 'seconds').format('YYYY-MM-DD HH:mmZ'),
   });
   const frontMatter = yaml.safeDump(vars);
-  const body = loremIpsum({count: paragraphCount, units: 'paragraphs'});
+  const body = loremIpsum({ count: paragraphCount, units: 'paragraphs' });
 
   const fileBody = `---${os.EOL}${frontMatter}---${os.EOL}${os.EOL}${body}`;
   const filename = sanitizeFilename(slugify(vars.title, { lower: true }));
@@ -36,7 +38,7 @@ function generatePosts(argv, options) {
   const count = argv.count || 100;
 
   let fields = argv.field || [];
-  if (typeof(fields) === 'string') {
+  if (typeof (fields) === 'string') {
     fields = [fields];
   }
   fields = _.fromPairs(fields.map(pair => pair.split('=')));
@@ -49,7 +51,7 @@ function generatePosts(argv, options) {
   const targetDirectory = path.join(...pathParts);
   const sinceObj = moment(since);
 
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < count; i += 1) {
     _generatePost(targetDirectory, sinceObj, fields);
   }
 }

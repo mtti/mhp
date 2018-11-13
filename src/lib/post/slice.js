@@ -5,11 +5,11 @@ class Slice {
   static parseFilter(filter) {
     if (!filter) {
       return [];
-    } else if (filter instanceof Array) {
+    } if (filter instanceof Array) {
       return _.flattenDeep(filter.map(Slice.parseFilter));
-    } else if (typeof filter === 'function') {
+    } if (typeof filter === 'function') {
       return [filter];
-    } else if (typeof filter === 'object') {
+    } if (typeof filter === 'object') {
       return [post => _.isMatch(post.fields, filter)];
     }
     throw new Error(`Unsupported filter type: ${typeof filter}`);
@@ -18,9 +18,9 @@ class Slice {
   static parseSort(sort) {
     if (!sort) {
       return (a, b) => b.publishedAt - a.publishedAt;
-    } else if (typeof sort === 'function') {
+    } if (typeof sort === 'function') {
       return sort;
-    } else if (typeof sort === 'string') {
+    } if (typeof sort === 'string') {
       return (a, b) => b.fields[sort] - a.fields[sort];
     }
     throw new Error(`Unsupported sort type: ${typeof sort}`);

@@ -26,12 +26,8 @@ function indexMiddlewareConstructor(options = {}) {
       const uriParts = req.path;
 
       let filename;
-      let template = opts.template;
       if (i === 0) {
         filename = opts.firstPageFilename;
-        if (opts.firstPageTemplate) {
-          template = opts.firstPageTemplate;
-        }
       } else {
         filename = nunjucks.renderString(opts.filenamePattern, { page: i + 1 });
       }

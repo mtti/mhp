@@ -8,7 +8,6 @@ const { commands } = require('../lib/cli');
 
 process.on('unhandledRejection', (reason) => {
   logger.error(reason);
-  console.log(reason);
 });
 
 const argv = minimist(process.argv.slice(2));

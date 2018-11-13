@@ -10,9 +10,9 @@ class Post {
   get slug() {
     if (this.fields.slug) {
       return this.fields.slug;
-    } else if (this.basename) {
+    } if (this.basename) {
       return this.basename;
-    } else if (this.fields.title) {
+    } if (this.fields.title) {
       return slugify(this.fields.title);
     }
     throw new Error('Unable to generate slug');
