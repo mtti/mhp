@@ -33,6 +33,11 @@ function _generatePost(targetDirectory, since, fields) {
   logger.info(`Wrote ${filePath}`);
 }
 
+/**
+ * Handles the generate-posts CLI command which generates random posts for testing and benchmarking.
+ * @param {string[]} argv
+ * @param {Object} options
+ */
 function generatePosts(argv, options) {
   const since = argv.since || moment().utc().subtract(1, 'year');
   const count = argv.count || 100;

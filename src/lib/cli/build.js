@@ -2,7 +2,13 @@ const path = require('path');
 const { cleanUnknownFiles } = require('../utils');
 const { Router } = require('../router');
 
-function generateRoutes(argv, options, site) {
+/**
+ * Handles the "build" CLI command which builds an MHP site at the current working directory.
+ * @param {string[]} argv
+ * @param {Object} options
+ * @param {*} site
+ */
+function build(argv, options, site) {
   const router = new Router({
     baseUrl: options.baseUrl,
     globals: {
@@ -25,4 +31,4 @@ function generateRoutes(argv, options, site) {
   }
 }
 
-module.exports = generateRoutes;
+module.exports = build;

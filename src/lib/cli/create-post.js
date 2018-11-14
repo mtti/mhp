@@ -16,6 +16,12 @@ publishedAt: {{ publishedAt }}
 Write your post here.
 `;
 
+/**
+ * Handles the create-post CLI command which creates a new post with placeholder values in the MHP
+ * site in the current working directory.
+ * @param {string[]} argv
+ * @param {Object} options
+ */
 function createPost(argv, options) {
   if (argv._.length !== 2) {
     throw new Error('Usage: mhp create-post TITLE');

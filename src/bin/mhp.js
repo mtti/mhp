@@ -42,7 +42,7 @@ if (argv.tz) {
   options.timezone = argv.tz;
 }
 
-const command = argv._[0] || 'generate-routes';
+const command = argv._[0] || 'build';
 const commandFunction = commands[command];
 if (!commandFunction) {
   throw new Error(`Unrecognized command ${command}`);

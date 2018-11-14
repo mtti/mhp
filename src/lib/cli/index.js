@@ -1,13 +1,13 @@
 const serve = require('./serve');
 const createPost = require('./create-post');
-const generateRoutes = require('./generate-routes');
+const build = require('./build');
 const generatePosts = require('./generate-posts');
 
 module.exports = {
   commands: {
+    build,
     serve,
     'create-post': createPost,
-    'generate-routes': generateRoutes,
     'generate-posts': generatePosts,
   },
 };
