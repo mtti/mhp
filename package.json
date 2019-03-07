@@ -11,6 +11,7 @@
     "lint": "eslint \"src/bin/**/*.js\" \"src/lib/**/*.js\" \"src/test/**/*.js\"",
     "lint:fix": "eslint --fix \"src/bin/**/*.js\" \"src/lib/**/*.js\" \"src/test/**/*.js\"",
     "jest": "jest",
+    "jest:verbose": "jest --verbose",
     "test": "npm run lint && npm run jest"
   },
   "dependencies": {
