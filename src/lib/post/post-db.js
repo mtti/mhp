@@ -5,24 +5,17 @@ const fs = require('fs-extra');
 const logger = require('../logger');
 const Post = require('./post');
 const Slice = require('./slice');
-const { asyncMap } = require('../utils');
 
 class PostDb {
-  static checkFileType(originalFile, cb) {
-    const file = _.cloneDeep(originalFile);
-    fs.stat(file.path, (err, stat) => {
-      if (err !== null) {
-        cb(err);
-        return;
-      }
-      if (stat.isFile()) {
-        file.type = 'file';
-      } else if (stat.isDirectory()) {
-        file.type = 'directory';
-      }
-
-      cb(null, file);
-    });
+  static async _checkFileType(file) {
+    const stat = await fs.stat(file.path);
+    const fileCopy = { ...file };
+    if (stat.isFile()) {
+      fileCopy.type = 'file';
+    } else if (stat.isDirectory()) {
+      fileCopy.type = 'directory';
+    }
+    return fileCopy;
   }
 
   constructor() {
@@ -55,17 +48,12 @@ class PostDb {
 
   loadDirectory(directory) {
     return fs.readdir(directory)
-      .then((filenames) => {
-        const files = filenames.map((filename) => {
-          const fullPath = path.join(directory, filename);
-          const extension = path.extname(fullPath);
-          return {
-            path: fullPath,
-            extension,
-          };
-        });
-        return asyncMap(files, PostDb.checkFileType);
-      })
+      .then(filenames => Promise.all(filenames
+        .map(filename => ({
+          path: path.join(directory, filename),
+          extension: path.extname(filename),
+        }))
+        .map(file => PostDb._checkFileType(file))))
       .then((items) => {
         const filePromises = items
           .filter(item => item.type === 'file' && item.extension === '.md')

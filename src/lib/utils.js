@@ -1,9 +1,7 @@
 const path = require('path');
 const _ = require('lodash');
-const async = require('async');
 const fs = require('fs-extra');
 const mime = require('mime-types');
-const Q = require('q');
 const logger = require('./logger');
 
 /**
@@ -154,5 +152,4 @@ module.exports = {
   mustNotEndWith,
   trim,
   cleanUri,
-  asyncMap: Q.nfbind(async.map),
 };
