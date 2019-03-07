@@ -4,6 +4,8 @@ const {
   mustNotStartWith, mustNotEndWith, cleanUri,
 } = require('./utils');
 
+jest.mock('mime-types');
+
 describe('utils', () => {
   describe('cleanAttributes', () => {
     const original = {
@@ -25,7 +27,7 @@ describe('utils', () => {
     });
 
     it('should produce the expected result', () => {
-      assert.deepEqual(result, expected);
+      expect(result).toEqual(expected);
     });
   });
 
@@ -37,7 +39,7 @@ describe('utils', () => {
     });
 
     it('should replace extension', () => {
-      assert.equal(result, '/foo/bar/somefile.md');
+      expect(result).toBe('/foo/bar/somefile.md');
     });
   });
 
@@ -50,24 +52,22 @@ describe('utils', () => {
       });
 
       it('returns "directory"', () => {
-        assert.equal(result, 'directory');
+        expect(result).toBe('directory');
       });
     });
 
     describe('when mime library returns null', () => {
-      let lookup;
-
       beforeEach(() => {
-        lookup = sandbox.stub(mime, 'lookup').returns(false);
+        mime.lookup.mockReturnValue(false);
         result = guessMimeType('/foo/bar/somefile.txt');
       });
 
       it('calls mime.lookup', () => {
-        assert.equal(lookup.called, true);
+        expect(mime.lookup.mock.calls.length).toBe(1);
       });
 
       it('returns application/octet-stream', () => {
-        assert.equal(result, 'application/octet-stream');
+        expect(result).toBe('application/octet-stream');
       });
     });
   });
@@ -78,17 +78,17 @@ describe('utils', () => {
     describe('exact = false', () => {
       it('child is not active on parent page', () => {
         result = isInActivePath('first/second', 'first', false);
-        assert.equal(result, false);
+        expect(result).toBe(false);
       });
 
       it('parent is active on child page', () => {
         result = isInActivePath('first', 'first/second', false);
-        assert.equal(result, true);
+        expect(result).toBe(true);
       });
 
       it('child is active on its own page', () => {
         result = isInActivePath('first/second', 'first/second', false);
-        assert.equal(result, true);
+        expect(result).toBe(true);
       });
     });
   });
@@ -105,7 +105,7 @@ describe('utils', () => {
       const expected = item[2];
       it(`add '${prefix}' to '${original}'`, () => {
         const result = mustStartWith(original, prefix);
-        assert.equal(result, expected);
+        expect(result).toBe(expected);
       });
     });
   });
@@ -122,7 +122,7 @@ describe('utils', () => {
       const expected = item[2];
       it(`remove '${suffix}' from '${original}'`, () => {
         const result = mustEndWith(original, suffix);
-        assert.equal(result, expected);
+        expect(result).toBe(expected);
       });
     });
   });
@@ -139,7 +139,7 @@ describe('utils', () => {
       const expected = item[2];
       it(`remove '${prefix}' from '${original}'`, () => {
         const result = mustNotStartWith(original, prefix);
-        assert.equal(result, expected);
+        expect(result).toBe(expected);
       });
     });
   });
@@ -156,7 +156,7 @@ describe('utils', () => {
       const expected = item[2];
       it(`remove '${suffix}' from '${original}'`, () => {
         const result = mustNotEndWith(original, suffix);
-        assert.equal(result, expected);
+        expect(result).toBe(expected);
       });
     });
   });
@@ -181,7 +181,7 @@ describe('utils', () => {
       const expected = item[1];
       it(`with ${original}`, () => {
         const result = cleanUri(original);
-        assert.equal(result, expected);
+        expect(result).toBe(expected);
       });
     });
   });

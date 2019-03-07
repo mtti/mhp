@@ -10,8 +10,8 @@
   "scripts": {
     "lint": "eslint \"src/bin/**/*.js\" \"src/lib/**/*.js\" \"src/test/**/*.js\"",
     "lint:fix": "eslint --fix \"src/bin/**/*.js\" \"src/lib/**/*.js\" \"src/test/**/*.js\"",
-    "mocha": "mocha src/test/setup.js \"src/bin/**/*.spec.js\" \"src/lib/**/*.spec.js\"",
-    "test": "npm run lint && npm run mocha"
+    "jest": "jest",
+    "test": "npm run lint && npm run jest"
   },
   "dependencies": {
     "cheerio": "1.0.0-rc.2",
@@ -36,13 +36,13 @@
     "winston": "3.2.1"
   },
   "devDependencies": {
-    "chai": "4.2.0",
-    "chai-subset": "1.6.0",
     "eslint": "5.15.0",
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-plugin-import": "2.16.0",
-    "mocha": "6.0.2",
-    "mock-fs": "4.8.0",
-    "sinon": "7.2.6"
+    "jest": "24.1.0",
+    "mock-fs": "4.8.0"
+  },
+  "jest": {
+    "collectCoverage": true
   }
 }

@@ -1,12 +1,7 @@
 {
   "extends": "airbnb-base",
   "env": {
-      "mocha": true
-  },
-  "globals": {
-      "assert": true,
-      "sandbox": true,
-      "expect": true
+      "jest": true
   },
   "rules": {
       "import/no-extraneous-dependencies": ["error", {"devDependencies": ["src/test/**/*.js", "src/**/*.spec.js"]}],

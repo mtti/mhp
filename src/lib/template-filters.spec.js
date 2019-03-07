@@ -21,7 +21,7 @@ describe('template filters', () => {
       });
 
       it('should format with the default format string', () => {
-        expect(result).to.equal('2014-12-23');
+        expect(result).toBe('2014-12-23');
       });
     });
 
@@ -36,7 +36,7 @@ describe('template filters', () => {
         });
 
         it('should use format in context', () => {
-          expect(result).to.equal('2014');
+          expect(result).toBe('2014');
         });
       });
 
@@ -46,7 +46,7 @@ describe('template filters', () => {
         });
 
         it('should format with the argument', () => {
-          expect(result).to.equal('2014-12');
+          expect(result).toBe('2014-12');
         });
       });
     });
