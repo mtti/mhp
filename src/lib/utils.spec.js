@@ -1,10 +1,12 @@
 const mime = require('mime-types');
+const fs = require('fs-extra');
 const {
   cleanAttributes, replaceExtension, guessMimeType, isInActivePath, mustStartWith, mustEndWith,
-  mustNotStartWith, mustNotEndWith, cleanUri,
+  mustNotStartWith, mustNotEndWith, cleanUri, readDirectory,
 } = require('./utils');
 
 jest.mock('mime-types');
+jest.mock('fs-extra');
 
 describe('utils', () => {
   describe('cleanAttributes', () => {
@@ -183,6 +185,57 @@ describe('utils', () => {
         const result = cleanUri(original);
         expect(result).toBe(expected);
       });
+    });
+  });
+
+  describe('readDirectory', () => {
+    const directoryStat = {
+      isDirectory: () => true,
+      isFile: () => false,
+    };
+    const fileStat = {
+      isDirectory: () => false,
+      isFile: () => true,
+    };
+
+    let result;
+
+    beforeEach(() => {
+      fs.readdir.mockResolvedValue(['subdirectory', 'file.md']);
+      fs.stat.mockImplementation((filePath) => {
+        if (filePath === '/directory/subdirectory') {
+          return Promise.resolve(directoryStat);
+        }
+        if (filePath === '/directory/file.md') {
+          return Promise.resolve(fileStat);
+        }
+        throw new Error(`Mock called with unexpected file path: ${filePath}`);
+      });
+    });
+
+    beforeEach(async () => {
+      result = await readDirectory('/directory');
+    });
+
+    afterEach(() => {
+      fs.readdir.mockRestore();
+      fs.stat.mockRestore();
+    });
+
+    it('calls fs.readdir', () => {
+      expect(fs.readdir).toHaveBeenCalledWith('/directory');
+    });
+
+    it('calls fs.stat for subdirectory', () => {
+      expect(fs.stat).toHaveBeenCalledWith('/directory/subdirectory');
+    });
+
+    it('calls fs.stat for file', () => {
+      expect(fs.stat).toHaveBeenCalledWith('/directory/file.md');
+    });
+
+    it('returns correct number or results', () => {
+      expect(result.length).toBe(2);
     });
   });
 });

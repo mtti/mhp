@@ -140,6 +140,24 @@ function cleanUri(uri) {
   return parts.join('/');
 }
 
+/**
+ * Read and stat the contents of a directory.
+ * @param {string} directory Path to the directory to read.
+ */
+async function readDirectory(directory) {
+  const filenames = await fs.readdir(directory);
+  const promises = filenames.map((filename) => {
+    const filePath = path.join(directory, filename);
+    return fs.stat(filePath)
+      .then(stat => ({
+        path: filePath,
+        stat,
+        extension: path.extname(filePath),
+      }));
+  });
+  return Promise.all(promises);
+}
+
 module.exports = {
   cleanAttributes,
   replaceExtension,
@@ -152,4 +170,5 @@ module.exports = {
   mustNotEndWith,
   trim,
   cleanUri,
+  readDirectory,
 };
