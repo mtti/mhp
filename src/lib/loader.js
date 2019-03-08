@@ -2,12 +2,20 @@ const path = require('path');
 const fs = require('fs-extra');
 const logger = require('./logger');
 
+/**
+ * Custom nunjucks template loader which can accepts multiple source directories. A template is
+ * loaded from the most recently added directory which contains it. This allows site specific
+ * templates to override default templates.
+ */
 class Loader {
   constructor() {
     this._paths = [];
   }
 
   addPath(templatePath) {
+    if (typeof templatePath !== 'string') {
+      throw new Error('templatePath must be a string');
+    }
     this._paths.push(templatePath);
   }
 
