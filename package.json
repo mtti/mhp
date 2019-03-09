@@ -3,13 +3,19 @@
   "private": true,
   "version": "0.1.0",
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=11.0.0"
+  },
   "main": "src/lib/index.js",
   "bin": {
     "mhp": "src/bin/mhp.js"
   },
+  "files": [
+    "src"
+  ],
   "scripts": {
-    "lint": "eslint \"src/bin/**/*.js\" \"src/lib/**/*.js\" \"src/test/**/*.js\"",
-    "lint:fix": "eslint --fix \"src/bin/**/*.js\" \"src/lib/**/*.js\" \"src/test/**/*.js\"",
+    "lint": "eslint \"src/bin/**/*.js\" \"src/lib/**/*.js\"",
+    "lint:fix": "eslint --fix \"src/bin/**/*.js\" \"src/lib/**/*.js\"",
     "jest": "jest",
     "jest:verbose": "jest --verbose",
     "test": "npm run lint && npm run jest"
