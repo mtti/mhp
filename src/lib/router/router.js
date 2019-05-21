@@ -184,26 +184,27 @@ class Router {
       .forEach(callback => callback(request, response));
 
     const path = [];
-    parts.forEach((item, i) => {
+    for (let i = 0; i < parts.length; i += 1) {
+      const item = parts[i];
+      const tail = parts.slice(i + 1);
+
       if (item.startsWith(':')) {
         const fieldName = item.slice(1);
         response.posts
           .groupBy(fieldName)
-          .forEach((pair) => {
-            const pathCopy = path.slice();
+          .forEach((pair) => { // eslint-disable-line no-loop-func
+            const pathCopy = [...path, pair[0], ...tail];
             const paramsCopy = _.cloneDeep(params);
-
-            pathCopy.push(pair[0]);
-            Array.prototype.push.apply(pathCopy, parts.slice(i + 1));
 
             paramsCopy[fieldName] = pair[0];
 
             this._generate(pathCopy, callbacks, pair[1], paramsCopy);
           });
+        break;
       } else {
         path.push(item);
       }
-    });
+    }
   }
 }
 
