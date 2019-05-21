@@ -10,7 +10,8 @@ const { Router } = require('../router');
  */
 function build(argv, options, site) {
   const router = new Router({
-    baseUrl: options.baseUrl,
+    siteTitle: 'An MHP Site',
+    baseUrl: options.baseUrl || 'http://127.0.0.1',
     globals: {
       assetManifest: site.assetManifest,
     },

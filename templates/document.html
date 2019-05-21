@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+    <head>
+        {% if isFront %}
+            <title>{{ siteTitle }}</title>
+        {% else %}
+            <title>{% if title %}{{ title }} - {% endif %}{{ siteTitle }}</title>
+        {% endif %}
+        <link rel="stylesheet" href="{{ "main.css"|assetUrl }}">
+        {% if feedUri %}
+        <link rel="alternate" type="application/atom+xml" href="{{ feedUri|url }}">
+        {% endif %}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    </head>
+    <body>
+        {% include "components/navbar.html" %}
+        {% block layout %}{% endblock %}
+        {% include "components/footer.html" %}
+        <script type="text/javascript" src="{{ "main.js"|assetUrl }}"></script>
+    </body>
+</html>

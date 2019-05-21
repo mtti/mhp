@@ -16,6 +16,11 @@ class Loader {
     if (typeof templatePath !== 'string') {
       throw new Error('templatePath must be a string');
     }
+    const stat = fs.statSync(templatePath);
+    if (!stat.isDirectory()) {
+      throw new Error(`Not a directory: ${templatePath}`);
+    }
+
     this._paths.push(templatePath);
   }
 
@@ -33,7 +38,7 @@ class Loader {
   getSource(name) {
     const templatePath = this.findTemplate(name);
     if (!templatePath) {
-      return null;
+      throw new Error(`Template not found: ${name}`);
     }
 
     const src = fs.readFileSync(templatePath, 'utf8');

@@ -1,0 +1,17 @@
+{% extends "document.html" %}
+
+{% block layout %}
+
+<div class="mhp-layout container">
+    <div class="row">
+        <div class="col-sm-8">
+            {% block content %}{{ body }}{% endblock %}
+        </div>
+
+        <div class="col-sm-4">
+            {% block sidebar %}{% include "components/sidebar.html" %}{% endblock %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
