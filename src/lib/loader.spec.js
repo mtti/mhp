@@ -19,6 +19,14 @@ describe('Loader', () => {
   describe('addPath', () => {
     describe('called with a string', () => {
       beforeEach(() => {
+        fs.statSync.mockImplementation(() => ({ isDirectory: () => true }));
+      });
+
+      afterEach(() => {
+        fs.statSync.mockRestore();
+      });
+
+      beforeEach(() => {
         loader.addPath('/first/path');
         loader.addPath('/second/path');
       });
@@ -49,6 +57,14 @@ describe('Loader', () => {
   });
 
   describe('findTemplate', () => {
+    beforeEach(() => {
+      fs.statSync.mockImplementation(() => ({ isDirectory: () => true }));
+    });
+
+    afterEach(() => {
+      fs.statSync.mockRestore();
+    });
+
     beforeEach(() => {
       loader.addPath('/first');
       loader.addPath('/second');
@@ -160,15 +176,19 @@ describe('Loader', () => {
       });
 
       beforeEach(() => {
-        result = loader.getSource('dummy.html');
+        try {
+          result = loader.getSource('dummy.html');
+        } catch (error) {
+          err = error;
+        }
       });
 
       it('does not call readFileSync', () => {
         expect(fs.readFileSync.mock.calls.length).toBe(0);
       });
 
-      it('returns null', () => {
-        expect(result).toBeNull();
+      it('throws error', () => {
+        expect(err).toBeDefined();
       });
     });
   });
