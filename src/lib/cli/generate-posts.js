@@ -2,7 +2,7 @@ const path = require('path');
 const os = require('os');
 const _ = require('lodash');
 const fs = require('fs-extra');
-const loremIpsum = require('lorem-ipsum');
+const loremIpsum = require('lorem-ipsum').loremIpsum;
 const uuidv4 = require('uuid/v4');
 const slugify = require('slugify');
 const sanitizeFilename = require('sanitize-filename');
@@ -22,7 +22,7 @@ function _generatePost(targetDirectory, since, fields) {
     publishedAt: moment().utc().subtract(sinceSeconds, 'seconds').format('YYYY-MM-DD HH:mmZ'),
   });
   const frontMatter = yaml.safeDump(vars);
-  const body = loremIpsum({ count: paragraphCount, units: 'paragraphs' });
+  const body = loremIpsum({ count: paragraphCount, units: 'paragraphs', suffix: '\n\n' });
 
   const fileBody = `---${os.EOL}${frontMatter}---${os.EOL}${os.EOL}${body}`;
   const filename = sanitizeFilename(slugify(vars.title, { lower: true }));
