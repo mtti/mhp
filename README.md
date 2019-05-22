@@ -1,4 +1,4 @@
-A simple Node.js static site generator with an Express-inspired API, [Nunjucks](https://mozilla.github.io/nunjucks/) templates and Markdown support.
+MHP (**M**atti's **H**ome **P**age) is a static site generator built in JavaScript with Node.js. It features an API insipired by Express routes, [Nunjucks](https://mozilla.github.io/nunjucks/) templates and Markdown support.
 
 ## Project structure
 
@@ -11,9 +11,11 @@ MHP is currently still under early development and a complete template project w
 * `/templates` Nunjucks template files.
 * `/mhp.routes.js`
 
-## mhp.routes.js
+## Routes
 
-A minimal routes file exports a callback which receives the MHP router as a parameter:
+Unlike with many static site generators, in MHP the location of post and page source files on disk is completely unrelated to their locations in the generated site. Posts and pages are treated more or less as data and are generated according to routes defined in the `mhp.routes.js` file in a project's root.
+
+The route file should be a JavaScript module exporting a single function, which accepts the MHP root router as a parameter:
 
 ```javascript
 module.exports = (router) => {
@@ -21,7 +23,7 @@ module.exports = (router) => {
 };
 ```
 
-The router's API is inspired by Express. However, since this is a static site generator where the response to every possible request must be pre-generated MHP's API is much more restricted than that of Express. Obviously only GET requests are supported, query strings (e.g. `?foo=bar`) can't be supported, and so on.
+While the router is inspired by Express, MHP is a static site generator and therefore the response to every possible request must be pre-generated. Therefore, only `GET` requests are supported and obviously no dynamic server-side features are possible.
 
 For example, to render a page from `project/pages/front.md` as `/index.html`, you could do:
 
@@ -30,8 +32,6 @@ module.exports = (router) => {
     router.get('/index.html', (req, res) => res.renderPage('front.md'));
 };
 ```
-
-Note that this will fail if you've not added a default page template at `project/templates/page.html`.
 
 To generate HTML files for all blog posts under `/blog`, you could do:
 
@@ -43,8 +43,6 @@ module.exports = (router) => {
 
 With posts, MHP simulates Express' route parameters by expanding routes like the above with every unique value of the post field specified as the name of the route parameter, in this case `slug`.
 
-Also note that this will fail if you've not added a default post template at `project/templates/post.html`.
-
 The above only generates HTML for the posts themselves. To also generate paged indexes listing the posts, you would do something like this:
 
 ```javascript
@@ -53,8 +51,6 @@ module.exports = (router) => {
     router.get('/blog', router.middleware.indexes());
 };
 ```
-
-This will fail if you've not added a default post index template at `project/templates/post-index.html`.
 
 This will generate `/blog/index.html`, `/blog/index-2.html` ... `/blog/index-N.html`. In this case, it's vital that the routes are in this order, as the first path a post is generated at becomes its **canonical location**, which the index pages need to generate links to the posts.
 
