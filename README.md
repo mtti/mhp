@@ -1,8 +1,20 @@
-MHP (**M**atti's **H**ome **P**age) is a static site generator built in JavaScript with Node.js. It features an API insipired by Express routes, [Nunjucks](https://mozilla.github.io/nunjucks/) templates and Markdown support.
+MHP (**M**atti's **H**ome **P**age) is a static site generator built in JavaScript with Node.js.
+
+Under early development, the API is likely to change drastically before version 1.0.0.
+
+## Features
+
+* Highly customizable site structure with Express-like routes.
+* Blog posts and static pages written in Markdown.
+* Tags, categories and more thanks to a highly flexible filtering and route generation system.
+* Jinja-like [Nunjucks](https://mozilla.github.io/nunjucks/) templates.
+* Custom hierarchical template loader which, together with Nunjucks' template inheritance enables a high-degree of reusability with templates.
+* Supports [webpack-manifest-plugin](https://www.npmjs.com/package/webpack-manifest-plugin) to resolve hashed asset files.
+* Atom feeds.
 
 ## Project structure
 
-MHP is currently still under early development and a complete template project will be provided when the API stabilizes. For now, a minimal MHP project would contain the following:
+A minimal MHP project would contain the following:
 
 * `/assets` Conventional location for frontend asset source files.
 * `/assets/static` Conventional location for static frontend assets.
@@ -88,6 +100,18 @@ MHP doesn't include a built-in front-end asset pipeline as you're expected to br
 As I use webpack though, MHP does include support for [webpack-manifest-plugin](https://www.npmjs.com/package/webpack-manifest-plugin) manifest files under `project/dist/assets/manifest.json` so in a template you can use `{{ "main.css"|assetUrl }}` to generate the absolute URL to a hashed file name like `main.6e2bc07f56680f8d4c5b.css` for example.
 
 A full example project with Webpack support will be released once MHP itself stabilizes.
+
+## Development
+
+MHP has been in "early development" since August 2017 and is likely to remain there for the foreseeable future. Issues, PRs and general feedback are welcome in principle, but for all either of us knows, I might decide to rewrite or break your work the next week so bear that in mind.
+
+### Roadmap
+
+* Test coverage improvements.
+* Modernization. MHP has been somewhat of a modern Javascript learning project for me and many legacy relics of that remain which should be refactored.
+* Asynchronization. MHP was written to be a synchronous command line utility and should be made asynchronous as much as possible.
+* Modularization. It should be made possible to load templates, posts and pages from a database and to emit generated files to a generic interface.
+* TypeScript port. Sometime in the far future, I'd like to port the whole thing over to TypeScrip.
 
 ## License
 
