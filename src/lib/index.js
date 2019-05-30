@@ -3,5 +3,5 @@ const middleware = require('./middleware');
 
 module.exports = {
   Router,
-  middleware,
+  ...middleware,
 };
