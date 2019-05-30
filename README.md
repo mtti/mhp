@@ -48,8 +48,10 @@ module.exports = (router) => {
 To generate HTML files for all blog posts under `/blog`, you could do:
 
 ```javascript
+const { generatePostPages } = require('@mtti/mhp');
+
 module.exports = (router) => {
-    router.get('/blog/:slug', router.middleware.posts());
+    router.get('/blog/:slug', generatePostPages());
 };
 ```
 
@@ -58,9 +60,11 @@ With posts, MHP simulates Express' route parameters by expanding routes like the
 The above only generates HTML for the posts themselves. To also generate paged indexes listing the posts, you would do something like this:
 
 ```javascript
+const { generatePostIndexes, generatePostPages } = require('@mtti/mhp');
+
 module.exports = (router) => {
-    router.get('/blog/:slug', router.middleware.posts());
-    router.get('/blog', router.middleware.indexes());
+    router.get('/blog/:slug', generatePostPages());
+    router.get('/blog', generatePostIndexes());
 };
 ```
 
@@ -69,15 +73,18 @@ This will generate `/blog/index.html`, `/blog/index-2.html` ... `/blog/index-N.h
 You can also generate an Atom feed of your posts:
 
 ```javascript
+const { generateAtomFeed, generatePostIndexes, generatePostPages }
+    = require('@mtti/mhp');
+
 module.exports = (router) => {
-    router.get('/blog/:slug', router.middleware.posts());
-    router.get('/blog', router.middleware.indexes());
+    router.get('/blog/:slug', generatePostPages());
+    router.get('/blog', generatePostIndexes());
 
     const feedOptions = {
         uuid: '69c308f8-18a9-4775-b6ab-34ebc2c3763e',
         title: 'My blog',
     };
-    router.get('/blog/atom.xml', router.middleware.atom(feedOptions));
+    router.get('/blog/atom.xml', generateAtomFeed(feedOptions));
 };
 ```
 
