@@ -1,3 +1,5 @@
+[![npm version](https://badge.fury.io/js/%40mtti%2Fmhp.svg)](https://badge.fury.io/js/%40mtti%2Fmhp)
+
 MHP (**M**atti's **H**ome **P**age) is a static site generator built in JavaScript with Node.js.
 
 Under early development, the API is likely to change drastically before version 1.0.0.
