@@ -1,10 +1,12 @@
 {
   "name": "@mtti/mhp",
+  "description": "Static site generator",
   "version": "0.1.0",
   "license": "Apache-2.0",
   "engines": {
     "node": ">=11.0.0"
   },
+  "repository": "mtti/mhp",
   "main": "src/lib/index.js",
   "bin": {
     "mhp": "src/bin/mhp.js"
