@@ -14,6 +14,12 @@ Under early development, the API is likely to change drastically before version 
 * Supports [webpack-manifest-plugin](https://www.npmjs.com/package/webpack-manifest-plugin) to resolve hashed asset files.
 * Atom feeds.
 
+## Related
+
+* [mhp-example](https://github.com/mtti/mhp-example) A full example MHP site.
+* [mhp-docker](https://github.com/mtti/mhp-docker) A Docker image for building MHP sites in a CI pipeline.
+* [ssup](https://github.com/mtti/ssup) A companion utility from the same author for uploading static sites to S3.
+
 ## Project structure
 
 A minimal MHP project would contain the following:
