@@ -14,13 +14,14 @@ function _generatePost(targetDirectory, since, fields) {
   const sinceSeconds = Math.floor(Math.random() * moment.utc().diff(since, 'seconds'));
   const paragraphCount = Math.floor(Math.random() * 7) + 1;
 
-  const vars = Object.assign({}, fields, {
+  const vars = {
+    ...fields,
     uuid: uuidv4(),
     title: loremIpsum({
       count: 1, units: 'sentences', sentenceLowerBound: 4, sentenceUpperBound: 6,
     }),
     publishedAt: moment().utc().subtract(sinceSeconds, 'seconds').format('YYYY-MM-DD HH:mmZ'),
-  });
+  };
   const frontMatter = yaml.safeDump(vars);
   const body = loremIpsum({ count: paragraphCount, units: 'paragraphs', suffix: '\n\n' });
 
