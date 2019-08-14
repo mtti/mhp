@@ -12,7 +12,8 @@
     "mhp": "src/bin/mhp.js"
   },
   "files": [
-    "src"
+    "src",
+    "templates"
   ],
   "scripts": {
     "lint": "eslint \"src/bin/**/*.js\" \"src/lib/**/*.js\"",
