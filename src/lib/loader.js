@@ -16,6 +16,11 @@ class Loader {
     if (typeof templatePath !== 'string') {
       throw new Error('templatePath must be a string');
     }
+
+    if (!fs.existsSync(templatePath)) {
+      throw new Error(`Template path does not exist: ${templatePath}`);
+    }
+
     const stat = fs.statSync(templatePath);
     if (!stat.isDirectory()) {
       throw new Error(`Not a directory: ${templatePath}`);

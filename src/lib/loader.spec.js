@@ -17,9 +17,10 @@ describe('Loader', () => {
   });
 
   describe('addPath', () => {
-    describe('called with a string', () => {
+    describe('called with a path to an existing directory', () => {
       beforeEach(() => {
         fs.statSync.mockImplementation(() => ({ isDirectory: () => true }));
+        fs.existsSync.mockImplementation(() => true);
       });
 
       afterEach(() => {
@@ -54,11 +55,31 @@ describe('Loader', () => {
         expect(err).not.toBeNull();
       });
     });
+
+    describe('called with a non-existent path', () => {
+      beforeEach(() => {
+        fs.existsSync.mockImplementation(() => false);
+      });
+
+      beforeEach(() => {
+        err = null;
+        try {
+          loader.addPath({});
+        } catch (e) {
+          err = e;
+        }
+      });
+
+      it('throw an exception', () => {
+        expect(err).not.toBeNull();
+      });
+    });
   });
 
   describe('findTemplate', () => {
     beforeEach(() => {
       fs.statSync.mockImplementation(() => ({ isDirectory: () => true }));
+      fs.existsSync.mockImplementation(() => true);
     });
 
     afterEach(() => {

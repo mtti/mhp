@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 const { cleanUnknownFiles } = require('../utils');
 const { Router } = require('../router');
@@ -20,7 +21,12 @@ function build(argv, options, site) {
 
   if (site.routeCb) {
     site.routeCb(router);
-    site.addTemplateDirectory(path.join(site.baseDirectory, 'templates'));
+
+    const siteTemplates = path.join(site.baseDirectory, 'templates');
+    if (fs.existsSync(siteTemplates)) {
+      site.addTemplateDirectory(siteTemplates);
+    }
+
     router.execute();
   }
 
