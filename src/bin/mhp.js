@@ -7,7 +7,11 @@ const Site = require('../lib/site');
 const { commands } = require('../lib/cli');
 
 process.on('unhandledRejection', (reason) => {
-  logger.error(reason);
+  if (reason.stack) {
+    logger.error(reason.stack);
+  } else {
+    logger.error(reason);
+  }
   process.exit(1);
 });
 

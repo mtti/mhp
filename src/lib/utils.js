@@ -158,6 +158,19 @@ async function readDirectory(directory) {
   return Promise.all(promises);
 }
 
+/**
+ * Append a suffix to the last element of a path parts array.
+ *
+ * @param {string[]} parts
+ * @param {string} suffix
+ */
+function suffixPathFilename(parts, suffix) {
+  const filename = parts.slice(-1);
+  const result = [...parts];
+  result[result.length - 1] = `${filename}${suffix}`;
+  return result;
+}
+
 module.exports = {
   cleanAttributes,
   replaceExtension,
@@ -171,4 +184,5 @@ module.exports = {
   trim,
   cleanUri,
   readDirectory,
+  suffixPathFilename,
 };

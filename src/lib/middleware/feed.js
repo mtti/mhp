@@ -1,6 +1,6 @@
-const _ = require('lodash');
-const { Feed } = require('feed');
 const moment = require('moment');
+const { Feed } = require('feed');
+const { suffixPathFilename } = require('../utils');
 
 function findNewestUpdateAt(posts) {
   if (posts.length === 0) {
@@ -17,7 +17,7 @@ function findNewestUpdateAt(posts) {
   return newest;
 }
 
-function atomConstructor(options = {}) {
+function generateFeeds(options = {}) {
   if (!options.title) {
     throw new Error('Feed title is required');
   }
@@ -25,10 +25,12 @@ function atomConstructor(options = {}) {
     throw new Error('Feed UUID is required');
   }
 
-  const opts = {};
-  _.merge(opts, options);
+  const opts = {
+    formats: ['atom', 'rss'],
+    ...options,
+  };
 
-  return function atomMiddleware(req, res) {
+  return function feedMiddleware(req, res) {
     const posts = res.posts.findAll().slice(0, 50);
     const updated = findNewestUpdateAt(posts);
     const feed = new Feed({
@@ -47,12 +49,19 @@ function atomConstructor(options = {}) {
       });
     });
 
-    const fileOptions = {
-      path: req.path,
-      contentType: 'application/atom+xml',
-    };
-    res.write(feed.atom1(), fileOptions);
+    if (opts.formats.includes('atom')) {
+      res.write(feed.atom1(), {
+        path: suffixPathFilename(req.path, '.atom.xml'),
+        contentType: 'application/atom+xml',
+      });
+    }
+    if (opts.formats.includes('rss')) {
+      res.write(feed.rss2(), {
+        path: suffixPathFilename(req.path, '.rss.xml'),
+        contentType: 'applications/rss+xml',
+      });
+    }
   };
 }
 
-module.exports = atomConstructor;
+module.exports = { generateFeeds };
