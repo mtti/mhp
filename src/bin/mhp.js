@@ -15,51 +15,55 @@ process.on('unhandledRejection', (reason) => {
   process.exit(1);
 });
 
-const argv = minimist(process.argv.slice(2));
+(async () => {
+  const argv = minimist(process.argv.slice(2));
 
-const inputDirectory = argv.directory || process.cwd();
+  const inputDirectory = argv.directory || process.cwd();
 
-const options = {
-  inputDirectory,
-  outputDirectory: path.join(inputDirectory, 'dist'),
-  port: argv.port || 8080,
-  baseUrl: argv.baseUrl || false,
-  keep: [],
-  cleanUnknownFiles: !argv.noclean,
-  timezone: argv.tz,
-};
+  const options = {
+    inputDirectory,
+    outputDirectory: path.join(inputDirectory, 'dist'),
+    port: argv.port || 8080,
+    baseUrl: argv.baseUrl || false,
+    keep: [],
+    cleanUnknownFiles: !argv.noclean,
+    timezone: argv.tz,
+  };
 
-if (argv.keep) {
-  if (Array.isArray(argv.keep)) {
-    options.keep = argv.keep;
-  } else {
-    options.keep.push(argv.keep);
+  if (argv.keep) {
+    if (Array.isArray(argv.keep)) {
+      options.keep = argv.keep;
+    } else {
+      options.keep.push(argv.keep);
+    }
   }
-}
 
-if (argv.verbose) {
-  logger.level = 'verbose';
-} else {
-  logger.level = 'info';
-}
+  if (argv.verbose) {
+    logger.level = 'verbose';
+  } else {
+    logger.level = 'info';
+  }
 
-const command = argv._[0] || 'build';
-const commandFunction = commands[command];
-if (!commandFunction) {
-  throw new Error(`Unrecognized command ${command}`);
-}
+  const command = argv._[0] || 'build';
+  const commandFunction = commands[command];
+  if (!commandFunction) {
+    throw new Error(`Unrecognized command ${command}`);
+  }
 
-let promise;
+  let promise;
 
-if (commandFunction.initializeSite === false) {
-  promise = commandFunction(argv, options);
-} else {
-  promise = Site.initialize(options.inputDirectory, options.outputDirectory)
-    .then(site => commandFunction(argv, options, site));
-}
+  if (commandFunction.initializeSite === false) {
+    promise = commandFunction(argv, options);
+  } else {
+    const site = await Site.initialize(
+      options.inputDirectory,
+      options.outputDirectory,
+    );
+    promise = commandFunction(argv, options, site);
+  }
 
-if (commandFunction.daemonize !== true) {
-  promise.then(() => {
+  if (commandFunction.daemonize !== true) {
+    await promise;
     process.exit(0);
-  });
-}
+  }
+})();
