@@ -31,6 +31,10 @@ class Site {
     return path.join(this._baseDirectory, 'pages');
   }
 
+  get generatedFiles() {
+    return Object.keys(this._generatedFiles);
+  }
+
   get assetManifest() {
     const assetManifestPath = path.join(this._outputDirectory, 'assets', 'manifest.json');
     if (fs.existsSync(assetManifestPath)) {
@@ -43,13 +47,13 @@ class Site {
     this._baseDirectory = baseDirectory;
     this._outputDirectory = outputDirectory;
     this._assetManifest = {};
+    this._generatedFiles = {};
 
     this._loader = new Loader();
     this._loader.addPath(path.join(__dirname, '..', '..', 'templates'));
     this.nunjucks = new nunjucks.Environment(this._loader);
 
     this.postDb = new PostDb();
-    this.generatedFiles = [];
 
     _.toPairs(templateFilters).forEach((item) => {
       this.nunjucks.addFilter(item[0], item[1]);
@@ -66,6 +70,14 @@ class Site {
 
   addTemplateDirectory(directoryPath) {
     this._loader.addPath(directoryPath);
+  }
+
+  hasFileBeenGenerated(filePath) {
+    return !!this._generatedFiles[filePath];
+  }
+
+  recordGeneratedFile(filePath) {
+    this._generatedFiles[filePath] = true;
   }
 }
 

@@ -31,9 +31,13 @@ function build(argv, options, site) {
   }
 
   if (options.cleanUnknownFiles !== false) {
-    const knownFiles = site.generatedFiles.slice();
-    const extraKnownFiles = options.keep.map(filename => path.join(site.outputDirectory, filename));
-    knownFiles.push(...extraKnownFiles);
+    const extraKnownFiles = options.keep.map(
+      filename => path.join(site.outputDirectory, filename),
+    );
+    const knownFiles = [
+      ...site.generatedFiles,
+      ...extraKnownFiles,
+    ];
     cleanUnknownFiles(site.outputDirectory, knownFiles);
   }
 }

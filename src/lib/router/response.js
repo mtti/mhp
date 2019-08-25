@@ -32,6 +32,14 @@ class Response {
     return `${this._router.globals.baseUrl}/${uri}`;
   }
 
+  /**
+   * Render and write a static page.
+   *
+   * @param {string} pagePath Path to the page to render, relative to the site's
+   *   pages directory.
+   * @param {*} context
+   * @param {*} options
+   */
   renderPage(pagePath, context = {}, options = {}) {
     const sourcePath = path.join(this._router.site.pageDirectory, pagePath);
     const page = fm(fs.readFileSync(sourcePath, 'utf8'));
@@ -51,6 +59,13 @@ class Response {
     return this.render(template, ctx, options);
   }
 
+  /**
+   * Render and write a templated page.
+   *
+   * @param {*} template
+   * @param {*} context
+   * @param {*} options
+   */
   render(template, context = {}, options = {}) {
     const vars = _.cloneDeep(this._router.globals);
     Object.assign(vars, context);
@@ -94,14 +109,19 @@ class Response {
     const directoryParts = pathCopy.slice(0, -1);
     fs.ensureDirSync(path.join(this._router.site.outputDirectory, path.join(...directoryParts)));
 
-    // Write the output file
     const filePath = path.join(
       this._router.site.outputDirectory,
       path.join(...pathCopy),
     );
+
+    if (this._router.site.hasFileBeenGenerated(filePath)) {
+      throw new Error(`Conflict: ${filePath} generated more than once`);
+    }
+
+    // Write the output file
     logger.verbose(`Writing ${filePath}`);
     fs.writeFileSync(filePath, content);
-    this._router.site.generatedFiles.push(filePath);
+    this._router.site.recordGeneratedFile(filePath);
   }
 }
 
