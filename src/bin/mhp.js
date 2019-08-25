@@ -17,14 +17,18 @@ process.on('unhandledRejection', (reason) => {
 
 const argv = minimist(process.argv.slice(2));
 
-const options = {
-  inputDirectory: argv.directory || process.cwd(),
-};
-options.outputDirectory = path.join(options.inputDirectory, 'dist');
-options.port = argv.port || 8080;
-options.baseUrl = argv.baseUrl || false;
+const inputDirectory = argv.directory || process.cwd();
 
-options.keep = [];
+const options = {
+  inputDirectory,
+  outputDirectory: path.join(inputDirectory, 'dist'),
+  port: argv.port || 8080,
+  baseUrl: argv.baseUrl || false,
+  keep: [],
+  cleanUnknownFiles: !argv.noclean,
+  timezone: argv.tz,
+};
+
 if (argv.keep) {
   if (Array.isArray(argv.keep)) {
     options.keep = argv.keep;
@@ -33,18 +37,10 @@ if (argv.keep) {
   }
 }
 
-if (argv.noclean) {
-  options.cleanUnknownFiles = false;
-}
-
 if (argv.verbose) {
   logger.level = 'verbose';
 } else {
   logger.level = 'info';
-}
-
-if (argv.tz) {
-  options.timezone = argv.tz;
 }
 
 const command = argv._[0] || 'build';
