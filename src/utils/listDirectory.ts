@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs-extra';
-import { FileInfo } from '../types';
+import { FileInfo } from '../types/FileInfo';
 
 /**
  * List all files and subdirectories in a directory.

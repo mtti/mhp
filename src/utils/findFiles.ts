@@ -1,4 +1,4 @@
-import { FileInfo } from '../types';
+import { FileInfo } from '../types/FileInfo';
 import { flatten } from './flatten';
 import { listDirectory } from './listDirectory';
 

@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import fm from 'front-matter';
-import { FileInfo } from './types';
+import { FileInfo } from './types/FileInfo';
 
 export class Post {
   /**
