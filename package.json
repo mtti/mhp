@@ -1,0 +1,41 @@
+{
+  "name": "@mtti/typescript-base",
+  "version": "0.1.0",
+  "description": "TypeScript backend project template",
+  "repository": "github:mtti/typescript-base",
+  "author": "Matti Hiltunen",
+  "license": "Apache-2.0",
+  "private": true,
+  "engines": {
+    "node": ">=10.15.0"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "jest": "jest --config ./jest.config.json",
+    "lint": "eslint 'src/**/*.ts'",
+    "lint:fix": "eslint --fix 'src/**/*.ts'",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run test",
+    "setup": "npm install",
+    "test": "npm run lint && npm run jest",
+    "test:docker": "docker build -f ./Dockerfile-test -t ts-test . && docker run --rm -it ts-test",
+    "tsc": "tsc"
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.spec.js",
+    "!dist/**/*.spec.d.ts"
+  ],
+  "devDependencies": {
+    "@mtti/eslint-config-typescript": "1.0.0",
+    "@types/jest": "24.0.18",
+    "@typescript-eslint/eslint-plugin": "2.3.0",
+    "@typescript-eslint/parser": "2.3.0",
+    "eslint": "6.4.0",
+    "eslint-plugin-import": "2.18.2",
+    "jest": "24.9.0",
+    "ts-jest": "24.1.0",
+    "typescript": "3.6.3"
+  }
+}
