@@ -1,8 +1,8 @@
 {
-  "name": "@mtti/typescript-base",
+  "name": "@mtti/mhp-rewrite",
   "version": "0.1.0",
-  "description": "TypeScript backend project template",
-  "repository": "github:mtti/typescript-base",
+  "description": "A TypeScript rewrite of MHP",
+  "repository": "github:mtti/mhp-rewrite",
   "author": "Matti Hiltunen",
   "license": "Apache-2.0",
   "private": true,
