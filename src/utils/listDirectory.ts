@@ -13,6 +13,7 @@ export async function listDirectory(directory: string): Promise<FileInfo[]> {
     const filePath = path.join(directory, filename);
     const stat = await fs.stat(filePath);
     return {
+      name: path.basename(filename, path.extname(filename)),
       path: filePath,
       stat,
       extension: path.extname(filePath),

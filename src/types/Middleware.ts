@@ -1,3 +1,7 @@
 import { BuildContext } from './BuildContext';
+import { Environment } from './Environment';
 
-export type Middleware = (context: BuildContext) => Promise<BuildContext>;
+export type Middleware = (
+  env: Environment,
+  context: BuildContext,
+) => Promise<BuildContext>;

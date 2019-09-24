@@ -18,5 +18,5 @@ export function getUniqueAttributeValues(
     }
   }
 
-  return Array(values.values());
+  return Array.from(values.values());
 }

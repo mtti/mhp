@@ -1,7 +1,8 @@
 import fs from 'fs';
 
 export type FileInfo = {
-  path: string;
-  stat: fs.Stats;
-  extension: string;
+  readonly name: string;
+  readonly path: string;
+  readonly stat: fs.Stats;
+  readonly extension: string;
 };

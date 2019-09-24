@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
 import fm from 'front-matter';
+import slugify from 'slugify';
 import { FileInfo } from './types/FileInfo';
 
 export class Post {
@@ -11,8 +12,14 @@ export class Post {
   static async load(file: FileInfo): Promise<Post> {
     const source = await fs.readFile(file.path, 'utf8');
     const data = fm(source);
-    return new Post(data.attributes as Record<string, unknown>, data.body);
+    return new Post(
+      file,
+      data.attributes as Record<string, unknown>,
+      data.body,
+    );
   }
+
+  private _source: FileInfo;
 
   private _attributes: Record<string, unknown>;
 
@@ -22,9 +29,18 @@ export class Post {
     return this._attributes;
   }
 
-  constructor(attributes: Record<string, unknown>, body: string) {
+  constructor(
+    source: FileInfo,
+    attributes: Record<string, unknown>,
+    body: string,
+  ) {
+    this._source = source;
     this._attributes = attributes;
     this._body = body;
+
+    if (!this._attributes.slug) {
+      this._attributes.slug = slugify(this._source.name);
+    }
   }
 
   async getBody(): Promise<string> {

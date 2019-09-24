@@ -1,3 +1,3 @@
-export function joinUri(uriParts: string[]): string {
+export function joinUri(uriParts: readonly string[]): string {
   return uriParts.join('/');
 }
