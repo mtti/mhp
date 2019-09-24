@@ -18,6 +18,10 @@ export class Post {
 
   private _body: string;
 
+  get attributes(): Record<string, unknown> {
+    return this._attributes;
+  }
+
   constructor(attributes: Record<string, unknown>, body: string) {
     this._attributes = attributes;
     this._body = body;

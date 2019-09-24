@@ -1,6 +1,6 @@
 {
-  "name": "@mtti/mhp-rewrite",
-  "version": "0.1.0",
+  "name": "@mtti/mhp",
+  "version": "0.2.0",
   "description": "A TypeScript rewrite of MHP",
   "repository": "github:mtti/mhp-rewrite",
   "author": "Matti Hiltunen",
