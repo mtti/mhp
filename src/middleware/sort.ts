@@ -8,7 +8,7 @@ import { Middleware } from '../types/Middleware';
  * @param sorter
  */
 export const sort = (sorter: (a: Post, b: Post) => number): Middleware => (
-  async (context: BuildContext): Promise<BuildContext> => ({
+  async (_, context: BuildContext): Promise<BuildContext> => ({
     ...context,
     posts: [...context.posts].sort(sorter),
   })

@@ -12,7 +12,7 @@ export type RenderFunc = (
 ) => string;
 
 export type WriteFunc = (
-  uri: string[],
+  uri: readonly string[],
   content: string,
 ) => Promise<void>;
 

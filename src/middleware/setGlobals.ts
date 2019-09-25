@@ -7,7 +7,7 @@ import { Middleware } from '../types/Middleware';
  * @param values A dictionary of values to set.
  */
 export const setGlobals = (values: Record<string, unknown>): Middleware => (
-  async (context: BuildContext): Promise<BuildContext> => ({
+  async (_, context: BuildContext): Promise<BuildContext> => ({
     ...context,
     globals: { ...context.globals, ...values },
   })

@@ -1,17 +1,38 @@
 import { BuildContext } from '../types/BuildContext';
 import { Middleware } from '../types/Middleware';
-import { joinUri } from '../utils/joinUri';
+
+export type PostOptions = {
+  canonical: boolean;
+}
 
 /**
  * Create a middleware for generating a post page.
  */
-export const generatePost = (): Middleware => (
-  async (context: BuildContext): Promise<BuildContext> => {
+export function generatePost(options?: PostOptions): Middleware {
+  const opts: PostOptions = {
+    canonical: true,
+    ...options,
+  };
+
+  return async (
+    { render, write },
+    context,
+  ): Promise<BuildContext> => {
     if (context.posts.length !== 1) {
       throw new Error(`Expected exactly 1 post, got ${context.posts.length}`);
     }
 
-    console.log(`Would generate: ${joinUri(context.uri)}`);
+    const post = context.posts[0];
+
+    if (opts.canonical) {
+      post.uri = context.uri;
+    }
+
+    await write(
+      post.uri,
+      render(context, { post }, 'post-page.html'),
+    );
+
     return context;
-  }
-);
+  };
+}

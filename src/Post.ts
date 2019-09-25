@@ -25,8 +25,24 @@ export class Post {
 
   private _body: string;
 
+  private _uri: readonly string[]|null = null;
+
   get attributes(): Record<string, unknown> {
     return this._attributes;
+  }
+
+  get uri(): readonly string[] {
+    if (!this._uri) {
+      throw new Error('Tried to get canonical URI for a post that doesn\'t have one');
+    }
+    return [...this._uri];
+  }
+
+  set uri(value: readonly string[]) {
+    if (this._uri) {
+      throw new Error(`Post at ${this._uri.join('/')} already has a canonical URI, tried to set ${value.join('/')}`);
+    }
+    this._uri = [...value];
   }
 
   constructor(
