@@ -8,7 +8,7 @@ export type PostOptions = {
 /**
  * Create a middleware for generating a post page.
  */
-export function generatePost(options?: PostOptions): Middleware {
+export function generatePostPages(options?: PostOptions): Middleware {
   const opts: PostOptions = {
     canonical: true,
     ...options,
@@ -30,7 +30,7 @@ export function generatePost(options?: PostOptions): Middleware {
 
     await write(
       post.uri,
-      render(context, { post }, 'post-page.html'),
+      render(context, { post }, 'post.html'),
     );
 
     return context;

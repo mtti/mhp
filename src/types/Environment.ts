@@ -1,9 +1,14 @@
 import { BuildContext } from './BuildContext';
+import { Page } from './Page';
 
 export type RenderStringFunc = (
   str: string,
   vars: Record<string, unknown>,
 ) => string;
+
+export type LoadPageFunc = (
+  name: string,
+) => Promise<Page>;
 
 export type RenderFunc = (
   context: BuildContext,
@@ -20,4 +25,5 @@ export type Environment = {
   readonly renderString: RenderStringFunc;
   readonly render: RenderFunc;
   readonly write: WriteFunc;
+  readonly loadPage: LoadPageFunc;
 };

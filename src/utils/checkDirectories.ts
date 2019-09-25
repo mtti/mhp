@@ -1,4 +1,5 @@
 import fs from 'fs-extra';
+import { removeFalsies } from './removeFalsies';
 
 /**
  * Filter out paths that do not point to directories.
@@ -22,9 +23,5 @@ export async function checkDirectories(
     return directory;
   });
 
-  const reducer = (acc: string[], current: string|null): string[] => (
-    current ? [...acc, current] : acc
-  );
-
-  return (await Promise.all(promises)).reduce(reducer, []);
+  return removeFalsies(await Promise.all(promises));
 }

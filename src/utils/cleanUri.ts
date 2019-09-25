@@ -7,7 +7,7 @@ import path from 'path';
  * @param uri URI parts array
  * @returns An URI parts array
  */
-export function cleanUri(uri: string[]): string[] {
+export function cleanUri(uri: readonly string[]): string[] {
   const filename = uri.slice(-1)[0];
   const ext = path.extname(filename);
   const basename = path.basename(filename, ext);
@@ -19,5 +19,5 @@ export function cleanUri(uri: string[]): string[] {
     return [...uri.slice(0, -1), basename];
   }
 
-  return uri;
+  return [...uri];
 }

@@ -1,8 +1,6 @@
 import { BuildContext } from '../types/BuildContext';
-import { Environment } from '../types/Environment';
 import { Middleware } from '../types/Middleware';
 import { Post } from '../Post';
-import { joinUri } from '../utils/joinUri';
 
 export type IndexOptions = {
   firstPageFilename: string|null;
@@ -32,10 +30,12 @@ type Pager = {
  *
  * @param values A dictionary of values to set.
  */
-export function generateIndex(options?: Partial<IndexOptions>): Middleware {
+export function generatePostIndexes(
+  options?: Partial<IndexOptions>,
+): Middleware {
   return async (
-    { renderString }: Environment,
-    context: BuildContext,
+    { render, renderString, write },
+    context,
   ): Promise<BuildContext> => {
     const opts: IndexOptions = {
       firstPageFilename: 'index.html',
@@ -61,15 +61,17 @@ export function generateIndex(options?: Partial<IndexOptions>): Middleware {
       }
 
       pages.push({
-        uri: [...context.uri, ...filename],
+        uri: [...context.uri, filename],
         number: i + 1,
         first: i === 0,
         last: i === totalPages - 1,
       });
     }
 
+    const promises: Promise<void>[] = [];
     for (let i = 0; i < totalPages; i += 1) {
       const skip = i * opts.postsPerPage;
+      const currentPage = pages[i];
 
       const pager: Pager = {
         pages,
@@ -79,9 +81,14 @@ export function generateIndex(options?: Partial<IndexOptions>): Middleware {
         total: totalPages,
         posts: context.posts.slice(skip, skip + opts.postsPerPage),
       };
+
+      promises.push(
+        write(currentPage.uri, render(context, { pager }, opts.template)),
+      );
     }
 
-    console.log(`Would generate: ${joinUri(context.uri)}`);
+    await Promise.all(promises);
+
     return context;
   };
 }

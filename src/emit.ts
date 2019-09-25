@@ -31,7 +31,7 @@ export const emit = (
     let context: BuildContext = {
       posts,
       uri: splitUri(uri),
-      globals: {},
+      vars: {},
     };
 
     // eslint-disable-next-line no-restricted-syntax
