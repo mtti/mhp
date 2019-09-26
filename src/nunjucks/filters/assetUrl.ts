@@ -12,13 +12,3 @@ export function assetUrl(this: any, input: string): string {
   }
   return `${this.ctx.baseUrl}/assets/${filename}`;
 }
-
-/*
-function assetUrl(input) {
-  let filename = input;
-  if (this.ctx.assetManifest && input in this.ctx.assetManifest) {
-    filename = this.ctx.assetManifest[input];
-  }
-  return `${this.ctx.baseUrl}/assets/${filename}`;
-}
-*/
