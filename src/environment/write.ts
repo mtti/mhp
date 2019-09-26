@@ -1,5 +1,5 @@
 import path from 'path';
-// import fs from 'fs-extra';
+import fs from 'fs-extra';
 import { WriteFunc } from '../types/Environment';
 import { ensureDirectory } from '../utils/ensureDirectory';
 
@@ -11,6 +11,7 @@ export type WriteOptions = {
 
 export function write(
   outputDirectory: string,
+  dryRun: boolean = false,
   writeCallback?: WriteCallback,
 ): WriteFunc {
   return async (
@@ -25,7 +26,8 @@ export function write(
       writeCallback(targetPath);
     }
 
-    console.log(`Would write: ${targetPath}`);
-    // await fs.writeFile(targetPath, content);
+    if (!dryRun) {
+      await fs.writeFile(targetPath, content);
+    }
   };
 }

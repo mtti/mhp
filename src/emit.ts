@@ -12,6 +12,7 @@ import { Post } from './Post';
 export const emit = (
   env: Environment,
   posts: Post[],
+  assetManifest: Record<string, string>,
 ): EmitFunc => (
   async (uri: string, ...middleware: Middleware[]): Promise<void> => {
     const uriParts = splitUri(uri);
@@ -21,7 +22,7 @@ export const emit = (
       const [head] = groupKeys;
       const groups = groupPosts(posts, head);
       await Promise.all(groups
-        .map(([key, postsInGroup]) => emit(env, postsInGroup)(
+        .map(([key, postsInGroup]) => emit(env, postsInGroup, assetManifest)(
           joinUri(replaceUriParameter(uriParts, head, key)),
           ...middleware,
         )));
@@ -31,7 +32,9 @@ export const emit = (
     let context: BuildContext = {
       posts,
       uri: splitUri(uri),
-      vars: {},
+      vars: {
+        assetManifest,
+      },
     };
 
     // eslint-disable-next-line no-restricted-syntax

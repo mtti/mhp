@@ -12,29 +12,46 @@ import { checkDirectory } from './utils/checkDirectory';
 import { checkDirectories } from './utils/checkDirectories';
 import { ensureDirectory } from './utils/ensureDirectory';
 import { createNunjucksEnv } from './nunjucks/createNunjucksEnv';
+import { tryReadJson } from './utils/tryReadJson';
+import { expectStringDictionary } from './utils/expectStringDictionary';
 
 export async function build(
   baseDirectory: string,
   main: (emit: EmitFunc) => Promise<void>,
 ): Promise<void> {
+  // Look up directories
   const postsDirectory = await expectDirectory(baseDirectory, 'posts');
   const outputDirectory = await ensureDirectory(baseDirectory, 'dist');
   const pagesDirectory = await checkDirectory(baseDirectory, 'pages');
 
+  // Load posts
   const posts = await loadPosts(postsDirectory);
 
+  // Create nunjucks environment
   const templateDirectories = await checkDirectories([
     path.resolve(__dirname, '..', 'templates'),
     path.join(baseDirectory, 'templates'),
   ]);
   const nunjucksEnv = createNunjucksEnv(templateDirectories);
 
+  // Log written files
+  const writeCallback = (file: string): void => {
+    console.log(`Writing: ${file}`);
+  };
+
+  // Load asset manifest if it exists
+  const assetManifest = expectStringDictionary(await tryReadJson(path.join(
+    outputDirectory,
+    'assets',
+    'manifest.json',
+  )));
+
   const env: Environment = {
     renderString: renderString(nunjucksEnv),
     render: render(nunjucksEnv),
-    write: write(outputDirectory),
+    write: write(outputDirectory, false, writeCallback),
     loadPage: loadPage(pagesDirectory),
   };
 
-  await main(emit(env, posts));
+  await main(emit(env, posts, assetManifest));
 }

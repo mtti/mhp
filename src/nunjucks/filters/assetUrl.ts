@@ -1,3 +1,8 @@
+import { NunjucksContext } from '../NunjucksContext';
+import { expectStringDictionary } from '../../utils/expectStringDictionary';
+import { expectString } from '../../utils/expectString';
+import { mustNotEndWith } from '../../utils/mustNotEndWith';
+
 /**
  * Replace the plain name of an asset with its hashed version if an asset
  * manifest is loaded.
@@ -5,10 +10,16 @@
  * @param this
  * @param input
  */
-export function assetUrl(this: any, input: string): string {
+export function assetUrl(this: NunjucksContext, input: string): string {
   let filename = input;
-  if (this.ctx.assetManifest && input in this.ctx.assetManifest) {
-    filename = this.ctx.assetManifest[input];
+
+  const assetManifest = this.ctx.assetManifest
+    ? expectStringDictionary(this.ctx.assetManifest) : {};
+  if (input in assetManifest) {
+    filename = assetManifest[input];
   }
-  return `${this.ctx.baseUrl}/assets/${filename}`;
+
+  const baseUrl = mustNotEndWith(expectString(this.ctx.baseUrl), '/');
+
+  return `${baseUrl}/assets/${filename}`;
 }
