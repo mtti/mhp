@@ -8,11 +8,13 @@ import { joinUri } from './utils/joinUri';
 import { replaceUriParameter } from './utils/replaceUriParameter';
 import { splitUri } from './utils/splitUri';
 import { Post } from './Post';
+import { compose } from './middleware/compose';
 
 export const emit = (
   env: Environment,
   posts: Post[],
   assetManifest: Record<string, string>,
+  vars?: Record<string, unknown>,
 ): EmitFunc => (
   async (uri: string, ...middleware: Middleware[]): Promise<void> => {
     const uriParts = splitUri(uri);
@@ -22,14 +24,19 @@ export const emit = (
       const [head] = groupKeys;
       const groups = groupPosts(posts, head);
       await Promise.all(groups
-        .map(([key, postsInGroup]) => emit(env, postsInGroup, assetManifest)(
+        .map(([key, postsInGroup]) => emit(
+          env,
+          postsInGroup,
+          assetManifest,
+          vars,
+        )(
           joinUri(replaceUriParameter(uriParts, head, key)),
           ...middleware,
         )));
       return;
     }
 
-    let context: BuildContext = {
+    let ctx: BuildContext = {
       posts,
       uri: splitUri(uri),
       vars: {
@@ -37,10 +44,13 @@ export const emit = (
       },
     };
 
-    // eslint-disable-next-line no-restricted-syntax
-    for (const currentMiddleware of middleware) {
-      // eslint-disable-next-line no-await-in-loop
-      context = await currentMiddleware(env, context);
+    if (vars) {
+      ctx = {
+        ...ctx,
+        vars: { ...vars, ...ctx.vars },
+      };
     }
+
+    await compose(...middleware)(env, ctx);
   }
 );
