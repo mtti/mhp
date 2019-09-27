@@ -18,6 +18,7 @@ import { withVars } from './withVars';
 
 export async function build(
   baseDirectory: string,
+  vars: Record<string, unknown>,
   main: (args: MainArgs) => Promise<void>,
 ): Promise<void> {
   // Look up directories
@@ -55,7 +56,7 @@ export async function build(
   };
 
   await main({
-    emit: emit(env, posts, assetManifest),
-    withVars: withVars(env, posts, assetManifest),
+    emit: emit(env, posts, assetManifest, vars),
+    withVars: withVars(env, posts, assetManifest, vars),
   });
 }
