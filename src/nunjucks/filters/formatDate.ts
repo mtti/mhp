@@ -7,11 +7,14 @@ export function formatDate(
   input: unknown,
   format?: unknown,
 ): string {
-  const inputStr = expectString(input);
+  if (!(input instanceof DateTime)) {
+    throw new Error('Expected DateTime instance');
+  }
+
   const formatString = format ? expectString(format) : null;
   const dateFormat = this.ctx.dateFormat
     ? expectString(this.ctx.dateFormat) : null;
 
   const useFormat = formatString || dateFormat || 'yyyy-MM-dd';
-  return DateTime.fromISO(inputStr).toFormat(useFormat);
+  return input.toFormat(useFormat);
 }

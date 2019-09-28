@@ -5,7 +5,7 @@ import { emit } from './emit';
 
 export function withVars(
   env: Environment,
-  posts: Post[],
+  posts: readonly Post[],
   assetManifest: Record<string, string>,
   baseVars: Record<string, unknown> = {},
 ): WithVarsFunc {

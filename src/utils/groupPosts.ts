@@ -8,7 +8,10 @@ import { getUniqueAttributeValues } from './getUniqueAttributeValues';
  * @param key
  * @returns An array of value-Post pairs.
  */
-export function groupPosts(posts: Post[], key: string): [string, Post[]][] {
+export function groupPosts(
+  posts: readonly Post[],
+  key: string,
+): [string, readonly Post[]][] {
   return getUniqueAttributeValues(posts, key)
     .filter((value) => typeof value === 'string')
     .map((value) => value as string)

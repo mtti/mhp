@@ -12,7 +12,7 @@ import { compose } from './middleware/compose';
 
 export const emit = (
   env: Environment,
-  posts: Post[],
+  posts: readonly Post[],
   assetManifest: Record<string, string>,
   vars?: Record<string, unknown>,
 ): EmitFunc => (

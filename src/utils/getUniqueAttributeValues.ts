@@ -7,7 +7,7 @@ import { Post } from '../Post';
  * @param key
  */
 export function getUniqueAttributeValues(
-  posts: Post[],
+  posts: readonly Post[],
   key: string,
 ): unknown[] {
   const values = new Set();

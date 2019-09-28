@@ -15,6 +15,7 @@ export const render = (
   {
     ...context.vars,
     ...vars,
+    front: context.uri.length === 0,
     uri: joinUri(cleanUri(context.uri)),
   },
 );

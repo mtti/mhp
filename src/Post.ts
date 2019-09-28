@@ -1,3 +1,4 @@
+import cheerio from 'cheerio';
 import fs from 'fs-extra';
 import fm from 'front-matter';
 import { DateTime } from 'luxon';
@@ -68,8 +69,23 @@ export class Post {
     return this._updatedAt;
   }
 
+  get html(): string {
+    return marked(this._body);
+  }
+
   get safeHtml(): nunjucks.runtime.SafeString {
-    return new nunjucks.runtime.SafeString(marked(this._body));
+    return new nunjucks.runtime.SafeString(this.html);
+  }
+
+  get summary(): nunjucks.runtime.SafeString {
+    const summaryAttr = this._attributes.summary;
+    if (typeof summaryAttr === 'string') {
+      return new nunjucks.runtime.SafeString(summaryAttr);
+    }
+
+    const doc = cheerio.load(this.html);
+    const firstParagraph = doc('p').first().html();
+    return new nunjucks.runtime.SafeString(firstParagraph || '');
   }
 
   constructor(

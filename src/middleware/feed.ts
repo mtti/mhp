@@ -4,6 +4,7 @@ import { Middleware } from '../types/Middleware';
 import { expectString } from '../utils/expectString';
 import { mostRecentlyUpdatedPost } from '../utils/mostRecentlyUpdatedPost';
 import { suffixUriFilename } from '../utils/suffixUriFilename';
+import { joinUrl } from '../utils/joinUrl';
 
 export type FeedMiddlewareOptions = {
   title: string;
@@ -41,7 +42,7 @@ export const feed = (options: FeedMiddlewareOptions): Middleware => {
     const items = await Promise.all(posts.map(async (post) => ({
       title: expectString(post.attributes.title),
       id: `urn:uuid:${post.uuid}`,
-      link: '',
+      link: joinUrl(expectString(context.vars.baseUrl), post.uri),
       content: await post.getHtml(),
       date: post.publishedAt.toJSDate(),
     })));

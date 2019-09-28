@@ -1,5 +1,7 @@
 import { BuildContext } from '../types/BuildContext';
 import { Middleware } from '../types/Middleware';
+import { expectString } from '../utils/expectString';
+import { joinUrl } from '../utils/joinUrl';
 import { Post } from '../Post';
 
 export type IndexOptions = {
@@ -11,9 +13,13 @@ export type IndexOptions = {
 
 type PagerPage = {
   uri: string[];
+  url: string;
   number: number;
+  index: number;
   first: boolean;
   last: boolean;
+  next?: PagerPage;
+  previous?: PagerPage;
 };
 
 type Pager = {
@@ -42,7 +48,7 @@ export function indexes(
       filenameTemplate: 'index-{{page}}.html',
       postsPerPage: 15,
       template: 'post-index.html',
-      ...options,
+      ...(options || {}),
     };
 
     const totalPages = Math.ceil(context.posts.length / opts.postsPerPage) || 1;
@@ -62,12 +68,28 @@ export function indexes(
 
       pages.push({
         uri: [...context.uri, filename],
+        url: joinUrl(
+          expectString(context.vars.baseUrl),
+          [...context.uri, filename],
+        ),
         number: i + 1,
+        index: i,
         first: i === 0,
         last: i === totalPages - 1,
       });
     }
 
+    // Set references to next and previous page
+    for (let i = 0; i < pages.length; i += 1) {
+      if (i < pages.length - 1) {
+        pages[i].next = pages[i + 1];
+      }
+      if (i > 0) {
+        pages[i].previous = pages[i - 1];
+      }
+    }
+
+    // Render and write pager pages to disk
     const promises: Promise<void>[] = [];
     for (let i = 0; i < totalPages; i += 1) {
       const skip = i * opts.postsPerPage;
@@ -86,7 +108,6 @@ export function indexes(
         write(currentPage.uri, render(context, { pager }, opts.template)),
       );
     }
-
     await Promise.all(promises);
 
     return context;

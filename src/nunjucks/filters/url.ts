@@ -22,7 +22,5 @@ export function url(this: NunjucksContext, input: unknown): string {
   const uri = joinUri(cleanUri(uriParts));
   const baseUrl = mustNotEndWith(expectString(this.ctx.baseUrl), '/');
 
-  console.log(baseUrl);
-
   return `${baseUrl}/${uri}`;
 }
