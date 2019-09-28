@@ -30,7 +30,7 @@ type Pager = {
  *
  * @param values A dictionary of values to set.
  */
-export function generatePostIndexes(
+export function indexes(
   options?: Partial<IndexOptions>,
 ): Middleware {
   return async (

@@ -8,7 +8,7 @@ export type PostOptions = {
 /**
  * Create a middleware for generating a post page.
  */
-export function generatePostPages(options?: PostOptions): Middleware {
+export function posts(options?: PostOptions): Middleware {
   const opts: PostOptions = {
     canonical: true,
     ...options,
