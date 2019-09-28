@@ -13,10 +13,16 @@ export function loadPage(pagesDirectory: string|null): LoadPageFunc {
 
   return async (name: string): Promise<Page> => {
     const src = await fs.readFile(path.join(pagesDirectory, name), 'utf8');
-    const data = fm(src);
+    const data = fm<Record<string, unknown>>(src);
+
+    const vars = data.attributes.vars
+      ? (data.attributes.vars as Record<string, unknown>) : {};
+
     return {
       body: data.body,
-      vars: data.attributes as Record<string, unknown>,
+      template: data.attributes.template
+        ? data.attributes.template as string : undefined,
+      vars,
     };
   };
 }
