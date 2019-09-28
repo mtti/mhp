@@ -2,7 +2,7 @@
   "name": "@mtti/mhp",
   "version": "0.2.0",
   "description": "A TypeScript rewrite of MHP",
-  "repository": "github:mtti/mhp-rewrite",
+  "repository": "github:mtti/mhp",
   "author": "Matti Hiltunen",
   "license": "Apache-2.0",
   "private": true,
