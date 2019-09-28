@@ -16,9 +16,14 @@ export type RenderFunc = (
   template: string,
 ) => string;
 
+export type WriteOptions = {
+  contentType?: string;
+};
+
 export type WriteFunc = (
   uri: readonly string[],
   content: string,
+  options?: WriteOptions,
 ) => Promise<void>;
 
 export type Environment = {

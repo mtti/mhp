@@ -1,13 +1,10 @@
 import path from 'path';
 import fs from 'fs-extra';
-import { WriteFunc } from '../types/Environment';
+import { WriteFunc, WriteOptions } from '../types/Environment';
+import { guessExtension } from '../utils/guessExtension';
 import { ensureDirectory } from '../utils/ensureDirectory';
 
 export type WriteCallback = (file: string) => void;
-
-export type WriteOptions = {
-
-};
 
 export function write(
   outputDirectory: string,
@@ -19,8 +16,14 @@ export function write(
     content: string,
     options?: WriteOptions,
   ): Promise<void> => {
-    await ensureDirectory(outputDirectory, ...uri.slice(0, -1));
-    const targetPath = path.join(outputDirectory, ...uri);
+    const opts = {
+      contentType: 'text/html',
+      ...(options || {}),
+    };
+
+    const fsUri = guessExtension(uri, opts.contentType);
+    await ensureDirectory(outputDirectory, ...fsUri.slice(0, -1));
+    const targetPath = path.join(outputDirectory, ...fsUri);
 
     if (writeCallback) {
       writeCallback(targetPath);

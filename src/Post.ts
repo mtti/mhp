@@ -1,7 +1,11 @@
 import fs from 'fs-extra';
 import fm from 'front-matter';
+import { DateTime } from 'luxon';
+import marked from 'marked';
 import slugify from 'slugify';
 import { FileInfo } from './types/FileInfo';
+import { expectDateTime } from './utils/expectDateTime';
+import { expectUuidString } from './utils/expectUuidString';
 
 export class Post {
   /**
@@ -27,6 +31,12 @@ export class Post {
 
   private _uri: readonly string[]|null = null;
 
+  private _uuid: string;
+
+  private _publishedAt: DateTime;
+
+  private _updatedAt: DateTime;
+
   get attributes(): Record<string, unknown> {
     return this._attributes;
   }
@@ -45,6 +55,18 @@ export class Post {
     this._uri = [...value];
   }
 
+  get uuid(): string {
+    return this._uuid;
+  }
+
+  get publishedAt(): DateTime {
+    return this._publishedAt;
+  }
+
+  get updatedAt(): DateTime {
+    return this._updatedAt;
+  }
+
   constructor(
     source: FileInfo,
     attributes: Record<string, unknown>,
@@ -54,6 +76,11 @@ export class Post {
     this._attributes = attributes;
     this._body = body;
 
+    this._uuid = expectUuidString(this._attributes.uuid);
+    this._publishedAt = expectDateTime(this._attributes.publishedAt);
+    this._updatedAt = this._attributes.updatedAt ?
+      expectDateTime(this._attributes.updatedAt) : this._publishedAt;
+
     if (!this._attributes.slug) {
       this._attributes.slug = slugify(this._source.name);
     }
@@ -61,5 +88,9 @@ export class Post {
 
   async getBody(): Promise<string> {
     return this._body;
+  }
+
+  async getHtml(): Promise<string> {
+    return marked(await this.getBody());
   }
 }

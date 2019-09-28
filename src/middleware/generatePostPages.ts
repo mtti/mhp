@@ -31,6 +31,9 @@ export function generatePostPages(options?: PostOptions): Middleware {
     await write(
       post.uri,
       render(context, { post }, 'post.html'),
+      {
+        contentType: 'text/html',
+      },
     );
 
     return context;

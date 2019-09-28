@@ -1,3 +1,4 @@
+export * from './feed';
 export * from './filter';
 export * from './generatePostIndexes';
 export * from './generatePostPages';
