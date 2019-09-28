@@ -2,6 +2,7 @@ import fs from 'fs-extra';
 import fm from 'front-matter';
 import { DateTime } from 'luxon';
 import marked from 'marked';
+import nunjucks from 'nunjucks';
 import slugify from 'slugify';
 import { FileInfo } from './types/FileInfo';
 import { expectDateTime } from './utils/expectDateTime';
@@ -65,6 +66,10 @@ export class Post {
 
   get updatedAt(): DateTime {
     return this._updatedAt;
+  }
+
+  get safeHtml(): nunjucks.runtime.SafeString {
+    return new nunjucks.runtime.SafeString(marked(this._body));
   }
 
   constructor(
