@@ -1,5 +1,4 @@
 import path from 'path';
-import { emit } from './emit';
 import { expectDirectory } from './utils';
 import { loadPosts } from './loadPosts';
 import { Environment } from './types/Environment';
@@ -13,13 +12,13 @@ import { ensureDirectory } from './utils/ensureDirectory';
 import { createNunjucksEnv } from './nunjucks/createNunjucksEnv';
 import { tryReadJson } from './utils/tryReadJson';
 import { expectStringDictionary } from './utils/expectStringDictionary';
-import { MainArgs } from './types/MainArgs';
-import { withVars } from './withVars';
+import { Middleware } from './types/Middleware';
+import { BuildContext } from './types/BuildContext';
+import { compose } from './middleware/compose';
 
 export async function build(
   baseDirectory: string,
-  vars: Record<string, unknown>,
-  main: (args: MainArgs) => Promise<void>,
+  ...middleware: Middleware[]
 ): Promise<void> {
   // Look up directories
   const postsDirectory = await expectDirectory(baseDirectory, 'posts');
@@ -56,8 +55,13 @@ export async function build(
     loadPage: loadPage(pagesDirectory),
   };
 
-  await main({
-    emit: emit(env, posts, assetManifest, vars),
-    withVars: withVars(env, posts, assetManifest, vars),
-  });
+  const context: BuildContext = {
+    uri: [],
+    posts,
+    vars: {
+      assetManifest,
+    },
+  };
+
+  await compose(...middleware)(env, context);
 }
