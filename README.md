@@ -1,16 +1,20 @@
+[![npm version](https://badge.fury.io/js/%40mtti%2Fmhp.svg)](https://badge.fury.io/js/%40mtti%2Fmhp)
 
-This is my personal backend TypeScript base project.
+MHP (**M**atti's **H**ome **P**age) is a static site generator built in TypeScript.
 
-## Checklist
+Under early development, the API is likely to change drastically before version 1.0.0.
 
-* Modify `package.json`:
-    * Change `name` and `description` to refer to your project
-    * Change `repository` to point to your project's repository
-    * Change `author` if you're not me
-    * Change `license` if you don't want to use Apache 2.0
-    * Consider if you want to change `version` to something else
-    * Consider if you want to remove `private` now, if your eventual plan is to publish to the public NPM registry.
-* Modify or delete `LICENSE` depending on if you want to release your project under the Apache 2.0 license.
-* Remove `.travis.yml` and/or `renovate.json` if you're not planning on using those services.
-* Modify `.eslintrc.json` and remove the `@mtti/eslint-config-typescript` dependency if you don't want to use my personal ESLint configs.
-* Replace the content of this `README.md` with something relevant to your project.
+## Features
+
+* Highly customizable site structure.
+* Blog posts and static pages written in Markdown.
+* Tags, categories and more thanks to a highly flexible filtering and route generation system.
+* Jinja-like [Nunjucks](https://mozilla.github.io/nunjucks/) templates.
+* Custom hierarchical template loader which, together with Nunjucks' template inheritance enables a high-degree of reusability with templates.
+* Supports [webpack-manifest-plugin](https://www.npmjs.com/package/webpack-manifest-plugin) to resolve hashed asset files.
+* Atom feeds.
+
+## Related
+
+* [mhp-example](https://github.com/mtti/mhp-example) A full example MHP site.
+* [ssup](https://github.com/mtti/ssup) A companion utility from the same author for uploading static sites to S3.
