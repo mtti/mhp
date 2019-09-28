@@ -8,7 +8,7 @@
   "engines": {
     "node": ">=10.15.0"
   },
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
     "jest": "jest --config ./jest.config.json",
@@ -22,9 +22,9 @@
     "tsc": "tsc"
   },
   "files": [
-    "dist",
-    "!dist/**/*.spec.js",
-    "!dist/**/*.spec.d.ts"
+    "lib",
+    "!lib/**/*.spec.js",
+    "!lib/**/*.spec.d.ts"
   ],
   "devDependencies": {
     "@mtti/eslint-config-typescript": "1.0.0",
