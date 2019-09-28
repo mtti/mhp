@@ -1,11 +1,10 @@
 {
   "name": "@mtti/mhp",
   "version": "0.2.0",
-  "description": "A TypeScript rewrite of MHP",
+  "description": "Static site generator",
   "repository": "github:mtti/mhp",
   "author": "Matti Hiltunen",
   "license": "Apache-2.0",
-  "private": true,
   "engines": {
     "node": ">=10.15.0"
   },
