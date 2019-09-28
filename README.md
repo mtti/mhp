@@ -1,6 +1,6 @@
-[![npm version](https://badge.fury.io/js/%40mtti%2Fmhp.svg)](https://badge.fury.io/js/%40mtti%2Fmhp)
+![Written in TypeScript](https://flat.badgen.net/badge/icon/typescript?icon=typescript&label) [![npm](https://flat.badgen.net/npm/v/@mtti/mhp?icon=npm)](https://www.npmjs.com/package/@mtti/mhp) [![Travis](https://flat.badgen.net/travis/mtti/mhp?icon=travis)](https://travis-ci.org/mtti/mhp) [![License](https://flat.badgen.net/github/license/mtti/mhp)](https://github.com/mtti/mhp/blob/master/LICENSE)
 
-MHP (**M**atti's **H**ome **P**age) is a static site generator built in TypeScript.
+A static website generator built in TypeScript.
 
 Under early development, the API is likely to change drastically before version 1.0.0.
 
