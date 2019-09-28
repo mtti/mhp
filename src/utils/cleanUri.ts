@@ -1,4 +1,5 @@
 import path from 'path';
+import { lastOf } from './lastOf';
 
 /**
  * Return an URI with the extension of .html files removed and index.html
@@ -8,7 +9,11 @@ import path from 'path';
  * @returns An URI parts array
  */
 export function cleanUri(uri: readonly string[]): string[] {
-  const filename = uri.slice(-1)[0];
+  if (uri.length === 0) {
+    return [];
+  }
+
+  const filename = lastOf(uri);
   const ext = path.extname(filename);
   const basename = path.basename(filename, ext);
 

@@ -25,7 +25,7 @@ export function guessExtension(
   }
 
   return [
-    ...parts.slice(-1),
+    ...parts.slice(0, -1),
     `${filenameParts[0]}.${ext}`,
   ];
 }
