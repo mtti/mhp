@@ -38,6 +38,7 @@ export async function build(
 
   // Log written files
   const writeCallback = (file: string): void => {
+    // eslint-disable-next-line no-console
     console.log(`Writing: ${file}`);
   };
 
