@@ -3,19 +3,19 @@
 {% block content %}
 
 <div class="mhp-post-index">
-    {% for post in posts %}
+    {% for post in pager.posts %}
     <div class="mhp-post-short">
         <div class="mhp-post-header">
             <div class="mhp-post-info">
-                {{ post.publishedAt|date }}
+                {{ post.publishedAt|formatDate }}
                 <span class="badge badge-secondary">New</span>
             </div>
-            <h2><a href="{{ post.url }}">{{ post.get("title") }}</a></h2>
+            <h2><a href="{{ post.uri|url }}">{{ post.attributes.title }}</a></h2>
         </div>
 
         <p>{{ post.summary|safe }}</p>
 
-        <p><a href="{{ post.url }}">Read more</a></p>
+        <p><a href="{{ post.uri|url }}">Read more</a></p>
     </div>
     {% endfor %}
 

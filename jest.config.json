@@ -1,0 +1,6 @@
+{
+  "collectCoverage": true,
+  "testPathIgnorePatterns": ["/node_modules/", "<rootDir>/dist/"],
+  "testMatch": [ "**/?(*.)+(spec|test).ts" ],
+  "preset": "ts-jest"
+}
