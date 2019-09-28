@@ -6,7 +6,7 @@ import { Middleware } from '../types/Middleware';
  *
  * @param values A dictionary of values to set.
  */
-export const setVars = (values: Record<string, unknown>): Middleware => (
+export const vars = (values: Record<string, unknown>): Middleware => (
   async (_, context: BuildContext): Promise<BuildContext> => ({
     ...context,
     vars: { ...context.vars, ...values },

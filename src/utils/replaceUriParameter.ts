@@ -8,7 +8,7 @@ import { mustStartWith } from './mustStartWith';
  * @param replacement
  */
 export function replaceUriParameter(
-  uriParts: string[],
+  uriParts: readonly string[],
   key: string,
   replacement: string,
 ): string[] {
