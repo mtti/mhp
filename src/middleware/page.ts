@@ -5,7 +5,9 @@ import { Middleware } from '../types/Middleware';
 
 export function page(name: string): Middleware {
   return async (
-    { loadPage, render, write },
+    {
+      loadPage, render, write, globals,
+    },
     context,
   ): Promise<BuildContext> => {
     const data = await loadPage(name);
@@ -14,6 +16,7 @@ export function page(name: string): Middleware {
       ...context.vars,
       ...data.vars,
       body: new nunjucks.runtime.SafeString(marked(data.body)),
+      ...globals,
     };
     const template = data.template || 'page.html';
 

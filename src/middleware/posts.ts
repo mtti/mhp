@@ -15,7 +15,7 @@ export function posts(options?: PostOptions): Middleware {
   };
 
   return async (
-    { render, write },
+    { render, write, globals },
     context,
   ): Promise<BuildContext> => {
     if (context.posts.length !== 1) {
@@ -30,7 +30,7 @@ export function posts(options?: PostOptions): Middleware {
 
     await write(
       post.uri,
-      render(context, { post }, 'post.html'),
+      render(context, { post, ...globals }, 'post.html'),
       {
         contentType: 'text/html',
       },

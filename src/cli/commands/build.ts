@@ -4,7 +4,6 @@ import minimist from 'minimist';
 import { pickFile } from '../../utils/pickFile';
 import { Middleware } from '../../types/Middleware';
 import { build as buildFn } from '../../build';
-import { vars as varsMiddleware } from '../../middleware/vars';
 
 export async function build(
   baseDirectory: string,
@@ -28,5 +27,10 @@ export async function build(
   // eslint-disable-next-line
   const middleware = require(rcFile) as Middleware[];
 
-  await buildFn(baseDirectory, varsMiddleware(vars), ...middleware);
+  await buildFn(
+    baseDirectory,
+    {
+      globals: vars,
+    },
+  )(...middleware);
 }
