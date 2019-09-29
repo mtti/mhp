@@ -20,7 +20,7 @@ async function main(): Promise<void> {
     throw new Error(`Unrecognized command: ${command}`);
   }
 
-  await commandFn(subArgs);
+  await commandFn(process.cwd(), subArgs);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
