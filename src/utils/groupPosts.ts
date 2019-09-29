@@ -1,4 +1,5 @@
 import { Post } from '../Post';
+import { attributeEqualsOrIncludes } from './attributeEqualsOrIncludes';
 import { getUniqueAttributeValues } from './getUniqueAttributeValues';
 
 /**
@@ -17,6 +18,6 @@ export function groupPosts(
     .map((value) => value as string)
     .map((value): [string, Post[]] => [
       value,
-      posts.filter((post) => post.attributes[key] === value),
+      posts.filter((post) => attributeEqualsOrIncludes(post, key, value)),
     ]);
 }
