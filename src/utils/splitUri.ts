@@ -1,7 +1,6 @@
-import { mustNotStartWith } from './mustNotStartWith';
-import { mustNotEndWith } from './mustNotEndWith';
+import { ensureNotEndsWith, ensureNotStartsWith } from '@mtti/funcs';
 
 export function splitUri(uri: string): string[] {
-  const cleanedUri = mustNotStartWith(mustNotEndWith(uri, '/'), '/');
+  const cleanedUri = ensureNotStartsWith(ensureNotEndsWith(uri, '/'), '/');
   return cleanedUri ? cleanedUri.split('/') : [];
 }

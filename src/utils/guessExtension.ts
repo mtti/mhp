@@ -1,5 +1,5 @@
 import mime from 'mime-types';
-import { lastOf } from './lastOf';
+import { lastOf } from '@mtti/funcs';
 
 /**
  * Guess file name extension from content type if no extension is already

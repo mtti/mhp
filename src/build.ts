@@ -1,5 +1,5 @@
 import path from 'path';
-import { expectDirectory } from './utils';
+import { expectDirectory } from './utils/expectDirectory';
 import { loadPosts } from './loadPosts';
 import { Environment } from './types/Environment';
 import { render } from './environment/render';

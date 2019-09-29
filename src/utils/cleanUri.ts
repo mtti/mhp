@@ -1,5 +1,5 @@
 import path from 'path';
-import { lastOf } from './lastOf';
+import { lastOf } from '@mtti/funcs';
 
 /**
  * Return an URI with the extension of .html files removed and index.html

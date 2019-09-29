@@ -24,7 +24,8 @@
   "files": [
     "lib",
     "!lib/**/*.spec.js",
-    "!lib/**/*.spec.d.ts"
+    "!lib/**/*.spec.d.ts",
+    "!lib/**/*.spec.js.map"
   ],
   "devDependencies": {
     "@mtti/eslint-config-typescript": "1.0.0",
@@ -44,6 +45,7 @@
     "typescript": "3.6.3"
   },
   "dependencies": {
+    "@mtti/funcs": "^2.0.0",
     "cheerio": "^1.0.0-rc.3",
     "feed": "^4.0.0",
     "front-matter": "^3.0.2",

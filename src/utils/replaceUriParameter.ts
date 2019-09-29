@@ -1,4 +1,4 @@
-import { mustStartWith } from './mustStartWith';
+import { ensureStartsWith } from '@mtti/funcs';
 
 /**
  * Replace a parameter in an URI with a different string.
@@ -12,6 +12,6 @@ export function replaceUriParameter(
   key: string,
   replacement: string,
 ): string[] {
-  const prefixedKey = mustStartWith(key, ':');
+  const prefixedKey = ensureStartsWith(key, ':');
   return uriParts.map((item) => (item === prefixedKey ? replacement : item));
 }

@@ -1,4 +1,4 @@
-import { findFiles } from './utils';
+import { findFiles } from './utils/findFiles';
 import { FileInfo } from './types/FileInfo';
 import { Post } from './Post';
 import { sortPostsByDate } from './sort/sortPostsByDate';
