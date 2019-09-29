@@ -13,9 +13,16 @@ export async function checkDirectory(
   ...parts: string[]
 ): Promise<string|null> {
   const target = path.join(...parts);
-  const stat = await fs.stat(target);
-  if (!stat.isDirectory()) {
-    return null;
+  try {
+    const stat = await fs.stat(target);
+    if (!stat.isDirectory()) {
+      return null;
+    }
+    return target;
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      return null;
+    }
+    throw err;
   }
-  return target;
 }
