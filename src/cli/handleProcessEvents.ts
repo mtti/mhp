@@ -1,4 +1,6 @@
-export function handleProcessEvents() {
+/* eslint-disable no-console */
+
+export function handleProcessEvents(): void {
   process.on('unhandledRejection', (reason) => {
     if (reason) {
       if (reason instanceof Error && reason.stack) {
