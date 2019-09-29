@@ -31,4 +31,5 @@ export type Environment = {
   readonly render: RenderFunc;
   readonly write: WriteFunc;
   readonly loadPage: LoadPageFunc;
+  readonly globals: Record<string, unknown>;
 };

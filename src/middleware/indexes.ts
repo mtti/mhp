@@ -40,7 +40,9 @@ export function indexes(
   options?: Partial<IndexOptions>,
 ): Middleware {
   return async (
-    { render, renderString, write },
+    {
+      render, renderString, write, globals,
+    },
     context,
   ): Promise<BuildContext> => {
     const opts: IndexOptions = {
@@ -105,7 +107,11 @@ export function indexes(
       };
 
       promises.push(
-        write(currentPage.uri, render(context, { pager }, opts.template)),
+        write(currentPage.uri, render(
+          context,
+          { pager, ...globals },
+          opts.template,
+        )),
       );
     }
     await Promise.all(promises);
