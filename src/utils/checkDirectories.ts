@@ -1,5 +1,5 @@
 import fs from 'fs-extra';
-import { removeFalsies } from './removeFalsies';
+import { removeFalsies } from '@mtti/funcs';
 
 /**
  * Filter out paths that do not point to directories.

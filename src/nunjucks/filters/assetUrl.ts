@@ -1,7 +1,7 @@
+import { ensureNotEndsWith } from '@mtti/funcs';
 import { NunjucksContext } from '../NunjucksContext';
 import { expectStringDictionary } from '../../utils/expectStringDictionary';
 import { expectString } from '../../utils/expectString';
-import { mustNotEndWith } from '../../utils/mustNotEndWith';
 
 /**
  * Replace the plain name of an asset with its hashed version if an asset
@@ -19,7 +19,7 @@ export function assetUrl(this: NunjucksContext, input: string): string {
     filename = assetManifest[input];
   }
 
-  const baseUrl = mustNotEndWith(expectString(this.ctx.baseUrl), '/');
+  const baseUrl = ensureNotEndsWith(expectString(this.ctx.baseUrl), '/');
 
   return `${baseUrl}/assets/${filename}`;
 }

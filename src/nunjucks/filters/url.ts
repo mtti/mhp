@@ -1,8 +1,8 @@
+import { ensureNotEndsWith } from '@mtti/funcs';
 import { cleanUri } from '../../utils/cleanUri';
 import { expectString } from '../../utils/expectString';
 import { isStringArray } from '../../utils/isStringArray';
 import { joinUri } from '../../utils/joinUri';
-import { mustNotEndWith } from '../../utils/mustNotEndWith';
 import { Post } from '../../Post';
 import { NunjucksContext } from '../NunjucksContext';
 
@@ -20,7 +20,7 @@ export function url(this: NunjucksContext, input: unknown): string {
   }
 
   const uri = joinUri(cleanUri(uriParts));
-  const baseUrl = mustNotEndWith(expectString(this.ctx.baseUrl), '/');
+  const baseUrl = ensureNotEndsWith(expectString(this.ctx.baseUrl), '/');
 
   return `${baseUrl}/${uri}`;
 }
