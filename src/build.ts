@@ -1,5 +1,4 @@
 import path from 'path';
-import { expectDirectory } from './utils/expectDirectory';
 import { loadPosts } from './loadPosts';
 import { Environment } from './types/Environment';
 import { render } from './environment/render';
@@ -21,12 +20,12 @@ export async function build(
   ...middleware: Middleware[]
 ): Promise<void> {
   // Look up directories
-  const postsDirectory = await expectDirectory(baseDirectory, 'posts');
+  const postsDirectory = await checkDirectory(baseDirectory, 'posts');
   const outputDirectory = await ensureDirectory(baseDirectory, 'dist');
   const pagesDirectory = await checkDirectory(baseDirectory, 'pages');
 
   // Load posts
-  const posts = await loadPosts(postsDirectory);
+  const posts = postsDirectory ? await loadPosts(postsDirectory) : [];
 
   // Create nunjucks environment
   const templateDirectories = await checkDirectories([
