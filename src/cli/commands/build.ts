@@ -1,6 +1,7 @@
 import path from 'path';
-import { fromEntries, toArray } from '@mtti/funcs';
+import { toArray } from '@mtti/funcs';
 import minimist from 'minimist';
+import { parsePairs } from '../../utils/parsePairs';
 import { pickFile } from '../../utils/pickFile';
 import { Middleware } from '../../types/Middleware';
 import { build as buildFn } from '../../build';
@@ -20,9 +21,7 @@ export async function build(
   // Allow setting template variables as key=value pairs with --var
   const varPairs: string[]
     = args.var ? toArray(args.var as string) : [];
-  const vars = fromEntries<string, string>(varPairs
-    .map((pair) => pair.split('=', 2))
-    .map(([key, value]) => [key, value]));
+  const vars = parsePairs(varPairs);
 
   // eslint-disable-next-line
   const middleware = require(rcFile) as Middleware[];
