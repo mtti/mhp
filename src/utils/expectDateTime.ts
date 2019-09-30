@@ -9,6 +9,10 @@ import { expectString } from './expectString';
  * @returns A luxon DateTime
  */
 export function expectDateTime(value: unknown): DateTime {
+  if (value instanceof Date) {
+    return DateTime.fromJSDate(value);
+  }
+
   const result = DateTime.fromISO(expectString(value));
   if (!result.isValid && result.invalidExplanation) {
     throw new Error(result.invalidExplanation);
