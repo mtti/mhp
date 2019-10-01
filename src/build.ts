@@ -35,6 +35,7 @@ export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
     // Create nunjucks environment
     const templateDirectories = await checkDirectories([
       path.resolve(__dirname, '..', 'templates'),
+      ...(opts.templateDirectories || []),
       path.join(baseDirectory, 'templates'),
     ]);
     const nunjucksEnv = createNunjucksEnv(templateDirectories);

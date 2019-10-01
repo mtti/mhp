@@ -3,8 +3,8 @@ import { toArray } from '@mtti/funcs';
 import minimist from 'minimist';
 import { parsePairs } from '../../utils/parsePairs';
 import { pickFile } from '../../utils/pickFile';
-import { Middleware } from '../../types/Middleware';
 import { build as buildFn } from '../../build';
+import { SiteOptions } from '../types/SiteOptions';
 
 export async function build(
   baseDirectory: string,
@@ -24,12 +24,13 @@ export async function build(
   const vars = parsePairs(varPairs);
 
   // eslint-disable-next-line
-  const middleware = require(rcFile) as Middleware[];
+  const siteOptions = require(rcFile) as SiteOptions;
 
   await buildFn(
     baseDirectory,
     {
+      templateDirectories: siteOptions.templateDirectories,
       globals: vars,
     },
-  )(...middleware);
+  )(...(siteOptions.routes || []));
 }
