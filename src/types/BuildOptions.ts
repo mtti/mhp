@@ -1,4 +1,7 @@
+import { Breadcrumb } from './Breadcrumb';
+
 export type BuildOptions = {
-  templateDirectories?: string[];
+  templateDirectories?: readonly string[];
+  breadcrumbs?: readonly Breadcrumb[];
   globals?: Record<string, unknown>;
 };

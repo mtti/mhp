@@ -20,6 +20,7 @@ import { compose } from './middleware/compose';
 export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
   const opts: BuildOptions = {
     globals: {},
+    breadcrumbs: [],
     ...(options || {}),
   };
 
@@ -55,7 +56,10 @@ export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
 
     const env: Environment = {
       renderString: renderString(nunjucksEnv),
-      render: render(nunjucksEnv),
+      render: render(
+        nunjucksEnv,
+        opts.breadcrumbs || [],
+      ),
       write: write(outputDirectory, false, writeCallback),
       loadPage: loadPage(pagesDirectory),
       globals: opts.globals || {},
