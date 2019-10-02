@@ -29,7 +29,8 @@ export async function build(
   await buildFn(
     baseDirectory,
     {
-      templateDirectories: siteOptions.templateDirectories,
+      templateDirectories: siteOptions.templateDirectories || [],
+      breadcrumbs: siteOptions.breadcrumbs || [],
       globals: vars,
     },
   )(...(siteOptions.routes || []));

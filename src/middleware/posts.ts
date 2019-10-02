@@ -28,9 +28,15 @@ export function posts(options?: PostOptions): Middleware {
       post.uri = context.uri;
     }
 
+    const vars = {
+      post,
+      title: post.attributes.title,
+      ...globals,
+    };
+
     await write(
       post.uri,
-      render(context, { post, ...globals }, 'post.html'),
+      render(context, vars, 'post.html'),
       {
         contentType: 'text/html',
       },
