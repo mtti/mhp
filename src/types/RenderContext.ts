@@ -1,7 +1,7 @@
-import { Breadcrumb } from './Breadcrumb';
+import { MenuItem } from './MenuItem';
 
 export const RenderContextKey = Symbol('RenderContextKey');
 
 export type RenderContext = {
-  activePath: Breadcrumb[];
+  activePath: MenuItem[];
 };

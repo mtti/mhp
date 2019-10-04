@@ -1,14 +1,14 @@
 import { expectUri } from '../../utils/expectUri';
-import { NunjucksContext } from '../NunjucksContext';
 import { getRenderContext } from '../../utils/getRenderContext';
 import { isInActivePath as isInActivePathFn } from '../../utils/isInActivePath';
+import { NunjucksContext } from '../NunjucksContext';
 
 export function isInActivePath(
   this: NunjucksContext,
-  input: string|string[],
+  uri: string|string[],
 ): boolean {
   const renderContext = getRenderContext(this);
-  const uri = expectUri(input);
+  const checkedUri = expectUri(uri);
 
-  return isInActivePathFn(uri, renderContext.activePath);
+  return isInActivePathFn(checkedUri, renderContext.activePath);
 }

@@ -30,7 +30,7 @@ export async function build(
     baseDirectory,
     {
       templateDirectories: siteOptions.templateDirectories || [],
-      breadcrumbs: siteOptions.breadcrumbs || [],
+      menu: siteOptions.menu || [],
       globals: vars,
     },
   )(...(siteOptions.routes || []));

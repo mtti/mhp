@@ -1,7 +1,7 @@
 import { splitUri } from './splitUri';
 import { isStringArray } from './isStringArray';
 
-export function expectUri(source: string|string[]): string[] {
+export function expectUri(source: unknown): string[] {
   if (Array.isArray(source)) {
     if (!isStringArray(source)) {
       throw new Error('Expected string array');

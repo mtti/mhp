@@ -3,6 +3,8 @@ import { TemplateLoader } from './TemplateLoader';
 import { assetUrl } from './filters/assetUrl';
 import { formatDate } from './filters/formatDate';
 import { url } from './filters/url';
+import { isInActivePath } from './functions/isInActivePath';
+
 
 // Wrap a filter function to print out proper stack trace in case of error
 function wrapFilter(filter: (...args: any[]) => any): (...args: any[]) => any {
@@ -28,6 +30,8 @@ export function createNunjucksEnv(
   env.addFilter('assetUrl', wrapFilter(assetUrl));
   env.addFilter('formatDate', wrapFilter(formatDate));
   env.addFilter('url', wrapFilter(url));
+
+  env.addGlobal('isInActivePath', isInActivePath);
 
   return env;
 }
