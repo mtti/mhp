@@ -1,7 +1,7 @@
-import { MenuItem } from '../types/MenuItem';
+import { MenuItemConfig } from '../types/MenuItemConfig';
 import { resolveActivePath } from './resolveActivePath';
 
-const crumbs: MenuItem[] = [
+const crumbs: MenuItemConfig[] = [
   {
     slug: 'cats',
     title: 'Cats',

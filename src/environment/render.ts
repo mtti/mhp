@@ -3,13 +3,13 @@ import { BuildContext } from '../types/BuildContext';
 import { RenderFunc } from '../types/Environment';
 import { cleanUri } from '../utils/cleanUri';
 import { joinUri } from '../utils/joinUri';
-import { MenuItem } from '../types/MenuItem';
+import { MenuItemConfig } from '../types/MenuItemConfig';
 import { RenderContext, RenderContextKey } from '../types/RenderContext';
 import { resolveActivePath } from '../utils/resolveActivePath';
 
 export const render = (
   env: nunjucks.Environment,
-  menu: readonly MenuItem[],
+  menu: readonly MenuItemConfig[],
 ): RenderFunc => (
   context: BuildContext,
   vars: Record<string, unknown>,

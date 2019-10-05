@@ -1,7 +1,7 @@
-import { MenuItem } from './MenuItem';
+import { MenuItemConfig } from './MenuItemConfig';
 
 export type BuildOptions = {
   templateDirectories?: readonly string[];
-  menu?: readonly MenuItem[];
+  menu?: readonly MenuItemConfig[];
   globals?: Record<string, unknown>;
 };

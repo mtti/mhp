@@ -1,7 +1,7 @@
-import { MenuItem } from '../types/MenuItem';
+import { MenuItemConfig } from '../types/MenuItemConfig';
 import { isInActivePath } from './isInActivePath';
 
-const activePath: MenuItem[] = [
+const activePath: MenuItemConfig[] = [
   { slug: 'first' },
   { slug: 'second' },
   { slug: 'third' },

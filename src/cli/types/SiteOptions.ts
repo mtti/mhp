@@ -1,8 +1,8 @@
 import { Middleware } from '../../types/Middleware';
-import { MenuItem } from '../../types/MenuItem';
+import { MenuItemConfig } from '../../types/MenuItemConfig';
 
 export type SiteOptions = {
   templateDirectories?: readonly string[];
-  menu?: readonly MenuItem[];
+  menu?: readonly MenuItemConfig[];
   routes?: readonly Middleware[];
 };

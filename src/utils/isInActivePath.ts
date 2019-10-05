@@ -1,4 +1,4 @@
-import { MenuItem } from '../types/MenuItem';
+import { MenuItemConfig } from '../types/MenuItemConfig';
 
 /**
  * Check if an URI path is in an active breadcrumb path.
@@ -8,7 +8,7 @@ import { MenuItem } from '../types/MenuItem';
  */
 export function isInActivePath(
   uri: string[],
-  activePath: MenuItem[],
+  activePath: MenuItemConfig[],
 ): boolean {
   const [crumbHead, ...crumbTail] = activePath;
   const [uriHead, ...uriTail] = uri;
