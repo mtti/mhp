@@ -1,7 +1,8 @@
-import { MenuItemConfig } from '../types/MenuItemConfig';
+import { MenuItem } from '../types/MenuItem';
 import { resolveActivePath } from './resolveActivePath';
+import { resolveMenu } from './resolveMenu';
 
-const crumbs: MenuItemConfig[] = [
+const crumbs: MenuItem[] = resolveMenu([
   {
     slug: 'cats',
     title: 'Cats',
@@ -25,8 +26,9 @@ const crumbs: MenuItemConfig[] = [
   {
     slug: 'not-cats',
     title: 'Not cats',
+    children: [],
   },
-];
+]);
 
 describe(resolveActivePath.name, () => {
   it('returns empty array when given an empty path', () => {

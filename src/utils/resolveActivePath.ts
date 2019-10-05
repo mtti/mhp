@@ -1,9 +1,9 @@
-import { MenuItemConfig } from '../types/MenuItemConfig';
+import { MenuItem } from '../types/MenuItem';
 
 export function resolveActivePath(
-  breadcrumbs: readonly MenuItemConfig[],
+  breadcrumbs: readonly MenuItem[],
   [head, ...tail]: readonly string[],
-): MenuItemConfig[] {
+): MenuItem[] {
   const current = breadcrumbs
     .filter((crumb) => crumb.slug && crumb.slug === head)[0];
 
