@@ -1,7 +1,8 @@
-import { Breadcrumb } from '../types/Breadcrumb';
+import { MenuItem } from '../types/MenuItem';
 import { resolveActivePath } from './resolveActivePath';
+import { resolveMenu } from './resolveMenu';
 
-const crumbs: Breadcrumb[] = [
+const crumbs: MenuItem[] = resolveMenu([
   {
     slug: 'cats',
     title: 'Cats',
@@ -25,10 +26,16 @@ const crumbs: Breadcrumb[] = [
   {
     slug: 'not-cats',
     title: 'Not cats',
+    children: [],
   },
-];
+]);
 
 describe(resolveActivePath.name, () => {
+  it('returns empty array when given an empty path', () => {
+    const result = resolveActivePath(crumbs, []);
+    expect(result).toEqual([]);
+  });
+
   it('correctly resolves when all path segments have a breadcrumb', () => {
     const result = resolveActivePath(crumbs, ['cats', 'big', 'lion'])
       .map((crumb) => crumb.title);

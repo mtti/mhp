@@ -16,13 +16,16 @@ import { BuildContext } from './types/BuildContext';
 import { BuildFn } from './types/BuildFn';
 import { BuildOptions } from './types/BuildOptions';
 import { compose } from './middleware/compose';
+import { resolveMenu } from './utils/resolveMenu';
 
 export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
   const opts: BuildOptions = {
     globals: {},
-    breadcrumbs: [],
+    menu: [],
     ...(options || {}),
   };
+
+  const menu = resolveMenu(opts.menu || []);
 
   return async (...middleware: Middleware[]): Promise<void> => {
     // Look up directories
@@ -58,7 +61,7 @@ export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
       renderString: renderString(nunjucksEnv),
       render: render(
         nunjucksEnv,
-        opts.breadcrumbs || [],
+        menu,
       ),
       write: write(outputDirectory, false, writeCallback),
       loadPage: loadPage(pagesDirectory),

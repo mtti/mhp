@@ -1,7 +1,7 @@
-import { Breadcrumb } from './Breadcrumb';
+import { MenuItemConfig } from './MenuItemConfig';
 
 export type BuildOptions = {
   templateDirectories?: readonly string[];
-  breadcrumbs?: readonly Breadcrumb[];
+  menu?: readonly MenuItemConfig[];
   globals?: Record<string, unknown>;
 };

@@ -1,7 +1,7 @@
-import { Breadcrumb } from '../types/Breadcrumb';
+import { MenuItemConfig } from '../types/MenuItemConfig';
 import { isInActivePath } from './isInActivePath';
 
-const activePath: Breadcrumb[] = [
+const activePath: MenuItemConfig[] = [
   { slug: 'first' },
   { slug: 'second' },
   { slug: 'third' },
