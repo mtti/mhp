@@ -12,6 +12,7 @@ export function loadPage(pagesDirectory: string|null): LoadPageFunc {
   }
 
   return async (name: string): Promise<Page> => {
+    const extension = path.extname(name);
     const src = await fs.readFile(path.join(pagesDirectory, name), 'utf8');
     const data = fm<Record<string, unknown>>(src);
 
@@ -23,6 +24,7 @@ export function loadPage(pagesDirectory: string|null): LoadPageFunc {
       template: data.attributes.template
         ? data.attributes.template as string : undefined,
       vars,
+      extension,
     };
   };
 }
