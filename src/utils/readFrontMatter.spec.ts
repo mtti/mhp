@@ -65,6 +65,17 @@ describe(readFrontMatter.name, () => {
       expect(result.body).toMatch(/Lorem ipsum/);
     });
 
+    it('returns body but no attributes from a markdown file with no attributes', async (): Promise<void> => {
+      const result = await readFrontMatter(
+        getPath('noAttributes.md'),
+        '---',
+        '---',
+        true,
+      );
+      expect(result.attributes).toEqual({});
+      expect(result.body).toMatch(/Lorem ipsum/);
+    });
+
     it('returns attributes an no body with unclosed attributes', async (): Promise<void> => {
       const result = await readFrontMatter(
         getPath('unclosedAttributes.html'),

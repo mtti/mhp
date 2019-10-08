@@ -47,6 +47,7 @@ export function readFrontMatter(
           state = 'collectingFrontMatter';
         } else if (readBody) {
           state = 'collectingBody';
+          bodyLines.push(line);
         } else {
           state = 'ended';
           inputStream.destroy();
