@@ -1,5 +1,6 @@
 import { BuildContext } from './BuildContext';
 import { Page } from './Page';
+import { TemplateSource } from './TemplateSource';
 
 export type RenderStringFunc = (
   str: string,
@@ -13,7 +14,7 @@ export type LoadPageFunc = (
 export type RenderFunc = (
   context: BuildContext,
   vars: Record<string, unknown>,
-  template: string,
+  template: TemplateSource,
 ) => string;
 
 export type WriteOptions = {

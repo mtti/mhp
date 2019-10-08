@@ -1,8 +1,8 @@
 import path from 'path';
-import fs from 'fs-extra';
-import fm from 'front-matter';
 import { LoadPageFunc } from '../types/Environment';
 import { Page } from '../types/Page';
+import { chooseFile } from '../utils/chooseFile';
+import { FrontMatterDocument, readFrontMatter } from '../utils/readFrontMatter';
 
 export function loadPage(pagesDirectory: string|null): LoadPageFunc {
   if (!pagesDirectory) {
@@ -12,17 +12,49 @@ export function loadPage(pagesDirectory: string|null): LoadPageFunc {
   }
 
   return async (name: string): Promise<Page> => {
-    const src = await fs.readFile(path.join(pagesDirectory, name), 'utf8');
-    const data = fm<Record<string, unknown>>(src);
+    // If the page name has no extension, try some possibilities
+    let possibleFilenames: string[];
+    if (path.extname(name)) {
+      possibleFilenames = [name];
+    } else {
+      possibleFilenames = [
+        `${name}.md`,
+        `${name}.html`,
+      ];
+    }
+
+    // Find the first filename option that exists
+    const fullPath = await chooseFile(pagesDirectory, possibleFilenames);
+    if (!fullPath) {
+      throw new Error(`Page does not exist: ${name}`);
+    }
+    const extension = path.extname(fullPath);
+
+    let data: FrontMatterDocument;
+    if (extension === '.md') {
+      data = await readFrontMatter(fullPath, '---', '---', true);
+    } else if (extension === '.html') {
+      data = await readFrontMatter(fullPath, '<!--', '-->', true);
+    } else {
+      throw new Error(`Unsupported page extension: ${extension}`);
+    }
 
     const vars = data.attributes.vars
       ? (data.attributes.vars as Record<string, unknown>) : {};
 
+    if (extension === '.html') {
+      return {
+        template: { content: data.body },
+        vars,
+        extension,
+      };
+    }
+
     return {
       body: data.body,
-      template: data.attributes.template
-        ? data.attributes.template as string : undefined,
+      template: { name: (data.attributes.template as string) || 'page.html' },
       vars,
+      extension,
     };
   };
 }
