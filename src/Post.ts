@@ -1,6 +1,4 @@
 import cheerio from 'cheerio';
-import fs from 'fs-extra';
-import fm from 'front-matter';
 import { DateTime } from 'luxon';
 import marked from 'marked';
 import nunjucks from 'nunjucks';
@@ -8,6 +6,7 @@ import slugify from 'slugify';
 import { FileInfo } from './types/FileInfo';
 import { expectDateTime } from './utils/expectDateTime';
 import { expectUuidString } from './utils/expectUuidString';
+import { readFrontMatter } from './utils/readFrontMatter';
 
 export class Post {
   /**
@@ -16,8 +15,7 @@ export class Post {
    * @param file
    */
   static async load(file: FileInfo): Promise<Post> {
-    const source = await fs.readFile(file.path, 'utf8');
-    const data = fm(source);
+    const data = await readFrontMatter(file.path, '---', '---');
     return new Post(
       file,
       data.attributes as Record<string, unknown>,

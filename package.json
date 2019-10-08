@@ -59,7 +59,6 @@
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",
     "feed": "^4.0.0",
-    "front-matter": "^3.0.2",
     "fs-extra": "^8.1.0",
     "luxon": "^1.19.3",
     "marked": "^0.7.0",
