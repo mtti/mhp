@@ -54,7 +54,7 @@
   },
   "dependencies": {
     "@mtti/funcs": "^2.0.0",
-    "@mtti/lines": "mtti/lines",
+    "@mtti/lines": "^1.0.0",
     "@types/uuid": "^3.4.5",
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",
