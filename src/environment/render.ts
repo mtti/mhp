@@ -8,6 +8,7 @@ import { MenuItem } from '../types/MenuItem';
 import { RenderContext, RenderContextKey } from '../types/RenderContext';
 import { resolveActivePath } from '../utils/resolveActivePath';
 import { arraysEqual } from '../utils/arraysEqual';
+import { TemplateSource } from '../types/TemplateSource';
 
 export const render = (
   env: nunjucks.Environment,
@@ -15,7 +16,7 @@ export const render = (
 ): RenderFunc => (
   context: BuildContext,
   vars: Record<string, unknown>,
-  template: string,
+  template: TemplateSource,
 ): string => {
   let activePath = resolveActivePath(menu, context.uri);
 
@@ -41,16 +42,23 @@ export const render = (
     activePath,
   };
 
-  return env.render(
-    template,
-    {
-      ...context.vars,
-      ...vars,
-      front: context.uri.length === 0,
-      uri: joinUri(cleanUri(context.uri)),
-      menu,
-      breadcrumbs: renderContext.activePath,
-      [RenderContextKey]: renderContext,
-    },
-  );
+  const finalVars = {
+    ...context.vars,
+    ...vars,
+    front: context.uri.length === 0,
+    uri: joinUri(cleanUri(context.uri)),
+    menu,
+    breadcrumbs: renderContext.activePath,
+    [RenderContextKey]: renderContext,
+  };
+
+  if (template.name) {
+    return env.render(template.name, finalVars);
+  }
+
+  if (template.content) {
+    return env.renderString(template.content, finalVars);
+  }
+
+  throw new Error('Either template name or content is required');
 };

@@ -15,12 +15,32 @@ export function page(name: string): Middleware {
     const vars = {
       ...context.vars,
       ...data.vars,
-      body: new nunjucks.runtime.SafeString(marked(data.body)),
-      ...globals,
     };
-    const template = data.template || 'page.html';
 
-    await write(context.uri, render(context, vars, template));
+    let rendered: string;
+    if (data.template.name && data.body) {
+      let body: nunjucks.runtime.SafeString;
+      if (data.extension === '.md') {
+        body = new nunjucks.runtime.SafeString(marked(data.body));
+      } else {
+        throw new Error(`Unsupported page extension: ${data.extension}`);
+      }
+      rendered = render(
+        context,
+        { ...vars, body, ...globals },
+        data.template,
+      );
+    } else if (data.template.content) {
+      rendered = render(
+        context,
+        { ...vars, ...globals },
+        data.template,
+      );
+    } else {
+      throw new Error(`No template name or content found for page ${name}`);
+    }
+
+    await write(context.uri, rendered);
 
     return context;
   };

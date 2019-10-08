@@ -110,7 +110,7 @@ export function indexes(
         write(currentPage.uri, render(
           context,
           { pager, ...globals },
-          opts.template,
+          { name: opts.template },
         )),
       );
     }
