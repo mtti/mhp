@@ -18,3 +18,19 @@ Under early development, the API is likely to change drastically before version 
 
 * [mhp-example](https://github.com/mtti/mhp-example) A full example MHP site.
 * [ssup](https://github.com/mtti/ssup) A companion utility from the same author for uploading static sites to S3.
+
+## License
+
+Copyright &copy;2019 Matti Hiltunen, licensed under the Apache License, version 2.0. See [LICENSE](https://github.com/mtti/mhp/blob/master/LICENSE) for details.
+
+Contains code from [nunjucks-markdown](https://github.com/zephraph/nunjucks-markdown). Copyright (c) 2014 Justin Bennett
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
