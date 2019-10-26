@@ -13,6 +13,11 @@ import { expectString } from '../../utils/expectString';
 export function assetUrl(this: NunjucksContext, input: string): string {
   let filename = input;
 
+  // Return absolute URLs unchanged
+  if (filename.match(/^[a-z]+:\/\/.+/)) {
+    return filename;
+  }
+
   const assetManifest = this.ctx.assetManifest
     ? expectStringDictionary(this.ctx.assetManifest) : {};
   if (input in assetManifest) {
