@@ -1,4 +1,5 @@
 import path from 'path';
+import { fromEntries } from '@mtti/funcs';
 import { loadPosts } from './loadPosts';
 import { Environment } from './types/Environment';
 import { render } from './environment/render';
@@ -22,6 +23,7 @@ export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
   const opts: BuildOptions = {
     globals: {},
     menu: [],
+    authors: [],
     ...(options || {}),
   };
 
@@ -68,7 +70,12 @@ export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
       globals: opts.globals || {},
     };
 
+    const authorMap = fromEntries(
+      (opts.authors || []).map((author) => [author.id, author]),
+    );
+
     const context: BuildContext = {
+      authors: authorMap,
       uri: [],
       posts,
       vars: {
