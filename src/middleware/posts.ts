@@ -28,15 +28,19 @@ export function posts(options?: PostOptions): Middleware {
       post.uri = context.uri;
     }
 
+    // Fetch post author metadata using value of the `author` attribute as key
+    const author = typeof post.attributes.author === 'string'
+      ? context.authors[post.attributes.author] : null;
+
     const vars = {
       post,
       title: post.attributes.title,
-      ...globals,
+      author,
     };
 
     await write(
       post.uri,
-      render(context, vars, { name: 'post.html' }),
+      render(context, { ...vars, ...globals }, { name: 'post.html' }),
       {
         contentType: 'text/html',
       },

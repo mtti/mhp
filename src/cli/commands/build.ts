@@ -29,6 +29,7 @@ export async function build(
   await buildFn(
     baseDirectory,
     {
+      authors: siteOptions.authors || [],
       templateDirectories: siteOptions.templateDirectories || [],
       menu: siteOptions.menu || [],
       globals: vars,
