@@ -1,6 +1,6 @@
 export * from './branch';
 export * from './compose';
-export * from './feed';
+export * from './rss';
 export * from './filter';
 export * from './indexes';
 export * from './posts';
