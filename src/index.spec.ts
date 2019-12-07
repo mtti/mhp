@@ -1,1 +1,3 @@
-it('always passes', () => {});
+it('always passes', () => {
+  // Do nothing
+});
