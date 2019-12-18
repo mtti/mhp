@@ -32,7 +32,7 @@
     "!lib/**/*.spec.js.map"
   ],
   "devDependencies": {
-    "@mtti/eslint-config-typescript": "1.0.0",
+    "@mtti/eslint-config-typescript": "2.0.0",
     "@types/cheerio": "0.22.15",
     "@types/express": "4.17.2",
     "@types/fs-extra": "8.0.1",
