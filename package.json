@@ -50,7 +50,7 @@
     "eslint-plugin-import": "2.19.1",
     "jest": "24.9.0",
     "ts-jest": "24.2.0",
-    "typescript": "3.7.3"
+    "typescript": "3.6.4"
   },
   "dependencies": {
     "@mtti/funcs": "^2.0.0",
