@@ -20,12 +20,14 @@ export class TemplateLoader implements nunjucks.ILoader {
   }
 
   private find(name: string): string {
+    const paths: string[] = [];
     for (const directory of this._directories) {
       const fullPath = path.join(directory, name);
+      paths.push(fullPath);
       if (fs.existsSync(fullPath)) {
         return fullPath;
       }
     }
-    throw new Error(`Template not found: ${name}`);
+    throw new Error(`Template not found: ${name} (tried ${paths.join(' ')})`);
   }
 }
