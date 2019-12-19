@@ -43,7 +43,7 @@ export class Post {
 
   get uri(): readonly string[] {
     if (!this._uri) {
-      throw new Error('Tried to get canonical URI for a post that doesn\'t have one');
+      throw new Error(`Tried to get canonical URI for post '${this._attributes.slug}' (${this.uuid}) that doesn't have one`);
     }
     return [...this._uri];
   }
@@ -111,5 +111,12 @@ export class Post {
 
   async getHtml(): Promise<string> {
     return marked(await this.getBody());
+  }
+
+  set(values: Record<string, unknown>): void {
+    this._attributes = {
+      ...this._attributes,
+      ...values,
+    };
   }
 }

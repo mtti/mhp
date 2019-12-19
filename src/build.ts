@@ -18,12 +18,17 @@ import { BuildFn } from './types/BuildFn';
 import { BuildOptions } from './types/BuildOptions';
 import { compose } from './middleware/compose';
 import { resolveMenu } from './utils/resolveMenu';
+import { preprocessPosts } from './utils/preprocessPosts';
+import { extractDateComponents } from './preprocessors/extractDateComponents';
 
 export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
   const opts: BuildOptions = {
     globals: {},
     menu: [],
     authors: [],
+    preprocessors: [
+      extractDateComponents('publishedAt'),
+    ],
     ...(options || {}),
   };
 
@@ -36,7 +41,8 @@ export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
     const pagesDirectory = await checkDirectory(baseDirectory, 'pages');
 
     // Load posts
-    const posts = postsDirectory ? await loadPosts(postsDirectory) : [];
+    let posts = postsDirectory ? await loadPosts(postsDirectory) : [];
+    posts = await preprocessPosts(posts, (opts.preprocessors || []));
 
     // Create nunjucks environment
     const templateDirectories = await checkDirectories([
