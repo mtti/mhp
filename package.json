@@ -29,7 +29,8 @@
     "lib",
     "!lib/**/*.spec.js",
     "!lib/**/*.spec.d.ts",
-    "!lib/**/*.spec.js.map"
+    "!lib/**/*.spec.js.map",
+    "templates/**/*.html"
   ],
   "devDependencies": {
     "@mtti/eslint-config-typescript": "2.0.0",
