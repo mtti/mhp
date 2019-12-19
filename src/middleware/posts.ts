@@ -40,7 +40,7 @@ export function posts(options?: PostOptions): Middleware {
 
     await write(
       post.uri,
-      render(context, { ...vars, ...globals }, { name: 'post.html' }),
+      render(context, { ...vars, ...globals }, { name: 'pages/post.html' }),
       {
         contentType: 'text/html',
       },

@@ -50,9 +50,11 @@ export function loadPage(pagesDirectory: string|null): LoadPageFunc {
       };
     }
 
+    const templateName = (data.attributes.template as string)
+      || 'pages/page.html';
     return {
       body: data.body,
-      template: { name: (data.attributes.template as string) || 'page.html' },
+      template: { name: templateName },
       vars,
       extension,
     };

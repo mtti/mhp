@@ -49,7 +49,7 @@ export function indexes(
       firstPageFilename: 'index.html',
       filenameTemplate: 'index-{{page}}.html',
       postsPerPage: 15,
-      template: 'post-index.html',
+      template: 'pages/post-index.html',
       ...(options || {}),
     };
 
