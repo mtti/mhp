@@ -30,5 +30,6 @@ export const resolveMenu = (
     title: item.title || item.slug || '',
     uri: itemUri,
     children: item.children ? resolveMenu(item.children, itemUri) : [],
+    attributes: item.attributes || {},
   };
 });

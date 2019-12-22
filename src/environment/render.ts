@@ -45,6 +45,7 @@ export const render = (
         slug,
         title: vars.title as string || slug,
         children: [],
+        attributes: {},
       },
     ];
   }
