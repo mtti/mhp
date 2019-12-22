@@ -3,12 +3,16 @@ import nunjucks from 'nunjucks';
 import { BuildContext } from '../types/BuildContext';
 import { RenderFunc } from '../types/Environment';
 import { cleanUri } from '../utils/cleanUri';
+import { splitUri } from '../utils/splitUri';
 import { joinUri } from '../utils/joinUri';
 import { MenuItem } from '../types/MenuItem';
 import { RenderContext, RenderContextKey } from '../types/RenderContext';
 import { resolveActivePath } from '../utils/resolveActivePath';
 import { arraysEqual } from '../utils/arraysEqual';
 import { TemplateSource } from '../types/TemplateSource';
+import { getSubMenu } from '../utils/getSubMenu';
+import { expectString } from '../utils/expectString';
+import { stripActivePath } from '../utils/stripActivePath';
 
 export const render = (
   env: nunjucks.Environment,
@@ -18,6 +22,13 @@ export const render = (
   vars: Record<string, unknown>,
   template: TemplateSource,
 ): string => {
+  const renderVars = { ...context.vars, ...vars };
+
+  // Allow setting a custom menu root with the menuRoot variable
+  const frontUri: string[] = renderVars.menuRoot ?
+    splitUri(expectString(renderVars.menuRoot)) : [];
+  const menuRoot = frontUri.length > 0 ? getSubMenu(frontUri, menu) : menu;
+
   let activePath = resolveActivePath(menu, context.uri);
 
   // Add current page to the active path if it's not already there
@@ -42,13 +53,16 @@ export const render = (
     activePath,
   };
 
+  const frontUriStr = joinUri(frontUri);
+  const currentUri = joinUri(cleanUri(context.uri));
+
   const finalVars = {
-    ...context.vars,
-    ...vars,
-    front: context.uri.length === 0,
-    uri: joinUri(cleanUri(context.uri)),
-    menu,
-    breadcrumbs: renderContext.activePath,
+    ...renderVars,
+    front: frontUriStr === currentUri,
+    uri: currentUri,
+    menu: menuRoot,
+    frontUri: frontUriStr,
+    breadcrumbs: stripActivePath(frontUri, renderContext.activePath),
     [RenderContextKey]: renderContext,
   };
 

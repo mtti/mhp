@@ -1,7 +1,7 @@
-import { MenuItemConfig } from './MenuItemConfig';
+import { MenuItem } from './MenuItem';
 
 export const RenderContextKey = Symbol('RenderContextKey');
 
 export type RenderContext = {
-  activePath: MenuItemConfig[];
+  activePath: MenuItem[];
 };
