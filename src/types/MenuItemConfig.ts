@@ -1,5 +1,6 @@
 export type MenuItemConfig = {
-  readonly slug: string;
+  readonly uri?: string;
+  readonly slug?: string;
   readonly title?: string;
   readonly children?: readonly MenuItemConfig[];
 };

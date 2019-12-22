@@ -1,11 +1,11 @@
-import { MenuItemConfig } from '../types/MenuItemConfig';
+import { MenuItem } from '../types/MenuItem';
 import { isInActivePath } from './isInActivePath';
 
-const activePath: MenuItemConfig[] = [
+const activePath: MenuItem[] = [
   { slug: 'first' },
   { slug: 'second' },
   { slug: 'third' },
-];
+] as MenuItem[];
 
 describe(isInActivePath.name, () => {
   it('returns true when entire URI is in active path', () => {
