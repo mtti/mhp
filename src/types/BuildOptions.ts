@@ -11,5 +11,5 @@ export type BuildOptions = {
   menu?: readonly MenuItemConfig[];
   globals?: Record<string, unknown>;
   preprocessors?: readonly PreprocessorFn[];
-  strings?: Record<string, Record<string, string>>;
+  strings?: Array<Record<string, Record<string, string>>>;
 };

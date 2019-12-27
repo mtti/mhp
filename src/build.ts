@@ -20,6 +20,7 @@ import { compose } from './middleware/compose';
 import { resolveMenu } from './utils/resolveMenu';
 import { preprocessPosts } from './utils/preprocessPosts';
 import { extractDateComponents } from './preprocessors/extractDateComponents';
+import { mergeTranslations } from './utils/mergeTranslations';
 
 export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
   const opts: BuildOptions = {
@@ -29,7 +30,7 @@ export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
     preprocessors: [
       extractDateComponents('publishedAt'),
     ],
-    strings: {},
+    strings: [],
     ...(options || {}),
   };
 
@@ -88,9 +89,7 @@ export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
       vars: {
         assetManifest,
       },
-      strings: {
-        ...(opts.strings || {}),
-      },
+      strings: mergeTranslations(opts.strings || []),
     };
 
     await compose(...middleware)(env, context);
