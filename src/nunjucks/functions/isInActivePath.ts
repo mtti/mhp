@@ -7,7 +7,7 @@ export function isInActivePath(
   this: NunjucksContext,
   uri: string|string[],
 ): boolean {
-  const renderContext = getRenderContext(this);
+  const renderContext = getRenderContext(this.ctx);
   const checkedUri = expectUri(uri);
 
   return isInActivePathFn(checkedUri, renderContext.activePath);

@@ -6,7 +6,7 @@ import { cleanUri } from '../utils/cleanUri';
 import { splitUri } from '../utils/splitUri';
 import { joinUri } from '../utils/joinUri';
 import { MenuItem } from '../types/MenuItem';
-import { RenderContext, RenderContextKey } from '../types/RenderContext';
+import { RenderContext } from '../types/RenderContext';
 import { resolveActivePath } from '../utils/resolveActivePath';
 import { arraysEqual } from '../utils/arraysEqual';
 import { TemplateSource } from '../types/TemplateSource';
@@ -52,6 +52,7 @@ export const render = (
 
   const renderContext: RenderContext = {
     activePath,
+    strings: context.strings,
   };
 
   const frontUriStr = joinUri(frontUri);
@@ -64,7 +65,8 @@ export const render = (
     menu: menuRoot,
     frontUri: frontUriStr,
     breadcrumbs: stripActivePath(frontUri, renderContext.activePath),
-    [RenderContextKey]: renderContext,
+    strings: context.strings,
+    _renderContext: renderContext,
   };
 
   if (template.name) {

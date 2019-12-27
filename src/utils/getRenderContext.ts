@@ -1,4 +1,4 @@
-import { RenderContext, RenderContextKey } from '../types/RenderContext';
+import { RenderContext } from '../types/RenderContext';
 
 /**
  * Get a RenderContext from a nunjucks context object.
@@ -6,7 +6,8 @@ import { RenderContext, RenderContextKey } from '../types/RenderContext';
  * @param context
  */
 export function getRenderContext(context: any): RenderContext {
-  const renderContext = context[RenderContextKey] as RenderContext|undefined;
+  // eslint-disable-next-line no-underscore-dangle
+  const renderContext = context._renderContext as RenderContext|undefined;
   if (!renderContext) {
     throw new Error('Expected render context');
   }

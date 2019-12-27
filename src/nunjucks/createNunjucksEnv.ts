@@ -4,6 +4,7 @@ import { assetUrl } from './filters/assetUrl';
 import { formatDate } from './filters/formatDate';
 import { url } from './filters/url';
 import { isInActivePath } from './functions/isInActivePath';
+import { t } from './functions/t';
 import { MarkdownExtension } from './MarkdownExtension';
 
 // Wrap a filter function to print out proper stack trace in case of error
@@ -32,6 +33,7 @@ export function createNunjucksEnv(
   env.addFilter('url', wrapFilter(url));
 
   env.addGlobal('isInActivePath', isInActivePath);
+  env.addGlobal('t', t);
 
   env.addExtension('MarkdownExtension', new MarkdownExtension());
 

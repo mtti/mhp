@@ -10,4 +10,5 @@ export type SiteOptions = {
   templateDirectories?: readonly string[];
   menu?: readonly MenuItemConfig[];
   routes?: readonly Middleware[];
+  strings?: Record<string, Record<string, string>>;
 };

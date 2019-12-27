@@ -29,6 +29,7 @@ export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
     preprocessors: [
       extractDateComponents('publishedAt'),
     ],
+    strings: {},
     ...(options || {}),
   };
 
@@ -86,6 +87,9 @@ export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
       posts,
       vars: {
         assetManifest,
+      },
+      strings: {
+        ...(opts.strings || {}),
       },
     };
 

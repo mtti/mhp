@@ -6,4 +6,5 @@ export type BuildContext = {
   readonly uri: readonly string[];
   readonly posts: readonly Post[];
   readonly vars: Record<string, unknown>;
+  readonly strings: Record<string, Record<string, string>>;
 };

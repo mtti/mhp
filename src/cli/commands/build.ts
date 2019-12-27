@@ -33,6 +33,7 @@ export async function build(
       templateDirectories: siteOptions.templateDirectories || [],
       menu: siteOptions.menu || [],
       globals: vars,
+      strings: siteOptions.strings,
     },
   )(...(siteOptions.routes || []));
 }

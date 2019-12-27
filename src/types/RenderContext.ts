@@ -1,7 +1,6 @@
 import { MenuItem } from './MenuItem';
 
-export const RenderContextKey = Symbol('RenderContextKey');
-
 export type RenderContext = {
   activePath: MenuItem[];
+  strings: Record<string, Record<string, string>>;
 };
