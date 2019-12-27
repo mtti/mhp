@@ -17,12 +17,12 @@ export function t(
 
   const strings = renderContext.strings[lang];
   if (!strings) {
-    return key;
+    throw new Error(`Missing translation: ${key} in language '${lang}'`);
   }
 
   const result = strings[key];
   if (!result) {
-    return key;
+    throw new Error(`Missing translation: ${key} in language '${lang}'`);
   }
 
   return result;
