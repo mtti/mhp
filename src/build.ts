@@ -63,8 +63,7 @@ export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
     // Load asset manifest if it exists
     const assetManifest = expectStringDictionary(await tryReadJson(path.join(
       outputDirectory,
-      'assets',
-      'manifest.json',
+      '.manifest.json',
     )));
 
     const env: Environment = {

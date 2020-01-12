@@ -26,5 +26,5 @@ export function assetUrl(this: NunjucksContext, input: string): string {
 
   const baseUrl = ensureNotEndsWith(expectString(this.ctx.baseUrl), '/');
 
-  return `${baseUrl}/assets/${filename}`;
+  return `${baseUrl}/${filename}`;
 }
