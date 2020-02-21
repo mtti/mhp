@@ -2,5 +2,8 @@
   "extends": [
     "config:base"
   ],
+  "schedule": [
+    "on friday"
+  ],
   "automerge": true
 }
