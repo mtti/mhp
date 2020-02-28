@@ -4,7 +4,7 @@ import fs from 'fs-extra';
 import minimist from 'minimist';
 import slugify from 'slugify';
 import sanitizeFilename from 'sanitize-filename';
-import uuid4 from 'uuid/v4';
+import { v4 as uuid4 } from 'uuid';
 import YAML from 'yaml';
 import { ensureDirectory } from '../../utils/ensureDirectory';
 import { fileExists } from '../../utils/fileExists';
