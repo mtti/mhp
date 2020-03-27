@@ -1,0 +1,19 @@
+# Build an run tests on push to any branch
+
+name: push
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Initialize Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.13.0'
+
+      - run: npm run build
+      - run: npm run test
