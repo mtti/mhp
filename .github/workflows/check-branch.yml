@@ -1,0 +1,24 @@
+# Build and run tests on push to any branch except master
+
+name: check-branch
+
+on:
+  push:
+    branches:
+      - '*'
+      - '!master'
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Initialize Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.13.0'
+
+      - run: npm install
+      - run: npm run build
+      - run: npm run test
