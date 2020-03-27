@@ -1,8 +1,12 @@
-# Build an run tests on push to any branch
+# Build and run tests on push to any branch except master
 
-name: push
+name: check
 
-on: [push]
+on:
+  push:
+    branches:
+      - '*'
+      - '!master'
 
 jobs:
   build:
