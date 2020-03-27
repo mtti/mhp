@@ -5,7 +5,7 @@ name: check-branch
 on:
   push:
     branches:
-      - '*'
+      - '**'
       - '!master'
 
 jobs:
