@@ -1,4 +1,4 @@
-[![Written in TypeScript](https://flat.badgen.net/badge/icon/typescript?icon=typescript&label)](http://www.typescriptlang.org/) [![npm](https://flat.badgen.net/npm/v/@mtti/mhp?icon=npm)](https://www.npmjs.com/package/@mtti/mhp) [![Travis](https://flat.badgen.net/travis/mtti/mhp?icon=travis)](https://travis-ci.org/mtti/mhp) [![License](https://flat.badgen.net/github/license/mtti/mhp)](https://github.com/mtti/mhp/blob/master/LICENSE)
+[![Written in TypeScript](https://flat.badgen.net/badge/icon/typescript?icon=typescript&label)](http://www.typescriptlang.org/) [![npm](https://flat.badgen.net/npm/v/@mtti/mhp?icon=npm)](https://www.npmjs.com/package/@mtti/mhp) [![License](https://flat.badgen.net/github/license/mtti/mhp)](https://github.com/mtti/mhp/blob/master/LICENSE)
 
 A static website generator built in TypeScript.
 
