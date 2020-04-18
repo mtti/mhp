@@ -5,5 +5,11 @@
   "schedule": [
     "on friday"
   ],
-  "automerge": true
+  "automerge": true,
+  "packageRules": [
+    {
+      "packagePatterns": ["yaml"],
+      "enabled": false
+    }
+  ]
 }
