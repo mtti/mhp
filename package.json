@@ -17,6 +17,7 @@
     "jest": "jest --config ./jest.config.json",
     "lint": "eslint 'src/**/*.ts'",
     "lint:fix": "eslint --fix 'src/**/*.ts'",
+    "prepack": "npm run build",
     "prepublishOnly": "npm run test",
     "setup": "npm install",
     "test": "npm run lint && npm run jest",
