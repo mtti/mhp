@@ -12,7 +12,7 @@ import { arraysEqual } from '../utils/arraysEqual';
 import { TemplateSource } from '../types/TemplateSource';
 import { getSubMenu } from '../utils/getSubMenu';
 import { expectString } from '../utils/expectString';
-import { stripActivePath } from '../utils/stripActivePath';
+import { removeInvisibleMenuItems } from '../utils/removeInvisibleMenuItems';
 
 export const render = (
   env: nunjucks.Environment,
@@ -36,6 +36,21 @@ export const render = (
   const notAlreadyInActivePath = (activePath.length === 0
     || !arraysEqual(lastOf(activePath).uri, cleanUri(context.uri)));
 
+  // Add dummy root item if the active path is empty
+  if (activePath.length === 0) {
+    activePath = [
+      {
+        uri: frontUri,
+        slug: '',
+        title: renderVars.siteTitle as string,
+        breadcrumbTitle: renderVars.siteTitle as string,
+        children: [],
+        visible: true,
+        attributes: {},
+      },
+    ];
+  }
+
   if (isNotRoot && notAlreadyInActivePath) {
     const slug = lastOf(context.uri);
     activePath = [
@@ -44,7 +59,9 @@ export const render = (
         uri: context.uri,
         slug,
         title: vars.title as string || slug,
+        breadcrumbTitle: vars.title as string || slug,
         children: [],
+        visible: true,
         attributes: {},
       },
     ];
@@ -62,9 +79,9 @@ export const render = (
     ...renderVars,
     front: frontUriStr === currentUri,
     uri: currentUri,
-    menu: menuRoot,
+    menu: removeInvisibleMenuItems(menuRoot),
     frontUri: frontUriStr,
-    breadcrumbs: stripActivePath(frontUri, renderContext.activePath),
+    breadcrumbs: renderContext.activePath,
     strings: context.strings,
     _renderContext: renderContext,
   };

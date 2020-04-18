@@ -25,10 +25,14 @@ export const resolveMenu = (
     throw new Error('Menu item must have either a slug or an URI');
   }
 
+  const title = item.title || item.slug || '';
+
   return {
     slug: item.slug,
-    title: item.title || item.slug || '',
+    title,
+    breadcrumbTitle: item.breadcrumbTitle || title,
     uri: itemUri,
+    visible: item.visible !== false,
     children: item.children ? resolveMenu(item.children, itemUri) : [],
     attributes: item.attributes || {},
   };
