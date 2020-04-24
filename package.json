@@ -61,7 +61,7 @@
     "feed": "^4.1.0",
     "fs-extra": "^9.0.0",
     "luxon": "^1.23.0",
-    "marked": "^0.8.2",
+    "marked": "^1.0.0",
     "mime-types": "^2.1.26",
     "minimist": "^1.2.5",
     "nunjucks": "^3.2.1",
