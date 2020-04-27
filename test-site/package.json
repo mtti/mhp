@@ -6,8 +6,8 @@
   "main": "index.js",
   "scripts": {
     "build": "rimraf dist && mhp",
-    "snapshot": "node test/scripts.js save",
-    "compare": "node test/scripts.js compare",
+    "snapshot": "rimraf snapshot && mhp --out ./snapshot",
+    "compare": "diff -r snapshot/ dist/",
     "test": "npm run build && npm run compare"
   },
   "devDependencies": {
