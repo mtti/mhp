@@ -22,3 +22,10 @@ jobs:
       - run: npm install
       - run: npm run build
       - run: npm run test
+
+      - name: Install test site
+        working-directory: ./test-site
+        run: npm install
+      - name: Snapshot test
+        working-directory: ./test-site
+        run: npm run test
