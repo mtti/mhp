@@ -12,4 +12,5 @@ export type BuildOptions = {
   globals?: Record<string, unknown>;
   preprocessors?: readonly PreprocessorFn[];
   strings?: Array<Record<string, Record<string, string>>>;
+  outputDirectory?: string;
 };
