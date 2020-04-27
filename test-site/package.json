@@ -1,0 +1,19 @@
+{
+  "name": "@mtti/mhp-test-site",
+  "private": true,
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rimraf dist && mhp",
+    "snapshot": "rimraf snapshot && mhp --out ./snapshot",
+    "compare": "diff -r snapshot/ dist/",
+    "test": "npm run build && npm run compare"
+  },
+  "devDependencies": {
+    "@mtti/mhp": "file:../"
+  },
+  "dependencies": {
+    "rimraf": "^3.0.2"
+  }
+}

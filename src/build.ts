@@ -21,16 +21,18 @@ import { resolveMenu } from './utils/resolveMenu';
 import { preprocessPosts } from './utils/preprocessPosts';
 import { extractDateComponents } from './preprocessors/extractDateComponents';
 import { mergeTranslations } from './utils/mergeTranslations';
+import { AuthorConfig } from './types/AuthorConfig';
 
 export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
-  const opts: BuildOptions = {
+  const opts = {
     globals: {},
     menu: [],
-    authors: [],
+    authors: [] as readonly AuthorConfig[],
     preprocessors: [
       extractDateComponents('publishedAt'),
     ],
     strings: [],
+    outputDirectory: path.join(baseDirectory, 'dist'),
     ...(options || {}),
   };
 
@@ -39,7 +41,7 @@ export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
   return async (...middleware: Middleware[]): Promise<void> => {
     // Look up directories
     const postsDirectory = await checkDirectory(baseDirectory, 'posts');
-    const outputDirectory = await ensureDirectory(baseDirectory, 'dist');
+    const outputDirectory = await ensureDirectory(opts.outputDirectory);
     const pagesDirectory = await checkDirectory(baseDirectory, 'pages');
 
     // Load posts

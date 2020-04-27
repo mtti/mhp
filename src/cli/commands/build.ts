@@ -23,6 +23,12 @@ export async function build(
     = args.var ? toArray(args.var as string) : [];
   const vars = parsePairs(varPairs);
 
+  // Override output directory with --out
+  let outputDirectory: string | undefined;
+  if (args.out) {
+    outputDirectory = path.resolve(baseDirectory, args.out);
+  }
+
   // eslint-disable-next-line
   const siteOptions = require(rcFile) as SiteOptions;
 
@@ -34,6 +40,7 @@ export async function build(
       menu: siteOptions.menu || [],
       globals: vars,
       strings: siteOptions.strings,
+      ...(outputDirectory ? { outputDirectory } : {}),
     },
   )(...(siteOptions.routes || []));
 }
