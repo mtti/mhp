@@ -11,10 +11,13 @@ export function formatDate(
     throw new Error('Expected DateTime instance');
   }
 
+  const zone = this.ctx.timeZone ? expectString(this.ctx.timeZone) : 'UTC';
+  const rezoned = input.setZone(zone);
+
   const formatString = format ? expectString(format) : null;
   const dateFormat = this.ctx.dateFormat
     ? expectString(this.ctx.dateFormat) : null;
 
   const useFormat = formatString || dateFormat || 'yyyy-MM-dd';
-  return input.toFormat(useFormat);
+  return rezoned.toFormat(useFormat);
 }
