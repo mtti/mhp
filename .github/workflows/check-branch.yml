@@ -19,11 +19,14 @@ jobs:
         with:
           node-version: '12.13.0'
 
-      - run: npm install
-      - run: npm run build
-      - run: npm run test
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Run tests
+        run: npm run test
 
-      - name: Install test site
+      - name: Prepare snapshot test
         working-directory: ./test-site
         run: npm install
       - name: Snapshot test
