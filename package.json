@@ -54,7 +54,7 @@
     "typescript": "3.8.3"
   },
   "dependencies": {
-    "@mtti/funcs": "^2.0.0",
+    "@mtti/funcs": "^2.1.0",
     "@mtti/lines": "^1.0.0",
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",
@@ -62,12 +62,12 @@
     "fs-extra": "^9.0.0",
     "luxon": "^1.23.0",
     "marked": "^1.0.0",
-    "mime-types": "^2.1.26",
+    "mime-types": "^2.1.27",
     "minimist": "^1.2.5",
     "nunjucks": "^3.2.1",
     "sanitize-filename": "^1.6.3",
     "slugify": "^1.4.0",
     "uuid": "^8.0.0",
-    "yaml": "1.9.0"
+    "yaml": "1.9.2"
   }
 }
