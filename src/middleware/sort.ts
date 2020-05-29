@@ -1,5 +1,6 @@
 import { Post } from '../Post';
 import { BuildContext } from '../types/BuildContext';
+import { Environment } from '../types/Environment';
 import { Middleware } from '../types/Middleware';
 
 /**
@@ -8,7 +9,7 @@ import { Middleware } from '../types/Middleware';
  * @param sorter
  */
 export const sort = (sorter: (a: Post, b: Post) => number): Middleware => (
-  async (_, context: BuildContext): Promise<BuildContext> => ({
+  async (_: Environment, context: BuildContext): Promise<BuildContext> => ({
     ...context,
     posts: [...context.posts].sort(sorter),
   })

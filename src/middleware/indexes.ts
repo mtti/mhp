@@ -1,4 +1,5 @@
 import { BuildContext } from '../types/BuildContext';
+import { Environment } from '../types/Environment';
 import { Middleware } from '../types/Middleware';
 import { expectString } from '../utils/expectString';
 import { joinUrl } from '../utils/joinUrl';
@@ -42,8 +43,8 @@ export function indexes(
   return async (
     {
       render, renderString, write, globals,
-    },
-    context,
+    }: Environment,
+    context: BuildContext,
   ): Promise<BuildContext> => {
     const opts: IndexOptions = {
       firstPageFilename: 'index.html',

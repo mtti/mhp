@@ -1,14 +1,15 @@
 import marked from 'marked';
 import nunjucks from 'nunjucks';
 import { BuildContext } from '../types/BuildContext';
+import { Environment } from '../types/Environment';
 import { Middleware } from '../types/Middleware';
 
 export function page(name: string): Middleware {
   return async (
     {
       loadPage, render, write, globals,
-    },
-    context,
+    }: Environment,
+    context: BuildContext,
   ): Promise<BuildContext> => {
     const data = await loadPage(name);
 
