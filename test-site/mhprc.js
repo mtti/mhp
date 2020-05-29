@@ -20,7 +20,7 @@ module.exports = {
 
     branch('/feed.rss.xml', rss({
       uuid: '120024cf-8721-4492-b4de-eb6847c92abb',
-      title: 'MHP Test Site Main Atom Feed',
+      title: 'MHP Test Site Main RSS Feed',
       maxPosts: 50,
     })),
 
