@@ -40,7 +40,10 @@ async function branchInner(
 }
 
 export function branch(uri: string, ...middleware: Middleware[]): Middleware {
-  return async (env, context): Promise<BuildContext> => {
+  return async (
+    env: Environment,
+    context: BuildContext,
+  ): Promise<BuildContext> => {
     await branchInner(
       env,
       {

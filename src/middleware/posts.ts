@@ -1,4 +1,5 @@
 import { BuildContext } from '../types/BuildContext';
+import { Environment } from '../types/Environment';
 import { Middleware } from '../types/Middleware';
 
 export type PostOptions = {
@@ -15,8 +16,8 @@ export function posts(options?: PostOptions): Middleware {
   };
 
   return async (
-    { render, write, globals },
-    context,
+    { render, write, globals }: Environment,
+    context: BuildContext,
   ): Promise<BuildContext> => {
     if (context.posts.length !== 1) {
       throw new Error(`Expected exactly 1 post, got ${context.posts.length}`);

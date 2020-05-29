@@ -5,7 +5,7 @@ import { RenderContext } from '../types/RenderContext';
  *
  * @param context
  */
-export function getRenderContext(context: any): RenderContext {
+export function getRenderContext(context: Record<string, any>): RenderContext {
   // eslint-disable-next-line no-underscore-dangle
   const renderContext = context._renderContext as RenderContext|undefined;
   if (!renderContext) {

@@ -1,4 +1,5 @@
 import { BuildContext } from '../types/BuildContext';
+import { Environment } from '../types/Environment';
 import { Middleware } from '../types/Middleware';
 
 /**
@@ -7,7 +8,7 @@ import { Middleware } from '../types/Middleware';
  * @param values A dictionary of values to set.
  */
 export const vars = (values: Record<string, unknown>): Middleware => (
-  async (_, context: BuildContext): Promise<BuildContext> => ({
+  async (_: Environment, context: BuildContext): Promise<BuildContext> => ({
     ...context,
     vars: { ...context.vars, ...values },
   })
