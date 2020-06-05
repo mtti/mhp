@@ -50,7 +50,7 @@
     "eslint": "7.1.0",
     "eslint-plugin-import": "2.20.2",
     "jest": "26.0.1",
-    "ts-jest": "26.0.0",
+    "ts-jest": "26.1.0",
     "typescript": "3.9.3"
   },
   "dependencies": {
