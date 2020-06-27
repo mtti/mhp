@@ -10,8 +10,8 @@ import { expectString } from '../../utils/expectString';
  * @param this
  * @param input
  */
-export function assetUrl(this: NunjucksContext, input: string): string {
-  let filename = expectString(input);
+export function assetUrl(this: NunjucksContext, input: unknown): string {
+  const filename = expectString(input);
 
   // Return absolute URLs unchanged
   if (filename.match(/^[a-z]+:\/\/.+/)) {
@@ -20,11 +20,8 @@ export function assetUrl(this: NunjucksContext, input: string): string {
 
   const assetManifest = this.ctx.assetManifest
     ? expectStringDictionary(this.ctx.assetManifest) : {};
-  if (input in assetManifest) {
-    filename = assetManifest[input];
-  }
-
+  const output = assetManifest[filename] || filename;
   const baseUrl = ensureNotEndsWith(expectString(this.ctx.baseUrl), '/');
 
-  return `${baseUrl}/${filename}`;
+  return `${baseUrl}/${output}`;
 }
