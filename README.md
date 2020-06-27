@@ -1,27 +1,28 @@
-[![Written in TypeScript](https://flat.badgen.net/badge/icon/typescript?icon=typescript&label)](http://www.typescriptlang.org/) [![npm](https://flat.badgen.net/npm/v/@mtti/mhp?icon=npm)](https://www.npmjs.com/package/@mtti/mhp) [![License](https://flat.badgen.net/github/license/mtti/mhp)](https://github.com/mtti/mhp/blob/master/LICENSE)
+[![Written in TypeScript](https://flat.badgen.net/badge/icon/TypeScript?icon=typescript&label)](http://www.typescriptlang.org/) [![npm](https://flat.badgen.net/npm/v/@mtti/mhp?icon=npm&label=)](https://www.npmjs.com/package/@mtti/mhp) [![License](https://flat.badgen.net/github/license/mtti/mhp)](https://github.com/mtti/mhp/blob/master/LICENSE)
 
-A static website generator built in TypeScript.
+A static website generator.
 
-Under early development, the API is likely to change drastically before version 1.0.0.
+In early development since 2017, the API is likely to change significantly before version 1.0.0.
 
 ## Features
 
 * Highly customizable site structure.
-* Blog posts and static pages written in Markdown.
-* Tags, categories and more thanks to a highly flexible filtering and route generation system.
+* Supports blog posts and static pages written in Markdown.
+* A flexible filtering system with an Express-like API decouples the on-disk locations of the output files from the source files.
 * [Nunjucks](https://mozilla.github.io/nunjucks/) templates.
-* Custom hierarchical template loader which, together with Nunjucks' template inheritance enables a high-degree of reusability with templates.
-* Supports [webpack-manifest-plugin](https://www.npmjs.com/package/webpack-manifest-plugin) to resolve hashed asset files.
-* Atom and RSS feeds generated with [feed](https://github.com/jpmonette/feed).
+* Improved template reusability across multiple sites thanks to a custom hierarchical template loader.
+* Frontend-agnostic, but supports [webpack-manifest-plugin](https://www.npmjs.com/package/webpack-manifest-plugin) to resolve hashed asset files.
+* RSS feeds generated with [feed](https://github.com/jpmonette/feed). People still use these, right? Right?
 
-## Related
+## Downsides
 
-* [mhp-example](https://github.com/mtti/mhp-example) A full example MHP site.
-* [ssup](https://github.com/mtti/ssup) A companion utility from the same author for uploading static sites to S3.
+* Nonexistent documentation.
+* Poor test coverage.
+* The API is still in flux, even though it's beginning to stabilize after three years of development.
 
 ## License
 
-Copyright &copy;2019 Matti Hiltunen, licensed under the Apache License, version 2.0. See [LICENSE](https://github.com/mtti/mhp/blob/master/LICENSE) for details.
+Copyright &copy;2017 - 2020 Matti Hiltunen, licensed under the Apache License, version 2.0. See [LICENSE](https://github.com/mtti/mhp/blob/master/LICENSE) for details.
 
 Contains code from [nunjucks-markdown](https://github.com/zephraph/nunjucks-markdown). Copyright (c) 2014 Justin Bennett
 
