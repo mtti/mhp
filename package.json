@@ -33,7 +33,7 @@
     "templates/**/*.html"
   ],
   "devDependencies": {
-    "@mtti/eslint-config-typescript": "2.0.0",
+    "@mtti/eslint-config-typescript": "2.1.0",
     "@types/cheerio": "0.22.18",
     "@types/express": "4.17.6",
     "@types/fs-extra": "9.0.1",
