@@ -5,11 +5,35 @@ import { expectString } from '../utils/expectString';
 import { joinUrl } from '../utils/joinUrl';
 import { Post } from '../Post';
 
-export type IndexOptions = {
-  firstPageFilename: string|null;
-  filenameTemplate: string;
-  postsPerPage: number;
+export type PageOptions = {
+  /**
+   * The name of the produced HTML file on disk. Use the template variable
+   * `{{ page }}` for the page number.
+   *
+   * The default for the first page is `index.html` and for all other pages
+   * `index-{{ page }}.html`.
+   */
+  filename: string;
+
+  /** The template used to render the page. */
   template: string;
+
+  /** Template variables for rendering the page. */
+  vars: Record<string, unknown>;
+};
+
+/**
+ * Index page generator options.
+ */
+export type IndexOptions = PageOptions & {
+  /** The number of posts to show on each page. */
+  postsPerPage: number;
+
+  /** Options specific to the first post page. */
+  firstPage?: PageOptions;
+
+  /** Options specific to the last post page. */
+  lastPage?: PageOptions;
 };
 
 type PagerPage = {
@@ -19,6 +43,7 @@ type PagerPage = {
   index: number;
   first: boolean;
   last: boolean;
+  vars: Record<string, unknown>;
   next?: PagerPage;
   previous?: PagerPage;
 };
@@ -47,10 +72,10 @@ export function indexes(
     context: BuildContext,
   ): Promise<BuildContext> => {
     const opts: IndexOptions = {
-      firstPageFilename: 'index.html',
-      filenameTemplate: 'index-{{page}}.html',
+      filename: 'index-{{page}}.html',
       postsPerPage: 15,
       template: 'pages/post-index.html',
+      vars: {},
       ...(options || {}),
     };
 
@@ -59,15 +84,30 @@ export function indexes(
     // Calculate basic information about each index page that will be generated
     const pages: PagerPage[] = [];
     for (let i = 0; i < totalPages; i += 1) {
-      let filename: string;
-      if (i === 0 && opts.firstPageFilename) {
-        filename = opts.firstPageFilename;
-      } else {
-        filename = renderString(
-          opts.filenameTemplate,
-          { page: i + 1 },
-        );
+      let pageOptions: PageOptions = {
+        filename: opts.filename,
+        template: opts.template,
+        vars: opts.vars,
+      };
+
+      if (i === totalPages - 1) {
+        pageOptions = {
+          ...pageOptions,
+          ...opts.lastPage,
+        };
       }
+      if (i === 0) {
+        pageOptions = {
+          ...pageOptions,
+          filename: 'index.html',
+          ...opts.firstPage,
+        };
+      }
+
+      const filename = renderString(
+        pageOptions.filename,
+        { page: i + 1 },
+      );
 
       pages.push({
         uri: [...context.uri, filename],
@@ -79,6 +119,7 @@ export function indexes(
         index: i,
         first: i === 0,
         last: i === totalPages - 1,
+        vars: pageOptions.vars,
       });
     }
 
@@ -110,7 +151,9 @@ export function indexes(
       promises.push(
         write(currentPage.uri, render(
           context,
-          { pager, ...globals },
+          {
+            pager, ...globals, ...opts.vars, ...currentPage.vars,
+          },
           { name: opts.template },
         )),
       );

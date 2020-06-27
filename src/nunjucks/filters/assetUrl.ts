@@ -11,7 +11,7 @@ import { expectString } from '../../utils/expectString';
  * @param input
  */
 export function assetUrl(this: NunjucksContext, input: string): string {
-  let filename = input;
+  let filename = expectString(input);
 
   // Return absolute URLs unchanged
   if (filename.match(/^[a-z]+:\/\/.+/)) {

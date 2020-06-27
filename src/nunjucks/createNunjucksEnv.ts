@@ -9,14 +9,14 @@ import { MarkdownExtension } from './MarkdownExtension';
 
 // Wrap a filter function to print out proper stack trace in case of error
 function wrapFilter(filter: (...args: any[]) => any): (...args: any[]) => any {
+  // eslint-disable-next-line consistent-return
   return function wrappedFilter(this: unknown, ...args: unknown[]): unknown {
     try {
       return filter.call(this, ...args);
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.log(err.stack);
+      console.log(`Fatal error in filter ${filter.name}: \n ${err.stack}`);
       process.exit(1);
-      throw err;
     }
   };
 }
