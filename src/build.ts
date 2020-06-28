@@ -33,6 +33,7 @@ export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
     ],
     strings: [],
     outputDirectory: path.join(baseDirectory, 'dist'),
+    renderHooks: [],
     ...(options || {}),
   };
 
@@ -73,6 +74,7 @@ export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
       render: render(
         nunjucksEnv,
         menu,
+        opts.renderHooks,
       ),
       write: write(outputDirectory, false, writeCallback),
       loadPage: loadPage(pagesDirectory),

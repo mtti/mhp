@@ -2,6 +2,8 @@ import { lastOf } from '@mtti/funcs';
 import nunjucks from 'nunjucks';
 import { BuildContext } from '../types/BuildContext';
 import { RenderFunc } from '../types/Environment';
+import { RenderHookFn } from '../types/RenderHookFn';
+import { RenderHookOptions } from '../types/RenderHookOptions';
 import { cleanUri } from '../utils/cleanUri';
 import { splitUri } from '../utils/splitUri';
 import { joinUri } from '../utils/joinUri';
@@ -17,6 +19,7 @@ import { removeInvisibleMenuItems } from '../utils/removeInvisibleMenuItems';
 export const render = (
   env: nunjucks.Environment,
   menu: readonly MenuItem[],
+  hooks: readonly RenderHookFn[],
 ): RenderFunc => (
   context: BuildContext,
   vars: Record<string, unknown>,
@@ -75,7 +78,7 @@ export const render = (
   const frontUriStr = joinUri(frontUri);
   const currentUri = joinUri(cleanUri(context.uri));
 
-  const finalVars = {
+  const finalVars: Record<string, unknown> = {
     ...renderVars,
     front: frontUriStr === currentUri,
     uri: currentUri,
@@ -86,12 +89,20 @@ export const render = (
     _renderContext: renderContext,
   };
 
-  if (template.name) {
-    return env.render(template.name, finalVars);
+  let hookOptions: RenderHookOptions = {
+    template,
+    vars: finalVars,
+  };
+  for (const hook of hooks) {
+    hookOptions = hook(hookOptions);
   }
 
-  if (template.content) {
-    return env.renderString(template.content, finalVars);
+  if (hookOptions.template.name) {
+    return env.render(hookOptions.template.name, hookOptions.vars);
+  }
+
+  if (hookOptions.template.content) {
+    return env.renderString(hookOptions.template.content, hookOptions.vars);
   }
 
   throw new Error('Either template name or content is required');
