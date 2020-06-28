@@ -26,4 +26,14 @@ module.exports = {
 
     branch('/about.html', page('about.md')),
   ],
+
+  renderHooks: [
+    ({template, vars}) => ({
+      template,
+      vars: {
+        ...vars,
+        debugMessages: [ ...vars.debugMessages || [], 'renderHook OK' ],
+      }
+    })
+  ],
 };
