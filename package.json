@@ -64,7 +64,7 @@
     "marked": "^1.1.1",
     "mime-types": "^2.1.27",
     "minimist": "^1.2.5",
-    "nunjucks": "^3.2.1",
+    "nunjucks": "^3.2.2",
     "sanitize-filename": "^1.6.3",
     "slugify": "^1.4.4",
     "uuid": "^8.2.0",
