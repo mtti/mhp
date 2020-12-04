@@ -1,15 +1,5 @@
 {
   "extends": [
-    "config:base"
-  ],
-  "schedule": [
-    "on friday"
-  ],
-  "automerge": true,
-  "packageRules": [
-    {
-      "depTypeList": ["dependencies"],
-      "rangeStrategy": "bump"
-    }
+    "github>mtti/renovate-config:node-lib"
   ]
 }
