@@ -36,7 +36,7 @@
     "@mtti/eslint-config-typescript": "3.0.0",
     "@types/cheerio": "0.22.23",
     "@types/express": "4.17.9",
-    "@types/fs-extra": "9.0.4",
+    "@types/fs-extra": "9.0.5",
     "@types/jest": "26.0.16",
     "@types/luxon": "1.25.0",
     "@types/marked": "1.2.1",
