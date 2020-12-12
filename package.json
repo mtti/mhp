@@ -24,6 +24,7 @@
     "setup": "npm install",
     "test": "npm run lint && npm run jest",
     "test:docker": "docker build -f ./Dockerfile-test -t ts-test . && docker run --rm -it ts-test",
+    "test:parallel": "node ./scripts/run-tests.js",
     "tsc": "tsc",
     "watch": "chokidar --initial -c \"npm run build\" \"src/**/*.ts\""
   },
