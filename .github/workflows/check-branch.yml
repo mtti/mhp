@@ -10,7 +10,7 @@ on:
 jobs:
   run-tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v2
 
@@ -21,14 +21,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-      - name: Build
-        run: npm run build
-      - name: Run tests
-        run: npm run test
 
-      - name: Prepare snapshot test
-        working-directory: ./test-site
-        run: npm install
-      - name: Snapshot test
-        working-directory: ./test-site
-        run: npm run test
+      - name: Run tests
+        run: npm run test:parallel

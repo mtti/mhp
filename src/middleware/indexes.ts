@@ -13,13 +13,13 @@ export type PageOptions = {
    * The default for the first page is `index.html` and for all other pages
    * `index-{{ page }}.html`.
    */
-  filename: string;
+  filename?: string;
 
   /** The template used to render the page. */
-  template: string;
+  template?: string;
 
   /** Template variables for rendering the page. */
-  vars: Record<string, unknown>;
+  vars?: Record<string, unknown>;
 };
 
 /**
@@ -105,7 +105,7 @@ export function indexes(
       }
 
       const filename = renderString(
-        pageOptions.filename,
+        pageOptions.filename || 'index-{{page}}.html',
         { page: i + 1 },
       );
 
@@ -119,7 +119,7 @@ export function indexes(
         index: i,
         first: i === 0,
         last: i === totalPages - 1,
-        vars: pageOptions.vars,
+        vars: pageOptions.vars || {},
       });
     }
 
