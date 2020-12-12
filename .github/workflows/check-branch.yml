@@ -8,7 +8,7 @@ on:
       - '**'
 
 jobs:
-  run-tests:
+  unit-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -21,14 +21,34 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
       - name: Build
         run: npm run build
-      - name: Run tests
+
+      - name: Run unit tests
         run: npm run test
+
+  snapshot-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Initialize Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.13.0'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
 
       - name: Prepare snapshot test
         working-directory: ./test-site
         run: npm install
-      - name: Snapshot test
+
+      - name: Run snapshot test
         working-directory: ./test-site
         run: npm run test
