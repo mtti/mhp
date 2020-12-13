@@ -1,6 +1,6 @@
 {
   "name": "@mtti/mhp",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Static site generator",
   "repository": "github:mtti/mhp",
   "author": "Matti Hiltunen",
