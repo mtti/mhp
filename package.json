@@ -65,7 +65,7 @@
     "fs-extra": "^9.0.1",
     "luxon": "^1.25.0",
     "marked": "^1.2.7",
-    "mime-types": "^2.1.27",
+    "mime-types": "^2.1.28",
     "minimist": "^1.2.5",
     "nunjucks": "^3.2.2",
     "sanitize-filename": "^1.6.3",
