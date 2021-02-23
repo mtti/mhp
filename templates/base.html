@@ -10,6 +10,9 @@
         {% if feedUri %}
         <link rel="alternate" type="application/rss+xml" href="{{ feedUri|url }}">
         {% endif %}
+        {%- if canonicalUrl -%}
+        <link rel="canonical" href="{{ canonicalUrl }}">
+        {%- endif %}
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     </head>
