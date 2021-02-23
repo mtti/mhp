@@ -37,6 +37,7 @@ export function posts(options?: PostOptions): Middleware {
       post,
       title: post.attributes.title,
       author,
+      canonicalUrl: post.attributes.canonicalUrl || null,
     };
 
     await write(
