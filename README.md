@@ -18,7 +18,7 @@ In early development since 2017, the API is likely to change significantly befor
 
 * Nonexistent documentation.
 * Poor test coverage.
-* The API is still in flux, even though it's beginning to stabilize after three years of development.
+* The API is still in flux, even though it's beginning to stabilize after four years of development.
 
 ## License
 
