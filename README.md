@@ -22,7 +22,7 @@ In early development since 2017, the API is likely to change significantly befor
 
 ## License
 
-Copyright &copy;2017 - 2020 Matti Hiltunen, licensed under the Apache License, version 2.0. See [LICENSE](https://github.com/mtti/mhp/blob/master/LICENSE) for details.
+Copyright &copy;2017 - 2021 Matti Hiltunen, licensed under the Apache License, version 2.0. See [LICENSE](https://github.com/mtti/mhp/blob/master/LICENSE) for details.
 
 Contains code from [nunjucks-markdown](https://github.com/zephraph/nunjucks-markdown). Copyright (c) 2014 Justin Bennett
 
