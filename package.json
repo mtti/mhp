@@ -37,7 +37,7 @@
   ],
   "devDependencies": {
     "@mtti/eslint-config-typescript": "3.0.0",
-    "@types/cheerio": "0.22.26",
+    "@types/cheerio": "0.22.27",
     "@types/express": "4.17.11",
     "@types/fs-extra": "9.0.8",
     "@types/jest": "26.0.20",
