@@ -69,7 +69,7 @@
     "minimist": "^1.2.5",
     "nunjucks": "^3.2.3",
     "sanitize-filename": "^1.6.3",
-    "slugify": "^1.4.7",
+    "slugify": "^1.5.0",
     "uuid": "^8.3.2",
     "yaml": "^1.10.2"
   }
