@@ -7,6 +7,7 @@ import { RenderHookFn } from './RenderHookFn';
  * Options used to create the main `build` function.
  */
 export type BuildOptions = {
+  assetManifest?: string;
   authors?: readonly AuthorConfig[];
   templateDirectories?: readonly string[];
   menu?: readonly MenuItemConfig[];

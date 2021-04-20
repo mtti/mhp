@@ -64,10 +64,13 @@ export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
     };
 
     // Load asset manifest if it exists
-    const assetManifest = expectStringDictionary(await tryReadJson(path.join(
+    const assetManifestPath = opts.assetManifest || path.join(
       outputDirectory,
       '.manifest.json',
-    )));
+    );
+    const assetManifest = expectStringDictionary(
+      await tryReadJson(assetManifestPath),
+    );
 
     const env: Environment = {
       renderString: renderString(nunjucksEnv),
