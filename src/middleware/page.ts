@@ -41,7 +41,10 @@ export function page(name: string): Middleware {
       throw new Error(`No template name or content found for page ${name}`);
     }
 
-    await write(context.uri, rendered);
+    // Special case for generating a page at site root
+    const uri = context.uri.length > 0 ? context.uri : ['index'];
+
+    await write(uri, rendered);
 
     return context;
   };
