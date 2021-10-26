@@ -11,7 +11,7 @@ export async function tryReadJson(
   try {
     const src = await fs.readFile(file, 'utf8');
     return JSON.parse(src);
-  } catch (err) {
+  } catch (err: any) {
     if (err.code === 'ENOENT') {
       return {};
     }

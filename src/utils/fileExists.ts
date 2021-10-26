@@ -9,7 +9,7 @@ export async function fileExists(file: string): Promise<boolean> {
   try {
     const stat = await fs.stat(file);
     return stat.isFile();
-  } catch (err) {
+  } catch (err: any) {
     if (err.code === 'ENOENT') {
       return false;
     }

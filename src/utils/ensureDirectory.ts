@@ -16,7 +16,7 @@ export async function ensureDirectory(...parts: string[]): Promise<string> {
       throw new Error(`Not a directory: ${target}`);
     }
     return target;
-  } catch (err) {
+  } catch (err: any) {
     if (err.code === 'ENOENT') {
       await fs.mkdirp(target);
       return target;

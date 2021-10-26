@@ -10,7 +10,7 @@ export async function tryFiles(files: string[]): Promise<string|null> {
   const tryFile = async (file: string): Promise<string|null> => {
     try {
       return await fs.readFile(file, 'utf8');
-    } catch (err) {
+    } catch (err: any) {
       if (err.code === 'ENOENT') {
         return null;
       }
