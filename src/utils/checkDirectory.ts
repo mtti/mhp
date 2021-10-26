@@ -19,7 +19,7 @@ export async function checkDirectory(
       return null;
     }
     return target;
-  } catch (err) {
+  } catch (err: any) {
     if (err.code === 'ENOENT') {
       return null;
     }

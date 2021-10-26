@@ -15,7 +15,7 @@ export async function checkDirectories(
       if (!stat.isDirectory()) {
         return null;
       }
-    } catch (err) {
+    } catch (err: any) {
       if (err.code === 'ENOENT') {
         return null;
       }

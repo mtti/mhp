@@ -13,7 +13,7 @@ function wrapFilter(filter: (...args: any[]) => any): (...args: any[]) => any {
   return function wrappedFilter(this: unknown, ...args: unknown[]): unknown {
     try {
       return filter.call(this, ...args);
-    } catch (err) {
+    } catch (err: any) {
       // eslint-disable-next-line no-console
       console.log(`Fatal error in filter ${filter.name}: \n ${err.stack}`);
       process.exit(1);
