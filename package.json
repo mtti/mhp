@@ -57,7 +57,7 @@
     "typescript": "4.4.4"
   },
   "dependencies": {
-    "@mtti/funcs": "^2.2.0",
+    "@mtti/funcs": "^2.3.0",
     "@mtti/lines": "^1.0.1",
     "cheerio": "^1.0.0-rc.10",
     "express": "^4.17.1",
