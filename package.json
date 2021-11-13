@@ -6,7 +6,7 @@
   "author": "Matti Hiltunen",
   "license": "Apache-2.0",
   "engines": {
-    "node": ">=14.18.1"
+    "node": ">=14"
   },
   "main": "lib/index.js",
   "bin": {
