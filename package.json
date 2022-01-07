@@ -63,7 +63,7 @@
     "express": "^4.17.2",
     "feed": "^4.2.2",
     "fs-extra": "^10.0.0",
-    "luxon": "^2.2.0",
+    "luxon": "^2.3.0",
     "marked": "^3.0.8",
     "mime-types": "^2.1.34",
     "minimist": "^1.2.5",
