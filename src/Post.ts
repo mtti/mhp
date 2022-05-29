@@ -1,6 +1,6 @@
 import cheerio from 'cheerio';
 import { DateTime } from 'luxon';
-import marked from 'marked';
+import { marked } from 'marked';
 import nunjucks from 'nunjucks';
 import slugify from 'slugify';
 import { FileInfo } from './types/FileInfo';

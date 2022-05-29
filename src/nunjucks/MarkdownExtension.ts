@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this,
   @typescript-eslint/explicit-module-boundary-types */
 
-import marked from 'marked';
+import { marked } from 'marked';
 import nunjucks from 'nunjucks';
 
 /**

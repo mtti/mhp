@@ -1,4 +1,4 @@
-import marked from 'marked';
+import { marked } from 'marked';
 import nunjucks from 'nunjucks';
 import { BuildContext } from '../types/BuildContext';
 import { Environment } from '../types/Environment';
