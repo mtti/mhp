@@ -44,6 +44,7 @@ type PagerPage = {
   first: boolean;
   last: boolean;
   vars: Record<string, unknown>;
+  template: string;
   next?: PagerPage;
   previous?: PagerPage;
 };
@@ -120,6 +121,9 @@ export function indexes(
         first: i === 0,
         last: i === totalPages - 1,
         vars: pageOptions.vars || {},
+        template: pageOptions.template
+          || opts.template
+          || 'pages/post-index.html',
       });
     }
 
@@ -154,7 +158,7 @@ export function indexes(
           {
             pager, ...globals, ...opts.vars, ...currentPage.vars,
           },
-          { name: opts.template },
+          { name: currentPage.template },
         )),
       );
     }
