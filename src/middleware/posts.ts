@@ -33,11 +33,17 @@ export function posts(options?: PostOptions): Middleware {
     const author = typeof post.attributes.author === 'string'
       ? context.authors[post.attributes.author] : null;
 
+    let postVars: Record<string, unknown> = {};
+    if (post.attributes.vars && typeof post.attributes.vars === 'object') {
+      postVars = { ...post.attributes.vars };
+    }
+
     const vars = {
       post,
       title: post.attributes.title,
       author,
       canonicalUrl: post.attributes.canonicalUrl || null,
+      ...postVars,
     };
 
     await write(
