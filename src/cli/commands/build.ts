@@ -41,7 +41,7 @@ export async function build(
       globals: vars,
       strings: siteOptions.strings,
       ...(outputDirectory ? { outputDirectory } : {}),
-      renderHooks: siteOptions.renderHooks || [],
+      plugins: siteOptions.plugins || [],
     },
   )(...(siteOptions.routes || []));
 }

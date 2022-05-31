@@ -10,7 +10,6 @@ export * from './MenuItem';
 export * from './MenuItemConfig';
 export * from './Middleware';
 export * from './Page';
-export * from './PreprocessorFn';
 export * from './RenderContext';
 export * from './RenderHookFn';
 export * from './RenderHookOptions';
