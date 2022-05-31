@@ -1,41 +1,52 @@
 import path from 'path';
 import { fromEntries } from '@mtti/funcs';
+import { ExpandDatePlugin } from './plugins';
 import { loadPosts } from './loadPosts';
 import { Environment } from './types/Environment';
 import { render } from './environment/render';
 import { renderString } from './environment/renderString';
 import { loadPage } from './environment/loadPage';
 import { write } from './environment/write';
+import { Middleware } from './types/Middleware';
+import { BuildContext } from './types/BuildContext';
+import { BuildFn } from './types/BuildFn';
+import { BuildOptions } from './types/BuildOptions';
 import { checkDirectory } from './utils/checkDirectory';
 import { checkDirectories } from './utils/checkDirectories';
 import { ensureDirectory } from './utils/ensureDirectory';
 import { createNunjucksEnv } from './nunjucks/createNunjucksEnv';
 import { tryReadJson } from './utils/tryReadJson';
 import { expectStringDictionary } from './utils/expectStringDictionary';
-import { Middleware } from './types/Middleware';
-import { BuildContext } from './types/BuildContext';
-import { BuildFn } from './types/BuildFn';
-import { BuildOptions } from './types/BuildOptions';
 import { compose } from './middleware/compose';
 import { resolveMenu } from './utils/resolveMenu';
 import { preprocessPosts } from './utils/preprocessPosts';
-import { extractDateComponents } from './preprocessors/extractDateComponents';
 import { mergeTranslations } from './utils/mergeTranslations';
-import { AuthorConfig } from './types/AuthorConfig';
 
-export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
-  const opts = {
+export function build(
+  baseDirectory: string,
+  options?: Partial<BuildOptions>,
+): BuildFn {
+  let opts: BuildOptions = {
     globals: {},
+    authors: [],
+    templateDirectories: [],
     menu: [],
-    authors: [] as readonly AuthorConfig[],
-    preprocessors: [
-      extractDateComponents('publishedAt'),
-    ],
     strings: [],
     outputDirectory: path.join(baseDirectory, 'dist'),
-    renderHooks: [],
+    plugins: [],
     ...(options || {}),
   };
+
+  opts.plugins = [
+    new ExpandDatePlugin('publishedAt'),
+    ...opts.plugins,
+  ];
+
+  for (const plugin of opts.plugins) {
+    if (plugin.onInitialize) {
+      opts = plugin.onInitialize(opts);
+    }
+  }
 
   const menu = resolveMenu(opts.menu || []);
 
@@ -47,7 +58,7 @@ export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
 
     // Load posts
     let posts = postsDirectory ? await loadPosts(postsDirectory) : [];
-    posts = await preprocessPosts(posts, (opts.preprocessors || []));
+    posts = await preprocessPosts(posts, opts.plugins);
 
     // Create nunjucks environment
     const templateDirectories = await checkDirectories([
@@ -77,7 +88,7 @@ export function build(baseDirectory: string, options?: BuildOptions): BuildFn {
       render: render(
         nunjucksEnv,
         menu,
-        opts.renderHooks,
+        opts.plugins,
       ),
       write: write(outputDirectory, false, writeCallback),
       loadPage: loadPage(pagesDirectory),

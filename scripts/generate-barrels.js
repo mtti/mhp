@@ -3,7 +3,7 @@ const path = require('path');
 
 const DIRECTORIES = [
   './src/middleware',
-  './src/preprocessors',
+  './src/plugins',
   './src/sort',
   './src/types',
 ];

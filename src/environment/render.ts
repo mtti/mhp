@@ -1,9 +1,9 @@
 import { lastOf } from '@mtti/funcs';
 import nunjucks from 'nunjucks';
 import { BuildContext } from '../types/BuildContext';
+import { Plugin } from '../types/BuildOptions';
 import { RenderFunc } from '../types/Environment';
-import { RenderHookFn } from '../types/RenderHookFn';
-import { RenderHookOptions } from '../types/RenderHookOptions';
+import { RenderOptions } from '../types/RenderOptions';
 import { cleanUri } from '../utils/cleanUri';
 import { splitUri } from '../utils/splitUri';
 import { joinUri } from '../utils/joinUri';
@@ -19,7 +19,7 @@ import { removeInvisibleMenuItems } from '../utils/removeInvisibleMenuItems';
 export const render = (
   env: nunjucks.Environment,
   menu: readonly MenuItem[],
-  hooks: readonly RenderHookFn[],
+  plugins: readonly Plugin[],
 ): RenderFunc => (
   context: BuildContext,
   vars: Record<string, unknown>,
@@ -89,21 +89,29 @@ export const render = (
     _renderContext: renderContext,
   };
 
-  let hookOptions: RenderHookOptions = {
+  let hookOptions: RenderOptions = {
     template,
     vars: finalVars,
   };
-  for (const hook of hooks) {
-    hookOptions = hook(hookOptions);
+  for (const plugin of plugins) {
+    if (!plugin.onPreRender) continue;
+    hookOptions = plugin.onPreRender(hookOptions);
   }
+
+  let rendered: string;
 
   if (hookOptions.template.name) {
-    return env.render(hookOptions.template.name, hookOptions.vars);
+    rendered = env.render(hookOptions.template.name, hookOptions.vars);
+  } else if (hookOptions.template.content) {
+    rendered = env.renderString(hookOptions.template.content, hookOptions.vars);
+  } else {
+    throw new Error('Either template name or content is required');
   }
 
-  if (hookOptions.template.content) {
-    return env.renderString(hookOptions.template.content, hookOptions.vars);
+  for (const plugin of plugins) {
+    if (!plugin.onPostRender) continue;
+    rendered = plugin.onPostRender(hookOptions, rendered);
   }
 
-  throw new Error('Either template name or content is required');
+  return rendered;
 };

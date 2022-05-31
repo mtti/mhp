@@ -1,5 +1,5 @@
 import { Post } from '../Post';
-import { PreprocessorFn } from '../types/PreprocessorFn';
+import { Plugin } from '../types/BuildOptions';
 
 /**
  * Run preprocessor functions on an array of posts.
@@ -9,15 +9,15 @@ import { PreprocessorFn } from '../types/PreprocessorFn';
  */
 export async function preprocessPosts(
   posts: readonly Post[],
-  preprocessors: readonly PreprocessorFn[],
+  plugins: readonly Plugin[],
 ): Promise<Post[]> {
   const result: Post[] = [];
 
   for (const original of posts) {
     let post = original;
-    for (const fn of preprocessors) {
-      // eslint-disable-next-line no-await-in-loop
-      post = await fn(post);
+    for (const plugin of plugins) {
+      if (!plugin.onPreprocessPost) continue;
+      post = await plugin.onPreprocessPost(post);
     }
     result.push(post);
   }
