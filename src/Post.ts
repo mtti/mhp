@@ -3,24 +3,52 @@ import { DateTime } from 'luxon';
 import { marked } from 'marked';
 import nunjucks from 'nunjucks';
 import slugify from 'slugify';
+import { RenderStringFunc } from './types/RenderStringFunc';
 import { FileInfo } from './types/FileInfo';
 import { expectDateTime } from './utils/expectDateTime';
 import { expectUuidString } from './utils/expectUuidString';
-import { readFrontMatter } from './utils/readFrontMatter';
+import { FrontMatterDocument, readFrontMatter } from './utils/readFrontMatter';
 
 export class Post {
+  static async load(
+    renderString: RenderStringFunc,
+    file: FileInfo,
+  ): Promise<Post> {
+    let frontMatter: FrontMatterDocument;
+
+    if (file.extension === '.md') {
+      frontMatter = await Post.loadMarkdown(file);
+    } else if (file.extension === '.html') {
+      frontMatter = await Post.loadHtml(file);
+    } else {
+      throw new Error(`Unsupported post file extension: ${file.extension}`);
+    }
+
+    return new Post(
+      renderString,
+      file,
+      frontMatter.attributes,
+      frontMatter.body,
+    );
+  }
+
+  /**
+   * Load a post from a HTML file.
+   *
+   * @param file
+   * @returns The loaded post
+   */
+  static loadHtml(file: FileInfo): Promise<FrontMatterDocument> {
+    return readFrontMatter(file.path, '<!--', '-->');
+  }
+
   /**
    * Load a post from a Markdown file.
    *
    * @param file
    */
-  static async load(file: FileInfo): Promise<Post> {
-    const data = await readFrontMatter(file.path, '---', '---');
-    return new Post(
-      file,
-      data.attributes as Record<string, unknown>,
-      data.body,
-    );
+  static loadMarkdown(file: FileInfo): Promise<FrontMatterDocument> {
+    return readFrontMatter(file.path, '---', '---');
   }
 
   private _source: FileInfo;
@@ -36,6 +64,8 @@ export class Post {
   private _publishedAt: DateTime;
 
   private _updatedAt: DateTime;
+
+  private _renderString: RenderStringFunc;
 
   get attributes(): Record<string, unknown> {
     return this._attributes;
@@ -68,7 +98,7 @@ export class Post {
   }
 
   get html(): string {
-    return marked(this._body);
+    return this.render();
   }
 
   get safeHtml(): nunjucks.runtime.SafeString {
@@ -87,10 +117,12 @@ export class Post {
   }
 
   constructor(
+    renderString: RenderStringFunc,
     source: FileInfo,
     attributes: Record<string, unknown>,
     body: string,
   ) {
+    this._renderString = renderString;
     this._source = source;
     this._attributes = attributes;
     this._body = body;
@@ -105,12 +137,15 @@ export class Post {
     }
   }
 
-  async getBody(): Promise<string> {
-    return this._body;
-  }
+  render(): string {
+    if (this._source.extension === '.md') {
+      return marked(this._body);
+    }
+    if (this._source.extension === '.html') {
+      return this._renderString(this._body, this._attributes);
+    }
 
-  async getHtml(): Promise<string> {
-    return marked(await this.getBody());
+    return '';
   }
 
   set(values: Record<string, unknown>): void {

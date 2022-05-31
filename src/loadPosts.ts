@@ -1,5 +1,6 @@
 import { findFiles } from './utils/findFiles';
 import { FileInfo } from './types/FileInfo';
+import { RenderStringFunc } from './types/RenderStringFunc';
 import { Post } from './Post';
 import { sortPostsByDate } from './sort/sortPostsByDate';
 
@@ -8,13 +9,17 @@ import { sortPostsByDate } from './sort/sortPostsByDate';
  *
  * @param directory
  */
-export async function loadPosts(directory: string): Promise<readonly Post[]> {
-  const markdownFiles = await findFiles(
+export async function loadPosts(
+  renderString: RenderStringFunc,
+  directory: string,
+): Promise<readonly Post[]> {
+  const files = await findFiles(
     directory,
-    (file: FileInfo) => file.extension === '.md',
+    ({ extension }) => extension === '.md' || extension === '.html',
   );
+
   const posts = await Promise.all(
-    markdownFiles.map((file: FileInfo) => Post.load(file)),
+    files.map((file: FileInfo) => Post.load(renderString, file)),
   );
   return posts.sort(sortPostsByDate);
 }

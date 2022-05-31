@@ -11,6 +11,6 @@ export * from './MenuItemConfig';
 export * from './Middleware';
 export * from './Page';
 export * from './RenderContext';
-export * from './RenderHookFn';
-export * from './RenderHookOptions';
+export * from './RenderOptions';
+export * from './RenderStringFunc';
 export * from './TemplateSource';
