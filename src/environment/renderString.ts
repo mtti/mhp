@@ -1,5 +1,5 @@
 import nunjucks from 'nunjucks';
-import { RenderStringFunc } from '../types/Environment';
+import { RenderStringFunc } from '../types/RenderStringFunc';
 
 export const renderString = (
   env: nunjucks.Environment,

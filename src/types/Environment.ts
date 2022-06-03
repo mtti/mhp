@@ -1,11 +1,7 @@
 import { BuildContext } from './BuildContext';
 import { Page } from './Page';
+import { RenderStringFunc } from './RenderStringFunc';
 import { TemplateSource } from './TemplateSource';
-
-export type RenderStringFunc = (
-  str: string,
-  vars: Record<string, unknown>,
-) => string;
 
 export type LoadPageFunc = (
   name: string,

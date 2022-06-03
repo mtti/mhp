@@ -56,10 +56,6 @@ export function build(
     const outputDirectory = await ensureDirectory(opts.outputDirectory);
     const pagesDirectory = await checkDirectory(baseDirectory, 'pages');
 
-    // Load posts
-    let posts = postsDirectory ? await loadPosts(postsDirectory) : [];
-    posts = await preprocessPosts(posts, opts.plugins);
-
     // Create nunjucks environment
     const templateDirectories = await checkDirectories([
       path.resolve(__dirname, '..', 'templates'),
@@ -98,6 +94,11 @@ export function build(
     const authorMap = fromEntries(
       (opts.authors || []).map((author) => [author.id, author]),
     );
+
+    // Load posts
+    let posts = postsDirectory
+      ? await loadPosts(env.renderString, postsDirectory) : [];
+    posts = await preprocessPosts(posts, opts.plugins);
 
     const context: BuildContext = {
       authors: authorMap,

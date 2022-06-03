@@ -36,7 +36,7 @@ export const rss = (options: FeedMiddlewareOptions): Middleware => {
       id: `urn:uuid:${post.uuid}`,
       guid: post.uuid,
       link: joinUrl(expectString(context.vars.baseUrl), post.uri),
-      content: await post.getHtml(),
+      content: post.render(),
       date: post.publishedAt.toJSDate(),
     })));
 
