@@ -24,6 +24,13 @@ async function branchInner(
         env,
         {
           ...context,
+          vars: {
+            ...context.vars,
+            $groups: {
+              ...(context.vars.$groups as any),
+              [head]: key,
+            },
+          },
           uri: replaceUriParameter(context.uri, head, key),
           posts,
         },
