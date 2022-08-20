@@ -15,6 +15,16 @@ export type PageOptions = {
    */
   filename?: string;
 
+  /**
+   * A template used to generate the title of the page. All variables available
+   * to page templates are available. For example, to include the name of
+   * the tag when generating tag indexes, you could use
+   * `Posts tagged with '{{ $groups.tags }}'`.
+   *
+   * This overrides the `title` variable if set.
+   */
+  titleTemplate?: string;
+
   /** The template used to render the page. */
   template?: string;
 
@@ -89,12 +99,17 @@ export function indexes(
         filename: opts.filename,
         template: opts.template,
         vars: opts.vars,
+        titleTemplate: opts.titleTemplate,
       };
 
       if (i === totalPages - 1) {
         pageOptions = {
           ...pageOptions,
           ...opts.lastPage,
+          vars: {
+            ...pageOptions.vars,
+            ...opts.lastPage?.vars,
+          },
         };
       }
       if (i === 0) {
@@ -102,6 +117,10 @@ export function indexes(
           ...pageOptions,
           filename: 'index.html',
           ...opts.firstPage,
+          vars: {
+            ...pageOptions.vars,
+            ...opts.firstPage?.vars,
+          },
         };
       }
 
@@ -109,6 +128,16 @@ export function indexes(
         pageOptions.filename || 'index-{{page}}.html',
         { page: i + 1 },
       );
+
+      if (pageOptions.titleTemplate && pageOptions.vars) {
+        pageOptions.vars.title = renderString(
+          pageOptions.titleTemplate,
+          {
+            ...context.vars,
+            ...pageOptions.vars,
+          },
+        );
+      }
 
       pages.push({
         uri: [...context.uri, filename],
