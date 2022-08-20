@@ -1,14 +1,22 @@
 /* eslint-disable class-methods-use-this,
   @typescript-eslint/explicit-module-boundary-types */
 
-import { marked } from 'marked';
 import nunjucks from 'nunjucks';
+
+import { noEscape } from '../utils/noEscape';
+import { RenderMarkdownFunc } from '../utils/renderMarkdown';
 
 /**
  * Nunjucks extension for the `{% markdown %}` ... `{% endmarkdown %}` tags.
  */
 export class MarkdownExtension implements nunjucks.Extension {
   tags: string[] = ['markdown'];
+
+  private _renderMarkdown: RenderMarkdownFunc;
+
+  constructor(renderMarkdown: RenderMarkdownFunc) {
+    this._renderMarkdown = renderMarkdown;
+  }
 
   parse(parser: any, nodes: any, lexer: any): any {
     const token = parser.nextToken();
@@ -56,6 +64,6 @@ export class MarkdownExtension implements nunjucks.Extension {
         .join('\n'); // Rejoin into one string.
     }
 
-    return new nunjucks.runtime.SafeString(marked(body));
+    return noEscape(this._renderMarkdown(body));
   }
 }

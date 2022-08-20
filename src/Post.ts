@@ -1,6 +1,5 @@
 import cheerio from 'cheerio';
 import { DateTime } from 'luxon';
-import { marked } from 'marked';
 import nunjucks from 'nunjucks';
 import slugify from 'slugify';
 import { RenderStringFunc } from './types/RenderStringFunc';
@@ -8,9 +7,11 @@ import { FileInfo } from './types/FileInfo';
 import { expectDateTime } from './utils/expectDateTime';
 import { expectUuidString } from './utils/expectUuidString';
 import { FrontMatterDocument, readFrontMatter } from './utils/readFrontMatter';
+import { RenderMarkdownFunc } from './utils/renderMarkdown';
 
 export class Post {
   static async load(
+    renderMarkdown: RenderMarkdownFunc,
     renderString: RenderStringFunc,
     file: FileInfo,
   ): Promise<Post> {
@@ -25,6 +26,7 @@ export class Post {
     }
 
     return new Post(
+      renderMarkdown,
       renderString,
       file,
       frontMatter.attributes,
@@ -64,6 +66,8 @@ export class Post {
   private _publishedAt: DateTime;
 
   private _updatedAt: DateTime;
+
+  private _renderMarkdown: RenderMarkdownFunc;
 
   private _renderString: RenderStringFunc;
 
@@ -117,11 +121,13 @@ export class Post {
   }
 
   constructor(
+    renderMarkdown: RenderMarkdownFunc,
     renderString: RenderStringFunc,
     source: FileInfo,
     attributes: Record<string, unknown>,
     body: string,
   ) {
+    this._renderMarkdown = renderMarkdown;
     this._renderString = renderString;
     this._source = source;
     this._attributes = attributes;
@@ -139,7 +145,7 @@ export class Post {
 
   render(): string {
     if (this._source.extension === '.md') {
-      return marked(this._body);
+      return this._renderMarkdown(this._body);
     }
     if (this._source.extension === '.html') {
       return this._renderString(this._body, this._attributes);

@@ -1,4 +1,5 @@
 import nunjucks from 'nunjucks';
+import { renderMarkdown } from '../utils/renderMarkdown';
 import { MarkdownExtension } from './MarkdownExtension';
 
 const source: string = `<div>
@@ -19,7 +20,10 @@ describe(MarkdownExtension.name, () => {
 
   beforeEach(() => {
     env = new nunjucks.Environment();
-    env.addExtension('MarkdownExtension', new MarkdownExtension());
+    env.addExtension(
+      'MarkdownExtension',
+      new MarkdownExtension(renderMarkdown()),
+    );
   });
 
   it('parses markdown correctly', () => {

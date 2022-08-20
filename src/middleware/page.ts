@@ -1,13 +1,12 @@
-import { marked } from 'marked';
-import nunjucks from 'nunjucks';
 import { BuildContext } from '../types/BuildContext';
 import { Environment } from '../types/Environment';
 import { Middleware } from '../types/Middleware';
+import { SafeString, noEscape } from '../utils/noEscape';
 
 export function page(name: string): Middleware {
   return async (
     {
-      loadPage, render, write, globals,
+      loadPage, render, write, globals, renderMarkdown,
     }: Environment,
     context: BuildContext,
   ): Promise<BuildContext> => {
@@ -20,9 +19,9 @@ export function page(name: string): Middleware {
 
     let rendered: string;
     if (data.template.name && data.body) {
-      let body: nunjucks.runtime.SafeString;
+      let body: SafeString;
       if (data.extension === '.md') {
-        body = new nunjucks.runtime.SafeString(marked(data.body));
+        body = noEscape(renderMarkdown(data.body));
       } else {
         throw new Error(`Unsupported page extension: ${data.extension}`);
       }

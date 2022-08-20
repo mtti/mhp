@@ -21,6 +21,7 @@ import { compose } from './middleware/compose';
 import { resolveMenu } from './utils/resolveMenu';
 import { preprocessPosts } from './utils/preprocessPosts';
 import { mergeTranslations } from './utils/mergeTranslations';
+import { renderMarkdown as renderMarkdownCtor } from './utils/renderMarkdown';
 
 export function build(
   baseDirectory: string,
@@ -56,13 +57,15 @@ export function build(
     const outputDirectory = await ensureDirectory(opts.outputDirectory);
     const pagesDirectory = await checkDirectory(baseDirectory, 'pages');
 
+    const renderMarkdown = renderMarkdownCtor();
+
     // Create nunjucks environment
     const templateDirectories = await checkDirectories([
       path.resolve(__dirname, '..', 'templates'),
       ...(opts.templateDirectories || []),
       path.join(baseDirectory, 'templates'),
     ]);
-    const nunjucksEnv = createNunjucksEnv(templateDirectories);
+    const nunjucksEnv = createNunjucksEnv(renderMarkdown, templateDirectories);
 
     // Log written files
     const writeCallback = (file: string): void => {
@@ -86,6 +89,7 @@ export function build(
         menu,
         opts.plugins,
       ),
+      renderMarkdown,
       write: write(outputDirectory, false, writeCallback),
       loadPage: loadPage(pagesDirectory),
       globals: opts.globals || {},
@@ -97,7 +101,7 @@ export function build(
 
     // Load posts
     let posts = postsDirectory
-      ? await loadPosts(env.renderString, postsDirectory) : [];
+      ? await loadPosts(renderMarkdown, env.renderString, postsDirectory) : [];
     posts = await preprocessPosts(posts, opts.plugins);
 
     const context: BuildContext = {
