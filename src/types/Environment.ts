@@ -1,3 +1,4 @@
+import { RenderMarkdownFunc } from '../utils/renderMarkdown';
 import { BuildContext } from './BuildContext';
 import { Page } from './Page';
 import { RenderStringFunc } from './RenderStringFunc';
@@ -26,6 +27,7 @@ export type WriteFunc = (
 export type Environment = {
   readonly renderString: RenderStringFunc;
   readonly render: RenderFunc;
+  readonly renderMarkdown: RenderMarkdownFunc;
   readonly write: WriteFunc;
   readonly loadPage: LoadPageFunc;
   readonly globals: Record<string, unknown>;

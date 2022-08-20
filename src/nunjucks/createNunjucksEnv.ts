@@ -1,4 +1,5 @@
 import nunjucks from 'nunjucks';
+import { RenderMarkdownFunc } from '../utils/renderMarkdown';
 import { TemplateLoader } from './TemplateLoader';
 import { assetUrl } from './filters/assetUrl';
 import { formatDate } from './filters/formatDate';
@@ -22,6 +23,7 @@ function wrapFilter(filter: (...args: any[]) => any): (...args: any[]) => any {
 }
 
 export function createNunjucksEnv(
+  renderMarkdown: RenderMarkdownFunc,
   templateDirectories: readonly string[],
 ): nunjucks.Environment {
   const env = new nunjucks.Environment(
@@ -35,7 +37,7 @@ export function createNunjucksEnv(
   env.addGlobal('isInActivePath', isInActivePath);
   env.addGlobal('t', t);
 
-  env.addExtension('MarkdownExtension', new MarkdownExtension());
+  env.addExtension('MarkdownExtension', new MarkdownExtension(renderMarkdown));
 
   return env;
 }

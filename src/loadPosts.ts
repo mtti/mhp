@@ -3,6 +3,7 @@ import { FileInfo } from './types/FileInfo';
 import { RenderStringFunc } from './types/RenderStringFunc';
 import { Post } from './Post';
 import { sortPostsByDate } from './sort/sortPostsByDate';
+import { RenderMarkdownFunc } from './utils/renderMarkdown';
 
 /**
  * Load posts recursively from a directory.
@@ -10,6 +11,7 @@ import { sortPostsByDate } from './sort/sortPostsByDate';
  * @param directory
  */
 export async function loadPosts(
+  renderMarkdown: RenderMarkdownFunc,
   renderString: RenderStringFunc,
   directory: string,
 ): Promise<readonly Post[]> {
@@ -19,7 +21,8 @@ export async function loadPosts(
   );
 
   const posts = await Promise.all(
-    files.map((file: FileInfo) => Post.load(renderString, file)),
+    files.map((file: FileInfo) => Post
+      .load(renderMarkdown, renderString, file)),
   );
   return posts.sort(sortPostsByDate);
 }
