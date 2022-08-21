@@ -18,6 +18,7 @@ import { createNunjucksEnv } from './nunjucks/createNunjucksEnv';
 import { tryReadJson } from './utils/tryReadJson';
 import { expectStringDictionary } from './utils/expectStringDictionary';
 import { compose } from './middleware/compose';
+import { commonFilter } from './utils/commonFilter';
 import { resolveMenu } from './utils/resolveMenu';
 import { preprocessPosts } from './utils/preprocessPosts';
 import { mergeTranslations } from './utils/mergeTranslations';
@@ -103,6 +104,8 @@ export function build(
     let posts = postsDirectory
       ? await loadPosts(renderMarkdown, env.renderString, postsDirectory) : [];
     posts = await preprocessPosts(posts, opts.plugins);
+
+    posts = posts.filter(commonFilter);
 
     const context: BuildContext = {
       authors: authorMap,
