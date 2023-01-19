@@ -65,7 +65,7 @@
     "fs-extra": "^11.1.0",
     "highlight.js": "^11.7.0",
     "luxon": "^3.2.1",
-    "marked": "^4.2.5",
+    "marked": "^4.2.12",
     "mime-types": "^2.1.35",
     "minimist": "^1.2.7",
     "nunjucks": "^3.2.3",
