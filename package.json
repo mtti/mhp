@@ -67,7 +67,7 @@
     "luxon": "^3.2.1",
     "marked": "^4.2.12",
     "mime-types": "^2.1.35",
-    "minimist": "^1.2.7",
+    "minimist": "^1.2.8",
     "nunjucks": "^3.2.3",
     "sanitize-filename": "^1.6.3",
     "slugify": "^1.6.5",
