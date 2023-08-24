@@ -64,7 +64,7 @@
     "feed": "^4.2.2",
     "fs-extra": "^11.1.0",
     "highlight.js": "^11.8.0",
-    "luxon": "^3.4.0",
+    "luxon": "^3.4.1",
     "marked": "^5.1.2",
     "mime-types": "^2.1.35",
     "minimist": "^1.2.8",
