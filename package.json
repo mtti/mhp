@@ -72,6 +72,6 @@
     "sanitize-filename": "^1.6.3",
     "slugify": "^1.6.6",
     "uuid": "^9.0.1",
-    "yaml": "^2.3.2"
+    "yaml": "^2.3.3"
   }
 }
