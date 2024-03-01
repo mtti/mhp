@@ -36,7 +36,7 @@
     "templates/**/*.html"
   ],
   "devDependencies": {
-    "@mtti/eslint-config-typescript": "3.0.0",
+    "@mtti/eslint-config-typescript": "4.0.1",
     "@types/cheerio": "0.22.35",
     "@types/express": "4.17.21",
     "@types/fs-extra": "9.0.13",
