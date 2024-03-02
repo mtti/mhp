@@ -91,7 +91,7 @@ export function build(
         opts.plugins,
       ),
       renderMarkdown,
-      write: write(outputDirectory, false, writeCallback),
+      write: write(outputDirectory, writeCallback, false),
       loadPage: loadPage(pagesDirectory),
       globals: opts.globals || {},
     };
