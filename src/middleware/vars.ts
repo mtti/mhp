@@ -3,7 +3,7 @@ import { Environment } from '../types/Environment';
 import { Middleware } from '../types/Middleware';
 
 /**
- * Create a middleware to set global template variables.
+ * Set global template variables.
  *
  * @param values A dictionary of values to set.
  */

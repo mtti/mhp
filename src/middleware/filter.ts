@@ -4,7 +4,7 @@ import { Environment } from '../types/Environment';
 import { Middleware } from '../types/Middleware';
 
 /**
- * Create a middleware which filters posts.
+ * Filter posts in the current context according to a filter function.
  *
  * @param filterFunc
  */

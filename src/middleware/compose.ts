@@ -4,8 +4,6 @@ import { Middleware } from '../types/Middleware';
 
 /**
  * Combine several middleware into one.
- *
- * @param middleware
  */
 export const compose = (...middleware: Middleware[]): Middleware => (
   async (env: Environment, context: BuildContext): Promise<BuildContext> => {

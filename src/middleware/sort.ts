@@ -4,9 +4,7 @@ import { Environment } from '../types/Environment';
 import { Middleware } from '../types/Middleware';
 
 /**
- * Create a middleware which sorts posts according to a sorting function.
- *
- * @param sorter
+ * Sort all posts in the context using a sorting function.
  */
 export const sort = (sorter: (a: Post, b: Post) => number): Middleware => (
   async (_: Environment, context: BuildContext): Promise<BuildContext> => ({
