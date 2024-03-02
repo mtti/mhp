@@ -35,5 +35,5 @@ export class ExpandDatePlugin implements Plugin {
     });
 
     return post;
-  }
+  };
 }

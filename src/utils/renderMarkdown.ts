@@ -2,13 +2,11 @@
 
 import hljs from 'highlight.js';
 import { Marked } from 'marked';
-import { markedHighlight } from 'marked-highlight'
+import { markedHighlight } from 'marked-highlight';
 
 export type RenderMarkdownFunc = (input: string) => string;
 
-export const renderMarkdown = (
-
-): RenderMarkdownFunc => (
+export const renderMarkdown = (): RenderMarkdownFunc => (
   input,
 ): string => {
   const marked = new Marked(
@@ -20,7 +18,7 @@ export const renderMarkdown = (
         return hljs.highlight(code, { language }).value;
       },
       langPrefix: 'hljs language-',
-    })
+    }),
   );
 
   return marked.parse(input, { async: false }) as string;
