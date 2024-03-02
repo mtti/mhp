@@ -29,9 +29,15 @@ export class MarkdownExtension implements nunjucks.Extension {
     // data into the BlockTag function, this finally worked by faking another
     // template node." (from nunjucks-markdown)
     const tabStart = new nodes.NodeList(
-      0, 0, [new nodes.Output(
-        0, 0, [new nodes.TemplateData(0, 0, (token.colno - 1))],
-      )],
+      0,
+      0,
+      [
+        new nodes.Output(
+          0,
+          0,
+          [new nodes.TemplateData(0, 0, (token.colno - 1))],
+        ),
+      ],
     );
 
     parser.advanceAfterBlockEnd();

@@ -8,8 +8,8 @@ export type WriteCallback = (file: string) => void;
 
 export function write(
   outputDirectory: string,
-  dryRun: boolean = false,
   writeCallback?: WriteCallback,
+  dryRun: boolean = false,
 ): WriteFunc {
   return async (
     uri: readonly string[],
