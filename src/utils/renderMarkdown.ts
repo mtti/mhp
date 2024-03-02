@@ -2,6 +2,7 @@
 
 import hljs from 'highlight.js';
 import { Marked } from 'marked';
+import { gfmHeadingId } from 'marked-gfm-heading-id';
 import { markedHighlight } from 'marked-highlight';
 
 export type RenderMarkdownFunc = (input: string) => string;
@@ -19,6 +20,7 @@ export const renderMarkdown = (): RenderMarkdownFunc => (
       },
       langPrefix: 'hljs language-',
     }),
+    gfmHeadingId(),
   );
 
   return marked.parse(input, { async: false }) as string;
