@@ -14,9 +14,7 @@ export type FeedMiddlewareOptions = {
 };
 
 /**
- * Create a middleware which filters posts.
- *
- * @param filterFunc
+ * Generate an RSS feed at the current path.
  */
 export const rss = (options: FeedMiddlewareOptions): Middleware => {
   const opts = {

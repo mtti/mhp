@@ -3,6 +3,9 @@ import { Environment } from '../types/Environment';
 import { Middleware } from '../types/Middleware';
 import { SafeString, noEscape } from '../utils/noEscape';
 
+/**
+ * Generate a page at the current path
+ */
 export function page(name: string): Middleware {
   return async (
     {

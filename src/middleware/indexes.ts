@@ -69,7 +69,7 @@ type Pager = {
 };
 
 /**
- * Create a middleware to set global template variables.
+ * Generate post index pages at the current path.
  *
  * @param values A dictionary of values to set.
  */

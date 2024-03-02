@@ -46,6 +46,9 @@ async function branchInner(
   return context;
 }
 
+/**
+ * Branch off a new middleware chain at the current path.
+ */
 export function branch(uri: string, ...middleware: Middleware[]): Middleware {
   return async (
     env: Environment,

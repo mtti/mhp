@@ -7,7 +7,7 @@ export type PostOptions = {
 }
 
 /**
- * Create a middleware for generating a post page.
+ * Generate post pages at the current path for all post currently in context.
  */
 export function posts(options?: PostOptions): Middleware {
   const opts: PostOptions = {
